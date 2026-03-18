@@ -155,7 +155,134 @@
             </div>
         </div>
 
-        <!-- Slide 3: 팀빌딩 & 자기소개 (가이드라인) -->
+        <!-- Slide 3: 조별 자리 배치 (NEW) -->
+        <div class="slide">
+            <div class="max-w-5xl w-full text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 flex items-center justify-center gap-3">
+                    <span class="text-indigo-600"><i class="fas fa-chair"></i></span> Step 2. 팀빌딩: 조별 자리 배치 안내
+                </h2>
+                <p class="text-gray-500 text-xl mb-8">짐을 챙겨서 화면의 지정된 조별 좌석으로 신속하게 이동해 주세요!</p>
+
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-200">
+                    <!-- 칠판 영역 -->
+                    <div class="w-full bg-gray-700 text-white py-4 rounded-xl text-2xl font-bold mb-8 shadow-inner tracking-[0.3em]">
+                        칠판 / 스크린 (교탁)
+                    </div>
+
+                    <div class="flex gap-6 mb-6">
+                        <!-- 좌측 블록 -->
+                        <div class="flex-1 space-y-6">
+                            <!-- 1조 -->
+                            <div class="bg-blue-50 border-2 border-blue-400 p-5 rounded-2xl relative shadow-sm">
+                                <span class="absolute -top-4 -left-4 bg-blue-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl shadow-md border-4 border-white">1조</span>
+                                <div class="grid grid-rows-2 gap-3 pl-4">
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                    </div>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 3조 -->
+                            <div class="bg-purple-50 border-2 border-purple-400 p-5 rounded-2xl relative shadow-sm">
+                                <span class="absolute -top-4 -left-4 bg-purple-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl shadow-md border-4 border-white">3조</span>
+                                <div class="grid grid-rows-2 gap-3 pl-4">
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                    </div>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 중앙 통로 -->
+                        <div class="w-16 flex flex-col justify-center items-center bg-gray-50 border-x-4 border-dashed border-gray-200 rounded-xl relative overflow-hidden">
+                            <span class="text-gray-400 font-black tracking-[1em] text-2xl rotate-90 whitespace-nowrap opacity-50 absolute">중앙 통로</span>
+                        </div>
+
+                        <!-- 우측 블록 -->
+                        <div class="flex-1 space-y-6">
+                            <!-- 2조 -->
+                            <div class="bg-emerald-50 border-2 border-emerald-400 p-5 rounded-2xl relative shadow-sm">
+                                <span class="absolute -top-4 -right-4 bg-emerald-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl shadow-md border-4 border-white">2조</span>
+                                <div class="grid grid-rows-2 gap-3 pr-4">
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                    </div>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 4조 -->
+                            <div class="bg-pink-50 border-2 border-pink-400 p-5 rounded-2xl relative shadow-sm">
+                                <span class="absolute -top-4 -right-4 bg-pink-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl shadow-md border-4 border-white">4조</span>
+                                <div class="grid grid-rows-2 gap-3 pr-4">
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                    </div>
+                                    <div class="grid grid-cols-4 gap-2">
+                                        <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                        <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5조 (통로 가로지르기) -->
+                    <div class="bg-orange-50 border-2 border-orange-400 p-5 rounded-2xl relative mt-4 shadow-sm">
+                        <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-orange-500 text-white px-6 py-1.5 rounded-full font-bold text-xl shadow-md border-4 border-white">마지막 줄 5조</span>
+                        <div class="flex gap-6 mt-3">
+                            <!-- 5조 좌측 -->
+                            <div class="flex-1 grid grid-cols-4 gap-2 pl-4">
+                                <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                                <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                                <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                                <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                            </div>
+                            <!-- 중앙 빈공간 -->
+                            <div class="w-16"></div>
+                            <!-- 5조 우측 -->
+                            <div class="flex-1 grid grid-cols-4 gap-2 pr-4">
+                                <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                                <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                                <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                                <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 팀빌딩 & 자기소개 (가이드라인) -->
         <div class="slide">
             <div class="max-w-5xl w-full text-center">
                 <h2 class="text-4xl font-bold text-gray-800 mb-10 flex items-center justify-center gap-3">
@@ -184,7 +311,7 @@
             </div>
         </div>
 
-        <!-- Slide 4: 팀빌딩 & 자기소개 (투표) -->
+        <!-- Slide 5: 팀빌딩 & 자기소개 (투표) -->
         <div class="slide">
             <div class="max-w-6xl w-full">
                 <h2 class="text-4xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-3">
@@ -218,7 +345,7 @@
             </div>
         </div>
 
-        <!-- Slide 5: 패스트오더 아이디에이션 (개념 복습) -->
+        <!-- Slide 6: 패스트오더 아이디에이션 (개념 복습) -->
         <div class="slide">
             <div class="max-w-4xl w-full text-center">
                 <h2 class="text-4xl font-bold text-gray-800 mb-10 flex items-center justify-center gap-3">
@@ -253,7 +380,7 @@
             </div>
         </div>
 
-        <!-- Slide 6: 패스트오더 아이디에이션 (미션) -->
+        <!-- Slide 7: 패스트오더 아이디에이션 (미션) -->
         <div class="slide">
             <div class="max-w-5xl w-full">
                 <h2 class="text-4xl font-bold text-gray-800 mb-10 flex items-center justify-center gap-3">
@@ -286,7 +413,7 @@
             </div>
         </div>
 
-        <!-- Slide 7: UI 스케치 미션 (제약 조건) -->
+        <!-- Slide 8: UI 스케치 미션 (제약 조건) -->
         <div class="slide">
             <div class="max-w-4xl w-full text-center">
                 <h2 class="text-4xl font-bold text-gray-800 mb-6 tracking-tight">Step 4. 종이 위에 UI 스케치 ✏️ (1/2)</h2>
@@ -316,7 +443,7 @@
             </div>
         </div>
 
-        <!-- Slide 8: UI 스케치 미션 (와이어프레임 예시) -->
+        <!-- Slide 9: UI 스케치 미션 (와이어프레임 예시) -->
         <div class="slide">
             <div class="max-w-4xl w-full flex flex-col items-center">
                 <h2 class="text-4xl font-bold text-gray-800 mb-10 tracking-tight">Step 4. 와이어프레임 예시 ✏️ (2/2)</h2>
@@ -354,7 +481,7 @@
             </div>
         </div>
 
-        <!-- Slide 9: 과제 안내 -->
+        <!-- Slide 10: 과제 안내 -->
         <div class="slide">
             <div class="max-w-4xl w-full text-center">
                 <h2 class="text-5xl font-extrabold mb-12 text-indigo-900">
@@ -381,7 +508,144 @@
             </div>
         </div>
 
-        <!-- Slide 10: 다음 주 예고 -->
+        <!-- Slide 11: 개발자의 글쓰기 (마크다운 소개) -->
+        <div class="slide">
+            <div class="max-w-5xl w-full">
+                <div class="text-center mb-10">
+                    <div class="inline-block bg-teal-100 text-teal-800 font-bold px-4 py-1.5 rounded-full mb-4 text-lg">Level Up! 🌟</div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">개발자의 우아한 글쓰기, 마크다운(Markdown)</h2>
+                    <p class="text-gray-500 text-xl">과제 제출할 때 스크린샷 캡처하고 복붙하느라 힘드셨죠?</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                    <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm flex flex-col">
+                        <div class="text-4xl mb-4 text-red-400"><i class="fas fa-times-circle"></i></div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">기존 방식 (비효율)</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed mb-4">
+                            VS Code 캡처 -> 워드나 한글에 붙여넣기 -> 레이아웃 깨짐 -> 코드 복사 불가능... 😱
+                        </p>
+                        <div class="bg-gray-100 p-4 rounded-xl mt-auto border border-gray-200 text-center text-gray-400 font-bold">
+                            "교수님도 코드 긁어서 실행해 볼 수가 없어요!"
+                        </div>
+                    </div>
+                    
+                    <div class="bg-teal-800 p-8 rounded-3xl border border-teal-700 shadow-xl flex flex-col text-white transform hover:-translate-y-1 transition">
+                        <div class="text-4xl mb-4 text-teal-300"><i class="fab fa-markdown"></i></div>
+                        <h3 class="text-2xl font-bold mb-4">마크다운 방식 (프로페셔널)</h3>
+                        <p class="text-teal-100 text-lg leading-relaxed mb-4">
+                            가볍고, 빠르며, 코드를 예쁘게 보여주는 텍스트 기반 포맷. GitHub, Notion 등 현업에서 100% 사용합니다.
+                        </p>
+                        <div class="bg-teal-900 p-4 rounded-xl mt-auto font-bold text-teal-200 text-center text-xl">
+                            "다음 주부터는 마크다운 작성 후 PDF로 제출받습니다!"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: 마크다운 핵심 문법 4가지 -->
+        <div class="slide">
+            <div class="max-w-6xl w-full text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8"><i class="fab fa-markdown text-indigo-600"></i> 마크다운 핵심 문법 딱 4가지!</h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-300 text-left">
+                    <!-- Left: Markdown Input -->
+                    <div class="bg-[#1e1e1e] p-8 h-full flex flex-col">
+                        <h3 class="text-gray-400 font-mono mb-4 border-b border-gray-700 pb-2 flex items-center gap-2"><i class="fas fa-pencil-alt text-sm"></i> homework.md (이렇게 쓰면)</h3>
+                        <pre class="text-gray-300 font-mono text-lg leading-relaxed whitespace-pre-wrap flex-1">
+<span class="text-blue-400 font-bold"># 1. 제목입니다 (H1)</span>
+<span class="text-blue-300 font-bold">## 소제목입니다 (H2)</span>
+
+<span class="text-yellow-300">-</span> 목록 1번
+<span class="text-yellow-300">-</span> 목록 2번
+
+가장 중요한 <span class="text-pink-400 font-bold">`코드 블록`</span>은 백틱(`) 3개로.
+<span class="text-green-400">```html</span>
+&lt;input type="text"&gt;
+<span class="text-green-400">```</span>
+
+이미지는 느낌표(!)와 괄호로 삽입합니다.
+<span class="text-pink-400">![스크린샷]</span><span class="text-yellow-300">(image.png)</span>
+                        </pre>
+                    </div>
+
+                    <!-- Right: Rendered Output -->
+                    <div class="bg-white p-10 h-full border-l border-gray-200 flex flex-col">
+                        <h3 class="text-gray-400 font-mono mb-6 border-b border-gray-200 pb-2 flex items-center gap-2"><i class="fas fa-eye text-sm"></i> Preview (이렇게 보입니다)</h3>
+                        <div class="flex-1">
+                            <h1 class="text-4xl font-bold mb-4 border-b pb-2">1. 제목입니다 (H1)</h1>
+                            <h2 class="text-2xl font-bold mb-4 mt-6">소제목입니다 (H2)</h2>
+                            
+                            <ul class="list-disc pl-6 mb-6 text-lg space-y-2 text-gray-700">
+                                <li>목록 1번</li>
+                                <li>목록 2번</li>
+                            </ul>
+                            
+                            <p class="text-lg mb-2 text-gray-700">가장 중요한 <code class="bg-gray-100 text-pink-600 px-1.5 py-0.5 rounded text-base">코드 블록</code>은 백틱(`) 3개로.</p>
+                            <div class="bg-[#2d2d2d] rounded-xl p-4 font-mono text-sm text-gray-200 overflow-x-auto shadow-inner relative mt-2 mb-6">
+                                <span class="absolute top-0 right-0 bg-gray-600 text-white text-xs px-2 py-1 rounded-bl-lg rounded-tr-xl">html</span>
+                                <span class="text-red-400">&lt;input</span> <span class="text-yellow-300">type=</span><span class="text-green-300">"text"</span><span class="text-red-400">&gt;</span><br>
+                            </div>
+
+                            <p class="text-lg mb-2 text-gray-700">이미지는 느낌표(!)와 괄호로 삽입합니다.</p>
+                            <div class="border-2 border-dashed border-gray-300 p-4 text-center rounded-lg text-gray-400">
+                                <i class="fas fa-image text-3xl mb-2"></i><br>스크린샷 이미지 표시
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: MarkText 안내 및 PDF 내보내기 -->
+        <div class="slide">
+            <div class="max-w-5xl w-full">
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">전용 에디터 추천: <span class="text-indigo-600">MarkText</span> 📝</h2>
+                    <p class="text-gray-500 text-xl">VS Code로도 작성 가능하지만, 초보자도 쉽게 쓸 수 있는 전용 무료 프로그램을 추천합니다.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 다운로드 -->
+                    <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-lg flex flex-col h-full">
+                        <div class="text-4xl mb-6 text-indigo-500"><i class="fas fa-download"></i></div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">1. 무료 다운로드</h3>
+                        <p class="text-gray-600 text-lg mb-4 leading-relaxed">
+                            공식 GitHub 저장소에 접속하여 다운로드 페이지로 이동합니다.
+                        </p>
+                        <a href="https://github.com/marktext/marktext" target="_blank" class="block bg-gray-100 p-4 rounded-xl text-indigo-600 font-bold hover:bg-indigo-50 transition border border-gray-200 mb-4 text-center">
+                            github.com/marktext/marktext <i class="fas fa-external-link-alt ml-1 text-sm"></i>
+                        </a>
+                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-xl mt-auto">
+                            <p class="text-sm text-gray-700 font-medium leading-relaxed">우측 하단의 <strong class="text-blue-700 text-base">Releases</strong> (또는 Downloads) 항목 클릭 후, 자신의 OS에 맞는 설치 파일 다운로드!</p>
+                        </div>
+                    </div>
+
+                    <!-- 이미지 & PDF 내보내기 -->
+                    <div class="bg-indigo-900 p-8 rounded-3xl border border-indigo-700 shadow-xl flex flex-col h-full text-white">
+                        <div class="text-4xl mb-6 text-yellow-400"><i class="fas fa-magic"></i></div>
+                        <h3 class="text-2xl font-bold mb-4 text-yellow-300">2. 꿀팁 & PDF 내보내기</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-indigo-800/50 p-4 rounded-xl border border-indigo-600">
+                                <p class="font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-image text-green-400"></i> 마법의 붙여넣기</p>
+                                <p class="text-indigo-200 text-sm leading-relaxed">화면을 캡처한 후, MarkText에서 <kbd class="bg-gray-700 px-1.5 py-0.5 rounded font-mono">Ctrl</kbd> + <kbd class="bg-gray-700 px-1.5 py-0.5 rounded font-mono">V</kbd> 를 누르면 이미지 파일 생성과 동시에 마크다운 문법이 자동 작성됩니다!</p>
+                            </div>
+                            
+                            <div class="bg-indigo-800/50 p-4 rounded-xl border border-indigo-600">
+                                <p class="font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-file-pdf text-red-400"></i> 과제 제출용 PDF 저장</p>
+                                <p class="text-indigo-200 text-sm leading-relaxed tracking-wide">
+                                    좌측 상단 <strong>3줄 햄버거 메뉴(≡)</strong> 클릭<br>
+                                    ➡️ <strong>[File]</strong> ➡️ <strong>[Export]</strong> ➡️ <strong>[PDF]</strong> 클릭!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: 다음 주 예고 -->
         <div class="slide">
             <div class="max-w-4xl w-full text-center">
                 <div class="text-8xl text-indigo-400 mb-10"><i class="fab fa-css3-alt"></i></div>
