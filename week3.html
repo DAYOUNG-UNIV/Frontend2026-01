@@ -62,13 +62,15 @@
                 <div class="font-extrabold text-xl text-indigo-700 flex items-center gap-2">
                     <i class="fas fa-code"></i> FRONTEND WEEK 3
                 </div>
-                <div class="hidden md:flex space-x-8 text-sm font-bold text-gray-600">
+                <div class="hidden md:flex space-x-6 lg:space-x-8 text-sm font-bold text-gray-600">
                     <a href="#intro" class="hover:text-indigo-600 transition">오늘의 목표</a>
-                    <a href="#quiz" class="hover:text-indigo-600 transition">몸풀기 퀴즈</a>
-                    <a href="#team" class="hover:text-indigo-600 transition">자기소개 공유</a>
-                    <a href="#ideation" class="hover:text-indigo-600 transition">패스트오더 기획</a>
-                    <a href="#sketch" class="hover:text-indigo-600 transition">UI 스케치</a>
-                    <a href="#homework" class="hover:text-indigo-600 transition">과제 안내</a>
+                    <a href="#quiz" class="hover:text-indigo-600 transition">퀴즈</a>
+                    <a href="#seating" class="hover:text-indigo-600 transition">자리배치</a>
+                    <a href="#team" class="hover:text-indigo-600 transition">자기소개</a>
+                    <a href="#ideation" class="hover:text-indigo-600 transition">패스트오더</a>
+                    <a href="#sketch" class="hover:text-indigo-600 transition">UI스케치</a>
+                    <a href="#homework" class="hover:text-indigo-600 transition">과제안내</a>
+                    <a href="#markdown" class="text-teal-600 hover:text-teal-800 transition">마크다운 제출</a>
                 </div>
             </div>
         </div>
@@ -84,7 +86,7 @@
             <div class="h-1 w-24 bg-indigo-400 mx-auto mb-8"></div>
             <div class="text-lg text-gray-600 space-y-2 bg-slate-50 p-6 rounded-2xl inline-block text-center w-full">
                 <p class="font-bold text-xl text-indigo-700 mb-2">오늘의 핵심 미션</p>
-                <p>1. 지난주 HTML 복습 완벽 마스터 (feat. 굿즈)</p>
+                <p>1. 지난주 HTML 복습 완벽 마스터</p>
                 <p>2. 팀원들과 친해지고 나의 HTML 솜씨 뽐내기</p>
                 <p>3. 학교 근처 맛집을 위한 패스트오더 UI 설계하기</p>
             </div>
@@ -92,30 +94,28 @@
     </section>
 
     <!-- Section 2: 몸풀기 퀴즈 -->
-    <section id="quiz" class="py-20 px-4 bg-white">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 tracking-tight">Step 1. 뇌풀기 Quiz 타임 🧠</h2>
-                <p class="text-gray-500 text-lg">지난 시간 플립러닝과 과제로 배운 HTML 구조, 얼마나 기억하나요?</p>
+    <section id="quiz" class="py-20 px-4 bg-white border-y border-gray-200">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">Step 1. 뇌풀기 Quiz 타임 🧠</h2>
+                <p class="text-gray-500 text-xl">지난 시간 플립러닝과 과제로 배운 HTML 구조, 얼마나 기억하나요?</p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div class="bg-indigo-900 p-10 rounded-3xl text-white shadow-xl relative overflow-hidden">
-                    <div class="absolute -right-10 -bottom-10 text-indigo-800 text-9xl opacity-50"><i class="fas fa-gamepad"></i></div>
-                    <div class="relative z-10">
-                        <div class="inline-block bg-yellow-400 text-indigo-900 px-4 py-1 rounded-full text-sm font-bold mb-6">QuizN 40문항</div>
-                        <h3 class="text-3xl font-extrabold mb-4">HTML 스피드 퀴즈</h3>
-                        <p class="text-indigo-200 mb-6 leading-relaxed">
-                            태그, 속성, 문서 구조 등 핵심 개념을 다집니다.<br>
-                            빠르고 정확하게 정답을 맞히는 것이 관건! 스마트폰 혹은 노트북 등을 준비해주세요.<br>
-                            (출결 근거자료 확보를 위해 반드시 본명으로 접속 부탁드립니다)
-                        </p>
-                        <div class="bg-indigo-800 p-4 rounded-xl border border-indigo-700 flex items-center gap-4">
-                            <i class="fas fa-clock text-2xl text-yellow-300"></i>
-                            <div>
-                                <p class="font-bold">예상 소요 시간</p>
-                                <p class="text-indigo-200 text-sm">약 20~30분 진행</p>
-                            </div>
+            <div class="bg-indigo-900 p-12 rounded-3xl text-white shadow-xl relative overflow-hidden flex flex-col justify-center items-center text-center">
+                <div class="absolute -right-10 -bottom-10 text-indigo-800 text-9xl opacity-50"><i class="fas fa-gamepad"></i></div>
+                <div class="relative z-10">
+                    <div class="inline-block bg-yellow-400 text-indigo-900 px-6 py-2 rounded-full text-base font-bold mb-8">QuizN 40문항</div>
+                    <h3 class="text-5xl font-extrabold mb-6">HTML 스피드 퀴즈</h3>
+                    <p class="text-indigo-200 mb-8 text-xl leading-relaxed">
+                        태그, 속성, 문서 구조 등 핵심 개념을 다집니다.<br>
+                        빠르고 정확하게 정답을 맞히는 것이 관건! 스마트폰을 준비해주세요.<br>
+                        <span class="text-sm opacity-80 mt-2 block">(※ 출결 근거자료 확보를 위해 반드시 본명으로 접속 부탁드립니다)</span>
+                    </p>
+                    <div class="inline-flex bg-indigo-800 p-4 rounded-xl border border-indigo-700 items-center gap-4 text-left">
+                        <i class="fas fa-clock text-3xl text-yellow-300"></i>
+                        <div>
+                            <p class="font-bold text-lg">예상 소요 시간</p>
+                            <p class="text-indigo-200">약 20~30분 진행</p>
                         </div>
                     </div>
                 </div>
@@ -123,77 +123,199 @@
         </div>
     </section>
 
-    <!-- Section 3: 팀빌딩 & 자기소개 -->
-    <section id="team" class="py-20 px-4 bg-slate-50 border-y border-gray-200">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl font-bold text-gray-800 mb-12 flex items-center gap-3">
-                <span class="text-indigo-600"><i class="fas fa-users"></i></span> Step 2. 팀빌딩 & 자기소개 공유
+    <!-- Section 3: 조별 자리 배치 -->
+    <section id="seating" class="py-20 px-4 bg-slate-50">
+        <div class="max-w-5xl mx-auto text-center">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4 flex items-center justify-center gap-3">
+                <span class="text-indigo-600"><i class="fas fa-chair"></i></span> Step 2. 팀빌딩: 조별 자리 배치 안내
             </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div class="space-y-6">
-                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-200">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">조별 발표 진행 가이드라인</h3>
-                        <ul class="space-y-4 text-gray-700">
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-birthday-cake text-pink-500 mt-1"></i>
-                                <div>
-                                    <strong>발표 순서:</strong> <br>오늘 날짜와 <span class="text-pink-600 font-bold">생일이 가장 가까운 사람</span>부터 시작해서 시계 방향으로 돌아갑니다.
+            <p class="text-gray-500 text-xl mb-12">짐을 챙겨서 화면의 지정된 조별 좌석으로 신속하게 이동해 주세요!</p>
+
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-200">
+                <!-- 칠판 영역 -->
+                <div class="w-full bg-gray-700 text-white py-4 rounded-xl text-2xl font-bold mb-8 shadow-inner tracking-[0.3em]">
+                    칠판 / 스크린 (교탁)
+                </div>
+
+                <div class="flex gap-6 mb-6">
+                    <!-- 좌측 블록 -->
+                    <div class="flex-1 space-y-6">
+                        <!-- 1조 -->
+                        <div class="bg-blue-50 border-2 border-blue-400 p-5 rounded-2xl relative shadow-sm hover:shadow-md transition">
+                            <span class="absolute -top-4 -left-4 bg-blue-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl shadow-md border-4 border-white">1조</span>
+                            <div class="grid grid-rows-2 gap-3 pl-4">
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
                                 </div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i class="fas fa-laptop-code text-blue-500 mt-1"></i>
-                                <div>
-                                    <strong>발표 내용:</strong> <br>지난주 과제였던 '나의 자기소개 HTML 웹페이지'를 화면에 띄우고 1분 내외로 설명합니다.
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-blue-200 flex items-center justify-center text-blue-300"><i class="fas fa-user"></i></div>
                                 </div>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
+                        <!-- 3조 -->
+                        <div class="bg-purple-50 border-2 border-purple-400 p-5 rounded-2xl relative shadow-sm hover:shadow-md transition">
+                            <span class="absolute -top-4 -left-4 bg-purple-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl shadow-md border-4 border-white">3조</span>
+                            <div class="grid grid-rows-2 gap-3 pl-4">
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-purple-200 flex items-center justify-center text-purple-300"><i class="fas fa-user"></i></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="bg-indigo-50 border border-indigo-100 p-6 rounded-2xl flex gap-4 items-center">
-                        <div class="text-3xl text-indigo-500"><i class="fas fa-bullhorn"></i></div>
-                        <p class="text-indigo-900 text-sm font-medium leading-relaxed">
-                            공유가 끝나면, 각 조에서 <strong>단 한 명의 대표 학생</strong>을 선정해 반 전체에 공유하는 시간을 갖겠습니다. 아래의 기준을 참고해 투표해주세요!
-                        </p>
+                    <!-- 중앙 통로 -->
+                    <div class="w-16 flex flex-col justify-center items-center bg-gray-50 border-x-4 border-dashed border-gray-200 rounded-xl relative overflow-hidden">
+                        <span class="text-gray-400 font-black tracking-[1em] text-2xl rotate-90 whitespace-nowrap opacity-50 absolute">중앙 통로</span>
+                    </div>
+
+                    <!-- 우측 블록 -->
+                    <div class="flex-1 space-y-6">
+                        <!-- 2조 -->
+                        <div class="bg-emerald-50 border-2 border-emerald-400 p-5 rounded-2xl relative shadow-sm hover:shadow-md transition">
+                            <span class="absolute -top-4 -right-4 bg-emerald-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl shadow-md border-4 border-white">2조</span>
+                            <div class="grid grid-rows-2 gap-3 pr-4">
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-emerald-200 flex items-center justify-center text-emerald-300"><i class="fas fa-user"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 4조 -->
+                        <div class="bg-pink-50 border-2 border-pink-400 p-5 rounded-2xl relative shadow-sm hover:shadow-md transition">
+                            <span class="absolute -top-4 -right-4 bg-pink-600 text-white w-12 h-12 flex items-center justify-center rounded-full font-bold text-xl shadow-md border-4 border-white">4조</span>
+                            <div class="grid grid-rows-2 gap-3 pr-4">
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                    <div class="h-10 bg-white rounded border-2 border-pink-200 flex items-center justify-center text-pink-300"><i class="fas fa-user"></i></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-200 flex flex-col">
-                    <h3 class="font-bold text-xl text-gray-800 mb-2 flex items-center gap-2">
+                <!-- 5조 (통로 가로지르기) -->
+                <div class="bg-orange-50 border-2 border-orange-400 p-5 rounded-2xl relative mt-4 shadow-sm hover:shadow-md transition">
+                    <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-orange-500 text-white px-6 py-1.5 rounded-full font-bold text-xl shadow-md border-4 border-white">마지막 줄 5조</span>
+                    <div class="flex gap-6 mt-3">
+                        <!-- 5조 좌측 -->
+                        <div class="flex-1 grid grid-cols-4 gap-2 pl-4">
+                            <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                            <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                            <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                            <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                        </div>
+                        <!-- 중앙 빈공간 -->
+                        <div class="w-16"></div>
+                        <!-- 5조 우측 -->
+                        <div class="flex-1 grid grid-cols-4 gap-2 pr-4">
+                            <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                            <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                            <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                            <div class="h-10 bg-white rounded border-2 border-orange-200 flex items-center justify-center text-orange-300"><i class="fas fa-user"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: 팀빌딩 & 자기소개 -->
+    <section id="team" class="py-20 px-4 bg-white border-y border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-gray-800 mb-12 flex items-center justify-center gap-3 text-center">
+                <span class="text-indigo-600"><i class="fas fa-users"></i></span> Step 3. 자기소개 공유 및 대표 선정
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- 가이드라인 -->
+                <div class="bg-slate-50 p-10 rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-8 border-b-2 border-indigo-100 pb-4">조별 발표 진행 가이드라인</h3>
+                    <ul class="space-y-8 text-gray-700 text-lg">
+                        <li class="flex items-start gap-4">
+                            <i class="fas fa-birthday-cake text-pink-500 text-2xl mt-1"></i>
+                            <div>
+                                <strong class="text-xl text-indigo-900 mb-2 block">발표 순서 정하기</strong>
+                                <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded font-bold">생일이 오늘과 가장 가까운 사람</span>부터 시작해서 시계 방향으로 돌아갑니다.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <i class="fas fa-laptop-code text-blue-500 text-2xl mt-1"></i>
+                            <div>
+                                <strong class="text-xl text-indigo-900 mb-2 block">무엇을 발표하나요?</strong>
+                                지난주 과제였던 '나의 자기소개 HTML 웹페이지'를 화면에 띄우고 1분 내외로 핵심만 재미있게 설명합니다.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 투표 -->
+                <div class="bg-indigo-50 p-10 rounded-3xl shadow-sm border border-indigo-100">
+                    <h3 class="text-2xl font-bold text-indigo-900 mb-4 flex items-center gap-2">
                         <i class="fas fa-crown text-yellow-500"></i> 조별 대표 선정 타이틀 (택 1)
                     </h3>
-                    <p class="text-sm text-gray-500 mb-6 pb-4 border-b border-gray-100">가장 잘한 사람보다는, 개성 있는 친구를 뽑아주세요!</p>
+                    <p class="text-gray-600 mb-8">모든 공유가 끝나면 아래 기준 중 하나로 <strong>단 한 명의 대표 학생</strong>을 선정해 주세요.</p>
                     
-                    <div class="space-y-3 flex-1">
+                    <div class="space-y-4 flex-1">
                         <!-- Role 1 -->
-                        <details class="group bg-blue-50 rounded-2xl border border-blue-100 transition-all duration-300 overflow-hidden" open>
-                            <summary class="flex justify-between items-center p-5 cursor-pointer font-bold text-blue-800 list-none leading-relaxed">
+                        <details class="group bg-white rounded-2xl border border-blue-200 transition-all duration-300 overflow-hidden shadow-sm" open>
+                            <summary class="flex justify-between items-center p-5 cursor-pointer font-bold text-blue-800 list-none text-lg">
                                 <span class="flex-1 pr-4">👨‍💻 태그 만수르 상</span>
-                                <i class="fas fa-chevron-down text-xs group-open:rotate-180 transition-transform"></i>
+                                <i class="fas fa-chevron-down text-sm group-open:rotate-180 transition-transform"></i>
                             </summary>
-                            <div class="px-6 pb-6 pt-0 text-sm text-gray-700 leading-relaxed border-t border-blue-100/50 mt-2 pt-4">
-                                배운 HTML 태그(table, ul/ol, a, img 등)를 있는 대로 꽉꽉 눌러 담아 코드를 가장 길고 다양하게 짠 사람!
+                            <div class="px-6 pb-6 pt-0 text-base text-gray-700 leading-relaxed border-t border-blue-100 mt-2 pt-4">
+                                배운 HTML 태그(table, ul/ol, a, img 등)를 있는 대로 꽉꽉 눌러 담아 코드를 가장 길고 화려하게 짠 사람!
                             </div>
                         </details>
 
                         <!-- Role 2 -->
-                        <details class="group bg-emerald-50 rounded-2xl border border-emerald-100 transition-all duration-300 overflow-hidden">
-                            <summary class="flex justify-between items-center p-5 cursor-pointer font-bold text-emerald-800 list-none leading-relaxed">
+                        <details class="group bg-white rounded-2xl border border-emerald-200 transition-all duration-300 overflow-hidden shadow-sm">
+                            <summary class="flex justify-between items-center p-5 cursor-pointer font-bold text-emerald-800 list-none text-lg">
                                 <span class="flex-1 pr-4">🗣️ TMI 장인 상</span>
-                                <i class="fas fa-chevron-down text-xs group-open:rotate-180 transition-transform"></i>
+                                <i class="fas fa-chevron-down text-sm group-open:rotate-180 transition-transform"></i>
                             </summary>
-                            <div class="px-6 pb-6 pt-0 text-sm text-gray-700 leading-relaxed border-t border-emerald-100/50 mt-2 pt-4">
+                            <div class="px-6 pb-6 pt-0 text-base text-gray-700 leading-relaxed border-t border-emerald-100 mt-2 pt-4">
                                 "이런 것까지 적었다고?" 싶을 정도로 자기소개 내용이 가장 독특하고 재미있어서 반 전체가 꼭 봐야 하는 사람!
                             </div>
                         </details>
 
                         <!-- Role 3 -->
-                        <details class="group bg-purple-50 rounded-2xl border border-purple-100 transition-all duration-300 overflow-hidden">
-                            <summary class="flex justify-between items-center p-5 cursor-pointer font-bold text-purple-800 list-none leading-relaxed">
+                        <details class="group bg-white rounded-2xl border border-purple-200 transition-all duration-300 overflow-hidden shadow-sm">
+                            <summary class="flex justify-between items-center p-5 cursor-pointer font-bold text-purple-800 list-none text-lg">
                                 <span class="flex-1 pr-4">🔥 꺾이지 않는 마음 상</span>
-                                <i class="fas fa-chevron-down text-xs group-open:rotate-180 transition-transform"></i>
+                                <i class="fas fa-chevron-down text-sm group-open:rotate-180 transition-transform"></i>
                             </summary>
-                            <div class="px-6 pb-6 pt-0 text-sm text-gray-700 leading-relaxed border-t border-purple-100/50 mt-2 pt-4">
+                            <div class="px-6 pb-6 pt-0 text-base text-gray-700 leading-relaxed border-t border-purple-100 mt-2 pt-4">
                                 비록 결과물은 삐뚤빼뚤하거나 이미지가 엑스박스가 떴을지라도, 이것저것 시도해본 도전 정신이 아름다운 사람!
                             </div>
                         </details>
@@ -203,44 +325,46 @@
         </div>
     </section>
 
-    <!-- Section 4: 패스트오더 아이디에이션 -->
-    <section id="ideation" class="py-20 px-4 bg-white">
+    <!-- Section 5: 패스트오더 아이디에이션 -->
+    <section id="ideation" class="py-20 px-4 bg-slate-50 border-y border-gray-200">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl font-bold text-gray-800 mb-12 flex items-center gap-3">
-                <span class="text-indigo-600"><i class="fas fa-store"></i></span> Step 3. 패스트오더 아이디에이션
+            <h2 class="text-4xl font-bold text-gray-800 mb-12 flex items-center justify-center gap-3 text-center">
+                <span class="text-indigo-600"><i class="fas fa-store"></i></span> Step 4. 패스트오더 아이디에이션
             </h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- HTML Form 개념 리마인드 -->
-                <div class="bg-gray-800 text-white rounded-3xl p-8 shadow-lg col-span-1 md:col-span-1">
-                    <h3 class="text-xl font-bold mb-4 text-yellow-400">📝 HTML Form 이란?</h3>
-                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">
-                        사용자가 웹 사이트로 정보를 보낼 수 있게 해주는 요소입니다. 로그인, 회원가입, 그리고 오늘 우리가 만들 <strong>상품 주문</strong>에 필수적이죠!
+                <div class="bg-gray-800 text-white rounded-3xl p-8 shadow-lg col-span-1 md:col-span-1 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold mb-4 text-yellow-400">📝 HTML Form 이란?</h3>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        사용자가 웹 사이트로 정보를 보낼 수 있게 해주는 핵심 요소입니다. 로그인, 회원가입, 그리고 오늘 우리가 만들 <strong>상품 주문 페이지</strong>에 필수적이죠!
                     </p>
-                    <div class="space-y-2 text-sm">
-                        <div class="bg-gray-700 p-2 rounded">&lt;input type="text"&gt; (글자 입력)</div>
-                        <div class="bg-gray-700 p-2 rounded">&lt;input type="radio"&gt; (하나만 선택)</div>
-                        <div class="bg-gray-700 p-2 rounded">&lt;input type="checkbox"&gt; (여러개 선택)</div>
-                        <div class="bg-gray-700 p-2 rounded">&lt;select&gt; (드롭다운 메뉴)</div>
+                    <div class="space-y-3 text-sm font-mono">
+                        <div class="bg-gray-700 p-3 rounded-lg border border-gray-600">&lt;input type="text"&gt; <span class="text-gray-400 font-sans text-xs ml-1">(글자 입력)</span></div>
+                        <div class="bg-gray-700 p-3 rounded-lg border border-gray-600">&lt;input type="radio"&gt; <span class="text-gray-400 font-sans text-xs ml-1">(단일 선택)</span></div>
+                        <div class="bg-gray-700 p-3 rounded-lg border border-gray-600">&lt;input type="checkbox"&gt; <span class="text-gray-400 font-sans text-xs ml-1">(다중 선택)</span></div>
+                        <div class="bg-gray-700 p-3 rounded-lg border border-gray-600">&lt;select&gt; <span class="text-gray-400 font-sans text-xs ml-1">(드롭다운)</span></div>
                     </div>
                 </div>
 
                 <!-- 식당 선정 미션 -->
-                <div class="bg-white rounded-3xl p-8 border-2 border-indigo-100 shadow-sm col-span-1 md:col-span-2 relative overflow-hidden">
-                    <div class="absolute right-0 top-0 w-32 h-32 bg-indigo-50 rounded-bl-full z-0"></div>
+                <div class="bg-white rounded-3xl p-10 border-2 border-indigo-100 shadow-lg col-span-1 md:col-span-2 relative overflow-hidden flex flex-col justify-center">
+                    <div class="absolute right-[-20px] top-[-20px] w-48 h-48 bg-indigo-50 rounded-full z-0 opacity-60"></div>
                     <div class="relative z-10">
-                        <div class="inline-block bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-bold mb-4">조별 회의 10분</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-4">학교 근처 맛집 패스트오더 만들기</h3>
-                        <p class="text-gray-600 mb-6">
+                        <div class="inline-block bg-indigo-600 text-white px-5 py-1.5 rounded-full text-sm font-bold mb-5 shadow-sm animate-pulse">
+                            <i class="fas fa-clock mr-1"></i> 조별 회의 10분
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-5">학교 근처 맛집 패스트오더 만들기</h3>
+                        <p class="text-gray-600 mb-8 text-lg leading-relaxed">
                             조별로 명지전문대 근처의 맛집(음식점 혹은 카페)을 하나 선정하고, 해당 가게의 메뉴를 주문할 수 있는 폼(Form)을 기획합니다. 학식도 환영합니다!
                         </p>
                         
-                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                            <p class="font-bold text-red-700 flex items-center gap-2">
+                        <div class="bg-red-50 border-l-4 border-red-500 p-5 rounded-r-xl">
+                            <p class="font-bold text-red-700 flex items-center gap-2 text-lg">
                                 <i class="fas fa-exclamation-triangle"></i> 식당 선정 기준: '도보'로 갈 수 있는 곳
                             </p>
-                            <p class="text-sm text-red-600 mt-2">
-                                <strong>※ 교수님 피셜:</strong> "저는 2시간 걸어서 집까지 퇴근한 적이 있습니다. 체력만 되면 2시간 거리 맛집도 학교 근처로 인정해 드립니다. 🏃‍♂️💨"
+                            <p class="text-gray-700 mt-2">
+                                <strong>※ 교수님 피셜:</strong> "저는 2시간 걸어서 집까지 퇴근한 적이 있습니다. 본인 체력만 허락한다면 2시간 거리 맛집도 '학교 근처'로 흔쾌히 인정해 드립니다. 🏃‍♂️💨"
                             </p>
                         </div>
                     </div>
@@ -249,88 +373,242 @@
         </div>
     </section>
 
-    <!-- Section 5: UI 스케치 미션 -->
-    <section id="sketch" class="py-20 px-4 bg-slate-50 border-y border-gray-200">
-        <div class="max-w-5xl mx-auto">
+    <!-- Section 6: UI 스케치 미션 -->
+    <section id="sketch" class="py-20 px-4 bg-white border-y border-gray-200">
+        <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 tracking-tight">Step 4. 종이 위에 UI 스케치 ✏️</h2>
-                <p class="text-gray-500 text-lg">기획한 메뉴와 주문 방식을 종이에 그려봅시다. (15분 진행)</p>
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">Step 5. 종이 위에 UI 스케치 ✏️</h2>
+                <p class="text-gray-500 text-xl">회의한 내용을 바탕으로 실제 주문 화면을 스케치합니다. (15분 진행)</p>
             </div>
 
-            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-lg border-2 border-dashed border-indigo-300">
-                <div class="flex flex-col md:flex-row gap-10 items-center">
+            <div class="bg-indigo-50 p-8 md:p-12 rounded-3xl shadow-lg border-2 border-dashed border-indigo-300">
+                <div class="flex flex-col md:flex-row gap-12 items-center">
                     <div class="flex-1 space-y-6">
-                        <h3 class="text-2xl font-extrabold text-indigo-900">제약 조건 (반드시 지킬 것!)</h3>
-                        <p class="text-gray-700 leading-relaxed">
-                            그냥 빈 네모칸만 그리지 마세요. 플립러닝에서 배운 Form 태그들이 화면에 어떻게 배치될지 구체적으로 스케치해야 합니다.
+                        <h3 class="text-3xl font-extrabold text-indigo-900 mb-2">필수 제약 조건</h3>
+                        <p class="text-gray-700 leading-relaxed text-lg">
+                            그냥 빈 네모칸만 그리지 마세요. 오늘 배운 Form 태그들이 화면에 어떻게 배치될지 구체적으로 스케치해야 합니다. <br>
+                            <strong>다음 4가지 요소 중 <span class="text-red-500 underline">최소 3가지 이상</span> 필수 포함!</strong>
                         </p>
                         
-                        <div class="bg-indigo-50 p-6 rounded-2xl">
-                            <p class="font-bold text-indigo-800 mb-3">🔥 다음 4가지 요소 중 <span class="text-red-500 underline">최소 3가지 이상</span> 필수 포함</p>
-                            <ul class="space-y-3 font-medium text-gray-700">
-                                <li class="flex items-center gap-2"><input type="text" disabled class="border border-gray-300 rounded px-2 w-20 text-xs" placeholder="입력칸"> 단답/장문 텍스트 (요청사항 등)</li>
-                                <li class="flex items-center gap-2"><input type="radio" disabled checked> 라디오 버튼 (사이즈 M/L 택1 등)</li>
-                                <li class="flex items-center gap-2"><input type="checkbox" disabled checked> 체크박스 (추가 토핑 다중선택 등)</li>
-                                <li class="flex items-center gap-2">
-                                    <select disabled class="border border-gray-300 rounded text-xs p-1">
-                                        <option>선택박스</option>
-                                    </select> 
-                                    셀렉트 박스 (수령 시간 선택 등)
-                                </li>
-                            </ul>
-                        </div>
+                        <ul class="space-y-4 font-medium text-gray-700 text-lg bg-white p-6 rounded-2xl shadow-sm">
+                            <li class="flex items-center gap-3"><input type="text" disabled class="border-2 border-gray-300 rounded px-2 py-1 w-24 text-sm bg-gray-100" placeholder="입력칸"> 단답/장문 텍스트 (요청사항 등)</li>
+                            <li class="flex items-center gap-3"><input type="radio" disabled checked class="w-6 h-6 accent-indigo-600"> 라디오 버튼 (사이즈 M/L 택1 등)</li>
+                            <li class="flex items-center gap-3"><input type="checkbox" disabled checked class="w-6 h-6 accent-indigo-600"> 체크박스 (추가 토핑 다중선택 등)</li>
+                            <li class="flex items-center gap-3">
+                                <select disabled class="border-2 border-gray-300 rounded text-sm p-1.5 w-24 bg-gray-100">
+                                    <option>선택박스</option>
+                                </select> 
+                                셀렉트 박스 (수령 시간 선택 등)
+                            </li>
+                        </ul>
                     </div>
                     
-                    <div class="w-full md:w-1/3 shrink-0">
-                        <div class="bg-gray-100 p-6 rounded-xl transform rotate-2 shadow-md">
-                            <div class="w-full h-8 bg-gray-200 rounded mb-4 flex items-center px-2 text-xs text-gray-400">가게 이름</div>
-                            <div class="flex gap-2 mb-4">
-                                <div class="w-4 h-4 rounded-full border border-gray-400"></div>
-                                <div class="w-20 h-4 bg-gray-200 rounded"></div>
+                    <div class="w-full md:w-5/12 shrink-0">
+                        <div class="bg-gray-100 p-8 rounded-3xl transform rotate-2 shadow-xl border border-gray-200">
+                            <div class="w-full h-10 bg-gray-300 rounded-lg mb-6 flex items-center px-4 text-base text-gray-500 font-bold border border-gray-400">명지 햄버거 패스트오더</div>
+                            
+                            <div class="bg-white p-4 rounded-xl border border-gray-300 mb-4 shadow-sm">
+                                <div class="text-sm font-bold text-gray-700 mb-2">1. 세트 선택 (Radio)</div>
+                                <div class="flex gap-3 mb-2 items-center">
+                                    <div class="w-4 h-4 rounded-full border-4 border-indigo-500"></div>
+                                    <div class="w-24 h-4 bg-gray-200 rounded"></div>
+                                </div>
+                                <div class="flex gap-3 items-center">
+                                    <div class="w-4 h-4 rounded-full border-2 border-gray-400"></div>
+                                    <div class="w-32 h-4 bg-gray-200 rounded"></div>
+                                </div>
                             </div>
-                            <div class="flex gap-2 mb-4">
-                                <div class="w-4 h-4 border border-gray-400"></div>
-                                <div class="w-24 h-4 bg-gray-200 rounded"></div>
+
+                            <div class="bg-white p-4 rounded-xl border border-gray-300 mb-4 shadow-sm">
+                                <div class="text-sm font-bold text-gray-700 mb-2">2. 추가 토핑 (Checkbox)</div>
+                                <div class="flex gap-3 items-center">
+                                    <div class="w-4 h-4 border-4 border-indigo-500 rounded bg-indigo-100"></div>
+                                    <div class="w-32 h-4 bg-gray-200 rounded"></div>
+                                </div>
                             </div>
-                            <div class="w-full h-20 bg-gray-200 rounded mb-4"></div>
-                            <div class="w-full h-10 bg-indigo-500 rounded text-white flex items-center justify-center text-sm font-bold">주문하기</div>
+
+                            <div class="bg-white p-4 rounded-xl border border-gray-300 mb-6 shadow-sm">
+                                <div class="text-sm font-bold text-gray-700 mb-2">3. 요청 사항 (Textarea)</div>
+                                <div class="w-full h-16 bg-gray-100 border border-gray-300 rounded flex items-start p-2"><span class="text-gray-400 text-xs">피클 빼주세요...</span></div>
+                            </div>
+
+                            <div class="w-full h-12 bg-indigo-600 rounded-lg text-white flex items-center justify-center text-lg font-bold shadow-md">주문하기</div>
                         </div>
-                        <p class="text-center text-xs text-gray-400 mt-4 italic">예시 스케치 (Wireframe)</p>
+                        <p class="text-center text-sm text-gray-400 mt-6 font-bold tracking-widest">예시 와이어프레임 (Wireframe)</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Section 6: 과제 및 마무리 -->
-    <section id="homework" class="py-20 px-4 bg-indigo-900 text-white text-center">
+    <!-- Section 7: 과제 및 마무리 -->
+    <section id="homework" class="py-24 px-4 bg-indigo-900 text-white text-center">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl font-extrabold mb-10 text-yellow-300">
-                🚀 Step 5. 오늘의 개별 과제
+            <h2 class="text-5xl font-extrabold mb-12 text-yellow-300">
+                🚀 오늘의 개별 과제
             </h2>
             
-            <div class="bg-indigo-800 p-10 rounded-3xl inline-block text-left w-full border border-indigo-600 shadow-2xl relative">
-                <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-indigo-900 font-bold px-6 py-2 rounded-full text-lg shadow-lg">
+            <div class="bg-indigo-800 p-12 rounded-3xl inline-block text-left w-full border border-indigo-600 shadow-2xl relative">
+                <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-indigo-900 font-extrabold px-8 py-2 rounded-full text-xl shadow-lg">
                     D-7: 다음 주 수업 전까지!
                 </div>
                 
-                <h3 class="text-2xl font-bold mb-4 mt-4">"스케치를 실제 코드로 생명 불어넣기"</h3>
-                <p class="text-indigo-200 mb-8 leading-relaxed">
+                <h3 class="text-3xl font-bold mb-6 mt-4">"스케치를 실제 코드로 생명 불어넣기"</h3>
+                <p class="text-indigo-200 mb-10 text-xl leading-relaxed">
                     오늘 조원들과 함께 짱구를 굴려 만든 멋진 종이 스케치, 다들 사진 찍어 가셨죠?<br>
                     집에 돌아가서 배운 HTML Form 태그들을 이용해 직접 웹 브라우저에 렌더링해 오는 것이 이번 주 과제입니다.
                 </p>
                 
-                <ul class="space-y-4 font-medium text-lg mb-8">
-                    <li class="flex items-center gap-3"><i class="fas fa-check-square text-green-400"></i> VS Code를 열고 HTML 기본 뼈대 잡기</li>
-                    <li class="flex items-center gap-3"><i class="fas fa-check-square text-green-400"></i> form, input, select 등 알맞은 태그 배치하기</li>
-                    <li class="flex items-center gap-3"><i class="fas fa-check-square text-green-400"></i> 완성된 `.html` 파일을 e-Campus 과제란에 제출!</li>
+                <ul class="space-y-5 font-medium text-2xl mb-12">
+                    <li class="flex items-center gap-4"><i class="fas fa-check-square text-green-400"></i> VS Code를 열고 HTML 기본 뼈대 잡기</li>
+                    <li class="flex items-center gap-4"><i class="fas fa-check-square text-green-400"></i> form, input, select 등 알맞은 태그 배치하기</li>
+                    <li class="flex items-center gap-4 text-teal-300 font-bold"><i class="fas fa-file-pdf"></i> 완성된 결과물과 코드를 마크다운으로 작성해 PDF로 제출!</li>
                 </ul>
 
-                <div class="bg-indigo-950 p-6 rounded-xl text-center">
-                    <p class="text-indigo-300 italic mb-2">🤔 "만들어보니 어떤가요? 디자인이 너무 안 예쁘지 않나요?"</p>
-                    <p class="text-indigo-300 italic">"주문 버튼을 눌러도 아무 일도 안 일어나죠?"</p>
-                    <div class="mt-4 font-bold text-yellow-300 text-xl">
-                        바로 그 답답함을 해결하기 위해, 다음 주부터 <span class="text-white bg-blue-500 px-2 rounded">CSS</span>를 배웁니다!
+                <div class="bg-indigo-950 p-8 rounded-2xl text-center border border-indigo-700">
+                    <p class="text-indigo-300 italic mb-2 text-lg">🤔 "만들어보니 어떤가요? 디자인이 너무 안 예쁘지 않나요?"</p>
+                    <p class="text-indigo-300 italic text-lg">"주문 버튼을 눌러도 아무 일도 안 일어나죠?"</p>
+                    <div class="mt-6 font-bold text-yellow-300 text-2xl">
+                        그 답답함을 해결하기 위해, 다음 주부터 드디어 <span class="text-white bg-blue-500 px-3 py-1 rounded-lg">CSS</span>를 배웁니다!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: 개발자의 글쓰기 (마크다운 소개) -->
+    <section id="markdown" class="py-20 px-4 bg-slate-50 border-t border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="inline-block bg-teal-100 text-teal-800 font-bold px-5 py-2 rounded-full mb-6 text-xl shadow-sm">과제 제출 형식 Level Up! 🌟</div>
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 tracking-tight">개발자의 우아한 글쓰기, 마크다운(Markdown)</h2>
+                <p class="text-gray-500 text-xl">과제 제출할 때 스크린샷 캡처하고 복붙하느라 힘드셨죠?</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch mb-16">
+                <div class="bg-white p-10 rounded-3xl border border-gray-200 shadow-md flex flex-col">
+                    <div class="text-5xl mb-6 text-red-400"><i class="fas fa-times-circle"></i></div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-6">기존 방식 (비효율)</h3>
+                    <p class="text-gray-600 text-xl leading-relaxed mb-6">
+                        VS Code 캡처 -> 워드나 한글에 붙여넣기 -> 레이아웃 깨짐 -> 코드 복사 불가능... 😱
+                    </p>
+                    <div class="bg-gray-100 p-6 rounded-2xl mt-auto border border-gray-200 text-center text-gray-500 font-bold text-lg">
+                        "교수님도 코드 긁어서 실행해 볼 수가 없어요!"
+                    </div>
+                </div>
+                
+                <div class="bg-teal-800 p-10 rounded-3xl border border-teal-700 shadow-xl flex flex-col text-white transform hover:-translate-y-2 transition duration-300">
+                    <div class="text-5xl mb-6 text-teal-300"><i class="fab fa-markdown"></i></div>
+                    <h3 class="text-3xl font-bold mb-6">마크다운 방식 (프로페셔널)</h3>
+                    <p class="text-teal-100 text-xl leading-relaxed mb-6">
+                        가볍고, 빠르며, 코드를 예쁘게 보여주는 텍스트 기반 포맷. GitHub, Notion 등 현업에서 100% 사용합니다.
+                    </p>
+                    <div class="bg-teal-900 p-6 rounded-2xl mt-auto font-bold text-teal-200 text-center text-2xl shadow-inner border border-teal-700">
+                        "오늘부터는 마크다운 작성 후 PDF로 제출받습니다!"
+                    </div>
+                </div>
+            </div>
+
+            <!-- 마크다운 핵심 문법 -->
+            <div class="text-center mb-8">
+                <h3 class="text-3xl font-bold text-gray-800 mb-6"><i class="fab fa-markdown text-indigo-600"></i> 마크다운 핵심 문법 딱 4가지!</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-300 text-left">
+                <!-- Left: Markdown Input -->
+                <div class="bg-[#1e1e1e] p-10 h-full flex flex-col">
+                    <h4 class="text-gray-400 font-mono mb-6 border-b border-gray-700 pb-3 flex items-center gap-2 text-lg"><i class="fas fa-pencil-alt text-base"></i> homework.md (이렇게 쓰면)</h4>
+                    <pre class="text-gray-300 font-mono text-xl leading-loose whitespace-pre-wrap flex-1">
+<span class="text-blue-400 font-bold"># 1. 제목입니다 (H1)</span>
+<span class="text-blue-300 font-bold">## 소제목입니다 (H2)</span>
+
+<span class="text-yellow-300">-</span> 목록 1번
+<span class="text-yellow-300">-</span> 목록 2번
+
+가장 중요한 <span class="text-pink-400 font-bold">`코드 블록`</span>은 백틱(`) 3개로.
+<span class="text-green-400">```html</span>
+&lt;input type="text"&gt;
+<span class="text-green-400">```</span>
+
+이미지는 느낌표(!)와 괄호로 삽입합니다.
+<span class="text-pink-400">![스크린샷]</span><span class="text-yellow-300">(image.png)</span>
+                    </pre>
+                </div>
+
+                <!-- Right: Rendered Output -->
+                <div class="bg-white p-10 h-full border-l border-gray-200 flex flex-col">
+                    <h4 class="text-gray-400 font-mono mb-8 border-b border-gray-200 pb-3 flex items-center gap-2 text-lg"><i class="fas fa-eye text-base"></i> Preview (이렇게 보입니다)</h4>
+                    <div class="flex-1">
+                        <h1 class="text-4xl font-bold mb-6 border-b pb-3">1. 제목입니다 (H1)</h1>
+                        <h2 class="text-2xl font-bold mb-6 mt-8">소제목입니다 (H2)</h2>
+                        
+                        <ul class="list-disc pl-8 mb-8 text-xl space-y-3 text-gray-700">
+                            <li>목록 1번</li>
+                            <li>목록 2번</li>
+                        </ul>
+                        
+                        <p class="text-xl mb-4 text-gray-700">가장 중요한 <code class="bg-gray-100 text-pink-600 px-2 py-1 rounded text-lg border border-gray-200">코드 블록</code>은 백틱(`) 3개로.</p>
+                        <div class="bg-[#2d2d2d] rounded-xl p-6 font-mono text-base text-gray-200 overflow-x-auto shadow-inner relative mt-2 mb-8">
+                            <span class="absolute top-0 right-0 bg-gray-600 text-white text-xs px-3 py-1 rounded-bl-lg rounded-tr-xl font-bold tracking-wider">html</span>
+                            <span class="text-red-400">&lt;input</span> <span class="text-yellow-300">type=</span><span class="text-green-300">"text"</span><span class="text-red-400">&gt;</span><br>
+                        </div>
+
+                        <p class="text-xl mb-4 text-gray-700">이미지는 느낌표(!)와 괄호로 삽입합니다.</p>
+                        <div class="border-2 border-dashed border-gray-300 p-8 text-center rounded-xl text-gray-400 bg-gray-50">
+                            <i class="fas fa-image text-5xl mb-4"></i><br><span class="font-bold text-lg">스크린샷 이미지 표시</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: MarkText 안내 및 PDF 내보내기 -->
+    <section id="marktext" class="py-20 px-4 bg-white border-t border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 tracking-tight">전용 에디터 추천: <span class="text-indigo-600">MarkText</span> 📝</h2>
+                <p class="text-gray-500 text-xl">VS Code로도 작성 가능하지만, 초보자도 쉽게 쓸 수 있는 전용 무료 프로그램을 추천합니다.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- 다운로드 -->
+                <div class="bg-slate-50 p-10 rounded-3xl border border-gray-200 shadow-md flex flex-col h-full">
+                    <div class="text-5xl mb-8 text-indigo-500"><i class="fas fa-download"></i></div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-6">1. 무료 다운로드</h3>
+                    <p class="text-gray-600 text-xl mb-6 leading-relaxed">
+                        공식 GitHub 저장소에 접속하여 다운로드 페이지로 이동합니다.
+                    </p>
+                    <a href="https://github.com/marktext/marktext" target="_blank" class="block bg-white p-5 rounded-2xl text-indigo-600 font-bold hover:bg-indigo-50 transition border border-gray-200 mb-6 text-center text-xl shadow-sm">
+                        github.com/marktext/marktext <i class="fas fa-external-link-alt ml-2 text-base"></i>
+                    </a>
+                    <div class="bg-blue-50 border-l-8 border-blue-400 p-6 rounded-r-2xl mt-auto shadow-inner">
+                        <p class="text-lg text-gray-700 font-medium leading-relaxed">
+                            우측 하단의 <strong class="text-blue-700 text-xl bg-blue-100 px-2 rounded">Releases</strong> (또는 Downloads) 항목 클릭 후, 자신의 운영체제(Windows/Mac)에 맞는 설치 파일 다운로드!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 이미지 & PDF 내보내기 -->
+                <div class="bg-indigo-900 p-10 rounded-3xl border border-indigo-700 shadow-xl flex flex-col h-full text-white">
+                    <div class="text-5xl mb-8 text-yellow-400"><i class="fas fa-magic"></i></div>
+                    <h3 class="text-3xl font-bold mb-8 text-yellow-300">2. 꿀팁 & PDF 내보내기</h3>
+                    
+                    <div class="space-y-8 flex-1 flex flex-col justify-center">
+                        <div class="bg-indigo-800/50 p-6 rounded-2xl border border-indigo-600 shadow-inner">
+                            <p class="font-bold text-white mb-3 flex items-center gap-3 text-xl"><i class="fas fa-image text-green-400"></i> 마법의 붙여넣기</p>
+                            <p class="text-indigo-200 text-lg leading-relaxed">
+                                화면을 캡처한 후, MarkText에서 <kbd class="bg-gray-700 px-2 py-1 rounded font-mono shadow-sm">Ctrl</kbd> + <kbd class="bg-gray-700 px-2 py-1 rounded font-mono shadow-sm">V</kbd> 를 누르면 이미지 파일 자동 생성과 동시에 마크다운 문법이 바로 작성됩니다!
+                            </p>
+                        </div>
+                        
+                        <div class="bg-indigo-800/50 p-6 rounded-2xl border border-indigo-600 shadow-inner">
+                            <p class="font-bold text-white mb-4 flex items-center gap-3 text-xl"><i class="fas fa-file-pdf text-red-400"></i> 과제 제출용 PDF 저장</p>
+                            <p class="text-indigo-200 text-lg leading-relaxed tracking-wide bg-indigo-950 p-4 rounded-xl border border-indigo-800">
+                                좌측 상단 <strong>3줄 햄버거 메뉴(≡)</strong> 클릭<br>
+                                ➡️ <strong class="text-white">File</strong> ➡️ <strong class="text-white">Export</strong> ➡️ <strong class="text-yellow-300">PDF</strong> 클릭!
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
