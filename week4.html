@@ -696,40 +696,54 @@
 
     <!-- Section 8: 과제 안내 -->
     <section id="homework" class="py-24 px-4 bg-indigo-900 text-white text-center">
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-5xl mx-auto">
             <h2 class="text-5xl font-extrabold mb-12 text-yellow-300">
                 🚀 Step 5. 오늘의 개별 과제
             </h2>
             
-            <div class="bg-indigo-800 p-12 rounded-3xl inline-block text-left w-full border border-indigo-600 shadow-2xl relative">
-                <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-indigo-900 font-extrabold px-8 py-2 rounded-full text-xl shadow-lg">
-                    D-7: 다음 주 수업 전까지!
+            <div class="bg-indigo-800 p-10 md:p-14 rounded-3xl inline-block text-left w-full border border-indigo-600 shadow-2xl relative">
+                <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-indigo-900 font-extrabold px-8 py-2 rounded-full text-lg md:text-xl shadow-lg whitespace-nowrap">
+                    제출 기한: 2026.03.26 ~ 04.02(23:59)
                 </div>
                 
-                <h3 class="text-3xl font-bold mb-6 mt-4">"나의 자기소개 웹페이지 리뉴얼 & 배포"</h3>
-                <p class="text-indigo-200 mb-10 text-xl leading-relaxed">
-                    과거에 제출했던 밋밋한 '자기소개 HTML 페이지' 기억나시나요?<br>
-                    오늘 배운 CSS를 듬뿍 발라 화려하게 스킨을 입히고, 전 세계에 배포해 보세요!
+                <h3 class="text-2xl md:text-3xl font-bold mb-4 mt-4 text-white border-b border-indigo-600 pb-4">
+                    [4주차] 조별 플레이리스트 CSS 스타일링 및 GitHub 배포
+                </h3>
+                <p class="text-indigo-200 mb-8 text-lg leading-relaxed">
+                    수강생 여러분, 이번 주 대면 수업에서 각 조별로 기획한 테마와 곡 리스트(HTML 뼈대)에 각자 CSS 스타일링을 적용하여 화려한 플레이리스트를 완성하는 미션입니다. 또한, 완성된 결과물을 서버(GitHub Pages)에 배포하는 과정까지가 핵심입니다!
                 </p>
                 
-                <ul class="space-y-6 font-medium text-xl bg-indigo-950 p-8 rounded-2xl border border-indigo-700">
-                    <li class="flex items-start gap-4">
-                        <i class="fas fa-check-circle text-green-400 text-3xl mt-1"></i>
-                        <div class="flex-1">자기소개 페이지에 CSS 속성 (색상, 배경, 폰트 크기 등) 적용하기</div>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <i class="fas fa-check-circle text-green-400 text-3xl mt-1"></i>
-                        <div class="flex-1">완성된 파일을 본인 GitHub Repository에 업로드하기</div>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <i class="fas fa-check-circle text-green-400 text-3xl mt-1"></i>
-                        <div class="flex-1">GitHub Pages 기능으로 호스팅(배포)하기</div>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <i class="fas fa-link text-yellow-400 text-3xl mt-1"></i>
-                        <div class="flex-1">e-Campus 과제란에 <strong class="text-yellow-300">완성된 웹사이트 URL 링크</strong> 제출!</div>
-                    </li>
-                </ul>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- 가이드라인 & 필수사항 -->
+                    <div class="bg-indigo-950 p-6 rounded-2xl border border-indigo-700">
+                        <h4 class="text-xl font-bold text-yellow-300 mb-4 flex items-center gap-2"><i class="fas fa-list-check"></i> 진행 가이드라인 및 필수사항</h4>
+                        <ul class="space-y-3 text-indigo-100 text-[15px]">
+                            <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1"></i> <div><strong>테마 적용:</strong> 수업 시간 5분 타임어택으로 합의한 테마, 곡명, 가사 적용 (합의 실패 조는 아이브 예시 코드 유지)</div></li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1"></i> <div><strong>CSS 3개 이상 필수:</strong> <code class="text-pink-300 text-[13px] bg-pink-900/30 px-1 rounded">color</code>, <code class="text-pink-300 text-[13px] bg-pink-900/30 px-1 rounded">background</code>, <code class="text-pink-300 text-[13px] bg-pink-900/30 px-1 rounded">table/border</code>, <code class="text-pink-300 text-[13px] bg-pink-900/30 px-1 rounded">list-style</code> 중 3가지 이상 필수 사용</div></li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-1"></i> <div><strong>GitHub 배포:</strong> 저장소 생성 후 Pages 기능 활성화하여 URL 확보</div></li>
+                        </ul>
+                    </div>
+
+                    <!-- 제출 방법 -->
+                    <div class="bg-indigo-950 p-6 rounded-2xl border border-indigo-700">
+                        <h4 class="text-xl font-bold text-pink-300 mb-4 flex items-center gap-2"><i class="fas fa-file-pdf"></i> 제출 방법 (Markdown ➡️ PDF)</h4>
+                        <ul class="space-y-3 text-indigo-100 text-[15px]">
+                            <li class="flex items-start gap-2"><i class="fas fa-caret-right text-pink-400 mt-1"></i> <div>마크다운(Markdown) 작성 후 <strong>반드시 PDF로 변환하여 파일 제출</strong> (최대 3개)</div></li>
+                            <li class="flex items-start gap-2"><i class="fas fa-caret-right text-pink-400 mt-1"></i> <div><strong>필수 포함:</strong> ① 작성 코드(<code>```</code> 블록) ② 브라우저 실행 스크린샷 1장 이상 ③ <strong>GitHub Pages 결과물 링크</strong></div></li>
+                            <li class="flex items-start gap-2"><i class="fas fa-caret-right text-pink-400 mt-1"></i> <div><span class="text-xs bg-indigo-800 px-2 py-1 rounded text-gray-300 font-mono">MarkText 기준: ≡ -> File -> Export -> PDF</span></div></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- AI 및 팁 -->
+                <div class="bg-indigo-900 p-6 rounded-2xl border border-indigo-500/50">
+                    <h4 class="text-lg font-bold text-white mb-3"><i class="fas fa-lightbulb text-yellow-400"></i> AI 활용 지침 & 참고 사항</h4>
+                    <ul class="space-y-3 text-indigo-200 text-[14px] leading-relaxed">
+                        <li><strong class="text-blue-300">🤖 AI 활용 지침:</strong> Gemini, ChatGPT 활용 가능. 단, 디자인 아이디어나 코드 작성에 도움을 받은 경우 문서 하단에 활용 내용 명시 및 <strong class="text-red-300">대화 내역 전체 캡처 첨부 필수!</strong> (출처 미기재/단순 복사 미제출 처리)</li>
+                        <li><strong class="text-yellow-300">🎨 우아한 문제 해결:</strong> 빈티지 테마인데 네온 그린(#39FF14)을 뽑았나요? 당황하지 말고 버튼 <code>:hover</code> 시 <code>box-shadow</code>로 포인트를 주는 등 제약 조건을 우아하게 풀어내보세요!</li>
+                        <li><strong class="text-green-300">⌨️ 코드 정렬 팁:</strong> 들여쓰기(Tab)에 유의하세요. VS Code 단축키 <kbd class="bg-indigo-950 px-1.5 py-0.5 rounded border border-indigo-700 text-xs font-mono">Shift+Alt+F</kbd> (Mac: <kbd class="bg-indigo-950 px-1.5 py-0.5 rounded border border-indigo-700 text-xs font-mono">Shift+Option+F</kbd>) 사용을 적극 권장합니다.</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
