@@ -76,132 +76,163 @@
 </head>
 <body class="antialiased selection:bg-indigo-200 selection:text-indigo-900 text-gray-800">
 
+    <!-- 
+    ====================================================================
+    👨‍🏫 강사님 오프라인 준비물 (제비뽑기용 프린트 텍스트)
+    ====================================================================
+    수업 전, 아래 항목들을 인쇄하거나 쪽지로 잘라 두 개의 통에 담아두세요.
+
+    [1번 통: 디자인 테마 16개] (2개 뽑아 1개 선택)
+    1. 사이버펑크 (Cyberpunk)
+    2. Y2K 레트로 팝 (Y2K Pop)
+    3. 모던 미니멀리즘 (Apple Style)
+    4. 빈티지 앤틱 (Vintage Antique)
+    5. 다꾸 (다이어리 꾸미기)
+    6. 클래식 매거진 (Classic Magazine)
+    7. 다크 고딕 (Dark Gothic)
+    8. 보태니컬 (Nature)
+    9. 네온 클럽 (Neon Club)
+    10. 8비트 오락실 (8-bit Game)
+    11. 몽환적인 우주 (Dreamy Space)
+    12. 하이틴 키치 (High-teen Kitsch)
+    13. 흑백 모노크롬 (Monochrome)
+    14. 글래스모피즘 (Glassmorphism)
+    15. 필름 느와르 (Film Noir)
+    16. 커맨드 라인 (Command Line)
+
+    [2번 통: 필수 색상 HEX 코드 16개] (2개 뽑아 무조건 적용)
+    #FF007F (강렬한 핫핑크)
+    #39FF14 (네온 그린)
+    #FFD700 (머스타드 골드)
+    #8A2BE2 (블루 바이올렛)
+    #00FFFF (시안/형광 하늘색)
+    #FF4500 (오렌지 레드)
+    #2F4F4F (다크 슬레이트 그레이)
+    #FFB6C1 (라이트 핑크)
+    #808000 (올리브)
+    #4B0082 (인디고/진보라)
+    #7FFF00 (차르트뢰즈/밝은 연두)
+    #DC143C (크림슨/핏빛 빨강)
+    #008080 (틸/청록색)
+    #F0E68C (카키)
+    #C0C0C0 (실버)
+    #FF1493 (딥 핑크)
+    ====================================================================
+    -->
+
     <!-- 숨겨진 뼈대 코드 (복사용) -->
     <textarea id="skeletonCode" class="copy-area" readonly><!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>우리 조 플레이리스트 (기본 제공 테마)</title>
+    <title>최애 앨범 소개</title>
     
     <style>
-        /* * 🚨 미션: 아래 텅 빈 CSS 공간을 채워 HTML 뼈대에 스킨을 입혀주세요!
-         * (힌트: background, color, padding, border, border-radius 등을 활용하세요)
-         */
-        
-        /* 1. 플레이리스트 전체 박스 꾸미기 */
-        .playlist-box {
-            
+        /* 여기서부터 자유롭게 코딩을 시작하세요! */
+        /* (강사님이 주신 필수 색상 2개 잊지 마세요!) */
+
+        * {
+            margin: 0;
+            padding: 0;
+            /* 테두리 두께를 크기에 포함시키는 마법의 속성 (나중에 배웁니다!) */
+            box-sizing: border-box; 
         }
 
-        /* 2. 앨범 커버 이미지 크기 조절 및 모서리 둥글게 */
-        .album-cover {
-            
+        body {
+            /* 0. 배경색과 기본 폰트 설정, 전체 여백 */
+            padding: 20px;
         }
 
-        /* 3. 테이블(표) 테두리 한 줄로 합치기, 가로폭 꽉 채우기 */
-        table {
-            
-        }
+        /* 1. 타이포그래피 (h1, h2, .artist-name 등) 폰트, 색상, 크기, 정렬 */
 
-        /* 4. 표의 제목(th)과 내용(td) 칸마다 선 긋고 여백 주기 */
-        th, td {
-            
-        }
 
-        /* 5. 'TITLE' 뱃지 예쁘게 꾸미기 (배경색, 글자색, 둥근 모서리 등) */
-        .title-badge {
-            
-        }
+        /* 2. 가사 영역 (.lyrics-box) 및 하이라이트 글자(.highlight) 강조 */
 
-        /* 6. 가사 영역 꾸미기 (배경, 글자색, 중앙 정렬, 줄간격 등) */
-        .lyrics-section {
-            
-        }
-        
-        .lyrics-text {
-            
-        }
+
+        /* 3. 목록(#charm-list) 불릿 기호 지우고 예쁘게 꾸미기 */
+
+
+        /* 4. 표(#track-table) 한 줄 테두리(border-collapse), 패딩, 짝수줄 배경색(:nth-child) */
+
+
+        /* 5. 버튼(.listen-btn) 꾸미고 호버(:hover) 효과 넣기 */
+
     </style>
 </head>
 <body>
+    <header id="album-header">
+        <p class="artist-name">아이브 (IVE)</p>
+        <h1>EP 1집 'I'VE MINE'</h1>
+        <p class="subtitle">다채로운 매력으로 가득 찬 플레이리스트</p>
+    </header>
 
-    <!-- 플레이리스트 컨테이너 -->
-    <div class="playlist-box">
-        
-        <!-- 앨범 정보 영역 -->
-        <div class="album-info">
-            <!-- 앨범 커버 이미지 -->
-            <img src="https://via.placeholder.com/100/cccccc/ffffff?text=Album+Cover" alt="앨범 커버" class="album-cover">
-            
-            <div class="album-details">
-                <h1>I'VE MINE</h1>
-                <p>IVE (아이브)</p>
-            </div>
+    <section class="lyrics-section">
+        <h2>🎵 킬링 파트 가사</h2>
+        <div class="lyrics-box">
+            <p>숨참고 Love Dive</p>
+            <p class="highlight">우리만의 자유로운 nineteen's kitsch</p>
+            <p>아주 오묘한 그 빛깔로 날 빼곡히 채워</p>
         </div>
+    </section>
 
-        <br>
+    <section class="info-section">
+        <h2>✨ 입덕 포인트</h2>
+        <ul id="charm-list">
+            <li>귀에 쏙쏙 박히는 트렌디한 비트와 멜로디</li>
+            <li>당당하고 주체적인 '나'를 외치는 가사</li>
+            <li>멤버들의 완벽한 비주얼과 퍼포먼스</li>
+        </ul>
+    </section>
 
-        <!-- 트랙 리스트 (표) -->
-        <table class="track-list">
+    <section class="track-section">
+        <h2>🎧 추천 플레이리스트</h2>
+        <table id="track-table">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>제목</th>
-                    <th>재생시간</th>
+                    <th>Track</th>
+                    <th>곡명</th>
+                    <th>Play Time</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>1</td>
-                    <td>Baddie <span class="title-badge">TITLE</span></td>
+                    <td>01</td>
+                    <td>Baddie</td>
                     <td>2:34</td>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td>Either Way <span class="title-badge">TITLE</span></td>
+                    <td>02</td>
+                    <td>Either Way</td>
                     <td>2:46</td>
                 </tr>
                 <tr>
-                    <td>3</td>
+                    <td>03</td>
                     <td>Love Dive</td>
                     <td>2:57</td>
                 </tr>
                 <tr>
-                    <td>4</td>
+                    <td>04</td>
                     <td>Kitsch</td>
                     <td>3:15</td>
                 </tr>
                 <tr>
-                    <td>5</td>
-                    <td>I AM <span class="title-badge">TITLE</span></td>
+                    <td>05</td>
+                    <td>I AM</td>
                     <td>3:03</td>
                 </tr>
                 <tr>
-                    <td>6</td>
-                    <td>After LIKE <span class="title-badge">TITLE</span></td>
+                    <td>06</td>
+                    <td>After LIKE</td>
                     <td>2:56</td>
                 </tr>
             </tbody>
         </table>
+    </section>
 
-        <br>
-
-        <!-- 가사 (킬링 파트) 영역 -->
-        <div class="lyrics-section">
-            <h3>🎵 오늘의 킬링 파트 (프랑켄슈타인 가사)</h3>
-            <p class="lyrics-text">
-                숨참고 Love Dive<br>
-                우리만의 자유로운 nineteen's kitsch<br>
-                넌 그냥 믿으면 돼 I'm on my way<br>
-                What's After 'LIKE'?<br>
-                Catch me if you can<br>
-                아주 오묘한 그 빛깔로 날 빼곡히 채워
-            </p>
-        </div>
-
-    </div>
-
+    <footer id="album-footer">
+        <button class="listen-btn">전곡 스밍하러 가기</button>
+    </footer>
 </body>
 </html></textarea>
 
@@ -328,36 +359,50 @@
             </div>
         </div>
 
-        <!-- Slide 5: CSS 실습 인트로 -->
+        <!-- Slide 5: CSS 실습 인트로 & 제약 조건 -->
         <div class="slide">
-            <div class="max-w-5xl w-full text-center">
-                <h2 class="text-4xl font-bold text-gray-800 mb-10 flex items-center justify-center gap-3">
-                    <span class="text-pink-500"><i class="fas fa-music"></i></span> Step 3. 조별 최애 앨범 플레이리스트 (1/4)
+            <div class="max-w-6xl w-full text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8 flex items-center justify-center gap-3">
+                    <span class="text-pink-500"><i class="fas fa-music"></i></span> Step 3. 조별 CSS 플레이리스트 미션 (1/5)
                 </h2>
 
-                <div class="bg-gray-800 text-white rounded-3xl p-12 shadow-2xl relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 text-pink-500/20 text-9xl"><i class="fas fa-compact-disc animate-spin-slow"></i></div>
-                    <h3 class="text-3xl font-bold mb-6 text-yellow-400">✨ HTML 뼈대에 CSS 스킨 입히기</h3>
-                    <p class="text-gray-300 mb-10 text-xl leading-relaxed relative z-10">
-                        오늘은 텍스트, 색상, 표(Table), 목록(List)에 대한 CSS를 배웁니다.<br>
-                        이걸 가장 잘 써먹을 수 있는 게 바로 <strong>'음악 플레이리스트' 웹페이지</strong> 만들기죠!
+                <div class="bg-gray-800 text-white rounded-3xl p-10 shadow-2xl relative overflow-hidden text-left border-2 border-gray-700">
+                    <div class="absolute -right-10 -bottom-10 text-pink-500/20 text-9xl"><i class="fas fa-compact-disc animate-spin-slow"></i></div>
+                    
+                    <div class="flex items-center gap-4 mb-4 relative z-10">
+                        <div class="bg-red-500 text-white px-4 py-1.5 rounded-lg font-bold text-base shadow-sm">필수 제약 조건</div>
+                        <h3 class="text-3xl font-bold text-yellow-400">배운 4가지 CSS 속성 중 <span class="text-white underline decoration-red-500 decoration-4">최소 3개 이상</span> 필수 적용!</h3>
+                    </div>
+                    
+                    <p class="text-gray-300 mb-8 text-xl leading-relaxed relative z-10">
+                        단순히 뼈대 코드만 복사해서 제출하면 안 됩니다! 🙅‍♂️<br>
+                        우리 조만의 테마를 정하고, 온라인 수업에서 배운 아래 속성들을 활용해 화려하게 꾸며보세요.
                     </p>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-lg font-mono text-center relative z-10">
-                        <div class="bg-gray-700 p-6 rounded-xl border border-gray-600 shadow-inner">
-                            <i class="fas fa-palette text-4xl text-pink-400 mb-3 block"></i>
-                            <p class="text-white font-sans text-lg">color</p>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-5 text-center relative z-10">
+                        <!-- Box 1 -->
+                        <div class="bg-gray-700 p-6 rounded-2xl border border-gray-600 shadow-inner transform hover:-translate-y-1 transition">
+                            <i class="fas fa-palette text-4xl text-pink-400 mb-4 block"></i>
+                            <p class="text-white font-sans text-xl font-bold mb-2">글자색</p>
+                            <p class="text-gray-400 font-mono text-sm leading-relaxed">color</p>
                         </div>
-                        <div class="bg-gray-700 p-6 rounded-xl border border-gray-600 shadow-inner">
-                            <i class="fas fa-fill-drip text-4xl text-blue-400 mb-3 block"></i>
-                            <p class="text-white font-sans text-lg">background</p>
+                        <!-- Box 2 -->
+                        <div class="bg-gray-700 p-6 rounded-2xl border border-gray-600 shadow-inner transform hover:-translate-y-1 transition">
+                            <i class="fas fa-fill-drip text-4xl text-blue-400 mb-4 block"></i>
+                            <p class="text-white font-sans text-xl font-bold mb-2">배경 스타일</p>
+                            <p class="text-gray-400 font-mono text-sm leading-relaxed">background</p>
                         </div>
-                        <div class="bg-gray-700 p-6 rounded-xl border border-gray-600 shadow-inner">
-                            <i class="fas fa-table text-4xl text-green-400 mb-3 block"></i>
-                            <p class="text-white font-sans text-lg">table / border</p>
+                        <!-- Box 3 -->
+                        <div class="bg-gray-700 p-6 rounded-2xl border border-gray-600 shadow-inner transform hover:-translate-y-1 transition">
+                            <i class="fas fa-table text-4xl text-green-400 mb-4 block"></i>
+                            <p class="text-white font-sans text-xl font-bold mb-2">표 & 테두리</p>
+                            <p class="text-gray-400 font-mono text-sm leading-relaxed">table<br>border</p>
                         </div>
-                        <div class="bg-gray-700 p-6 rounded-xl border border-gray-600 shadow-inner">
-                            <i class="fas fa-list-ul text-4xl text-yellow-400 mb-3 block"></i>
-                            <p class="text-white font-sans text-lg">list-style</p>
+                        <!-- Box 4 -->
+                        <div class="bg-gray-700 p-6 rounded-2xl border border-gray-600 shadow-inner transform hover:-translate-y-1 transition">
+                            <i class="fas fa-list-ul text-4xl text-yellow-400 mb-4 block"></i>
+                            <p class="text-white font-sans text-xl font-bold mb-2">목록 기호</p>
+                            <p class="text-gray-400 font-mono text-sm leading-relaxed">list-style</p>
                         </div>
                     </div>
                 </div>
@@ -368,7 +413,7 @@
         <div class="slide">
             <div class="max-w-5xl w-full">
                 <h2 class="text-4xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-3">
-                    <span class="text-red-500"><i class="fas fa-bullhorn"></i></span> Step 3. 교수님의 특별 미션 (2/4)
+                    <span class="text-red-500"><i class="fas fa-bullhorn"></i></span> Step 3. 교수님의 특별 미션 (2/5)
                 </h2>
                 
                 <div class="bg-red-50 p-10 rounded-3xl border-4 border-red-200 shadow-xl mt-8">
@@ -382,11 +427,11 @@
                     <ul class="space-y-6 text-red-800 text-xl font-medium bg-white p-8 rounded-2xl shadow-sm border border-red-100">
                         <li class="flex items-start gap-4">
                             <span class="text-3xl mt-1">🔥</span>
-                            <div class="flex-1 leading-relaxed"><strong>5분 안에</strong> 조별 플레이리스트에 들어갈 곡명을 합의하세요.</div>
+                            <div class="flex-1 leading-relaxed"><strong>5분 안에</strong> 조별 플레이리스트에 들어갈 곡명과 가사를 합의하세요.</div>
                         </li>
                         <li class="flex items-start gap-4">
                             <span class="text-3xl mt-1">⚠️</span>
-                            <div class="flex-1 leading-relaxed">합의를 못 한 조는 강제적으로 <strong>제공된 예시 코드(아이브 등)</strong>를 한 글자도 바꾸지 못하고 그대로 디자인해야 합니다!</div>
+                            <div class="flex-1 leading-relaxed">합의를 못 한 조는 강제적으로 <strong>제공된 예시 코드(아이브 등)</strong>를 한 글자도 바꾸지 못하고 그대로 CSS 디자인을 시작해야 합니다!</div>
                         </li>
                     </ul>
                 </div>
@@ -396,7 +441,7 @@
         <!-- Slide 7: 대통합 솔루션 -->
         <div class="slide">
             <div class="max-w-6xl w-full text-center">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8"><i class="fas fa-lightbulb text-yellow-500"></i> 조별 '최애 앨범' 대통합을 위한 4가지 솔루션 (3/4)</h2>
+                <h2 class="text-3xl font-bold text-gray-800 mb-8"><i class="fas fa-lightbulb text-yellow-500"></i> 조별 '최애 앨범' 대통합을 위한 4가지 솔루션 (3/5)</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
                     <!-- 솔루션 1 -->
@@ -440,11 +485,62 @@
             </div>
         </div>
 
-        <!-- Slide 8: CSS 시각화 예시 (아이브) -->
+        <!-- Slide 8: 운명의 제비뽑기 -->
+        <div class="slide">
+            <div class="max-w-7xl w-full text-center px-4">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6"><i class="fas fa-random text-purple-500"></i> Step 3. 운명의 제비뽑기 🎲 (4/5)</h2>
+                
+                <div class="flex flex-col lg:flex-row gap-6">
+                    <!-- Left: Rules & Tip -->
+                    <div class="w-full lg:w-1/3 flex flex-col gap-4">
+                        <div class="bg-indigo-900 text-white p-6 rounded-3xl shadow-lg text-left border-4 border-indigo-700">
+                            <h3 class="text-2xl font-bold mb-4 text-yellow-300"><i class="fas fa-ticket-alt"></i> 미션 룰 (조장 등판!)</h3>
+                            <ul class="space-y-4 text-lg">
+                                <li><strong>1. 테마 뽑기:</strong> 앞으로 나와 통에서 2개를 뽑고, 그 중 1개를 최종 선택합니다.</li>
+                                <li><strong>2. 컬러 뽑기:</strong> 2개를 뽑아 해당 색상(HEX)을 디자인 <span class="bg-red-500 px-1 rounded font-bold">포인트 컬러</span>로 무조건 사용하세요!</li>
+                            </ul>
+                        </div>
+                        <div class="bg-yellow-50 p-6 rounded-3xl border-2 border-yellow-300 shadow-md text-left flex-1 relative overflow-hidden">
+                            <i class="fas fa-quote-right absolute -right-4 -bottom-4 text-6xl text-yellow-200 opacity-50"></i>
+                            <h3 class="text-xl font-bold text-yellow-800 mb-3"><i class="fas fa-lightbulb text-yellow-600"></i> 교수님의 조언</h3>
+                            <p class="text-yellow-900 text-base leading-relaxed font-medium">
+                                <span class="text-gray-500 italic">"선생님, 빈티지 테마인데 네온 그린(#39FF14) 색상을 뽑았어요 어떡하죠?!"</span><br><br>
+                                👉 버튼에 마우스를 올렸을 때(:hover) 그림자(box-shadow) 색상으로 살짝 줘보는 건 어떨까요? 클라이언트의 억지(?) 요구사항을 우아하게 풀어내는 게 진짜 실력입니다!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Themes Grid -->
+                    <div class="w-full lg:w-2/3 bg-white p-6 rounded-3xl shadow-lg border border-gray-200">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2 text-left">🎟️ 16가지 디자인 테마 리스트 (어떤 테마가 걸릴지 모릅니다!)</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-left">
+                            <div class="bg-slate-900 text-green-400 p-3 rounded-xl border border-green-500/30"><span class="text-xl">🕶</span> <strong>사이버펑크</strong><br><span class="text-xs opacity-80">어두운 배경, 네온 글씨</span></div>
+                            <div class="bg-pink-200 text-pink-800 p-3 rounded-xl border border-pink-300"><span class="text-xl">🫧</span> <strong>Y2K 레트로</strong><br><span class="text-xs opacity-80">픽셀 폰트, 통통 튀는 색</span></div>
+                            <div class="bg-gray-50 text-gray-800 p-3 rounded-xl border border-gray-300 shadow-sm"><span class="text-xl">🍏</span> <strong>미니멀리즘</strong><br><span class="text-xs opacity-80">넓은 여백, 극강의 깔끔함</span></div>
+                            <div class="bg-[#F5F5DC] text-[#5C4033] p-3 rounded-xl border border-[#D2B48C]"><span class="text-xl">☕️</span> <strong>빈티지 앤틱</strong><br><span class="text-xs opacity-80">낡은 종이, 명조체</span></div>
+                            <div class="bg-purple-100 text-purple-800 p-3 rounded-xl border border-purple-200"><span class="text-xl">🌸</span> <strong>다꾸 (다이어리)</strong><br><span class="text-xs opacity-80">파스텔, 손글씨, 둥근 버튼</span></div>
+                            <div class="bg-white text-black p-3 rounded-xl border-2 border-black"><span class="text-xl">📰</span> <strong>클래식 매거진</strong><br><span class="text-xs opacity-80">흑백 대비, 굵은 제목</span></div>
+                            <div class="bg-black text-red-500 p-3 rounded-xl border border-red-900 shadow-inner"><span class="text-xl">🦇</span> <strong>다크 고딕</strong><br><span class="text-xs opacity-80">칠흑 배경, 핏빛 포인트</span></div>
+                            <div class="bg-green-100 text-green-900 p-3 rounded-xl border border-green-200"><span class="text-xl">🌿</span> <strong>보태니컬</strong><br><span class="text-xs opacity-80">그린/어스 톤, 여유로움</span></div>
+                            <div class="bg-fuchsia-900 text-fuchsia-300 p-3 rounded-xl border border-fuchsia-700"><span class="text-xl">🪩</span> <strong>네온 클럽</strong><br><span class="text-xs opacity-80">강렬한 보색, 빛나는 버튼</span></div>
+                            <div class="bg-blue-600 text-yellow-300 p-3 rounded-xl border-4 border-yellow-400"><span class="text-xl">👾</span> <strong>8비트 오락실</strong><br><span class="text-xs opacity-80">굵은 테두리, 쨍한 원색</span></div>
+                            <div class="bg-indigo-950 text-indigo-200 p-3 rounded-xl border border-indigo-800"><span class="text-xl">🌌</span> <strong>몽환적인 우주</strong><br><span class="text-xs opacity-80">밤하늘 색, 반짝이는 텍스트</span></div>
+                            <div class="bg-rose-400 text-white p-3 rounded-xl border border-rose-500"><span class="text-xl">💖</span> <strong>하이틴 키치</strong><br><span class="text-xs opacity-90">핫핑크, 장난감 같은 UI</span></div>
+                            <div class="bg-zinc-200 text-zinc-800 p-3 rounded-xl border-2 border-zinc-500"><span class="text-xl">⚪️</span> <strong>흑백 모노크롬</strong><br><span class="text-xs opacity-90">극단적 대비, 무채색만</span></div>
+                            <div class="bg-blue-100/50 backdrop-blur-sm text-blue-900 p-3 rounded-xl border border-white shadow-sm"><span class="text-xl">🪞</span> <strong>글래스모피즘</strong><br><span class="text-xs opacity-90">반투명 유리, 블러 효과</span></div>
+                            <div class="bg-stone-900 text-stone-300 p-3 rounded-xl border-b-4 border-stone-600"><span class="text-xl">🕵️‍♂️</span> <strong>필름 느와르</strong><br><span class="text-xs opacity-90">거친 질감, 어두운 그림자</span></div>
+                            <div class="bg-black text-green-400 p-3 rounded-xl border border-green-500 font-mono"><span class="text-xl">💻</span> <strong>커맨드 라인</strong><br><span class="text-xs opacity-90">까만 바탕, 터미널 감성</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: CSS 시각화 예시 (아이브) -->
         <div class="slide">
             <div class="max-w-7xl w-full text-center px-4">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-4xl font-bold text-gray-800"><i class="fas fa-magic text-pink-500"></i> Step 3. 예시: 아이브(IVE) 플레이리스트 변신 (4/4)</h2>
+                    <h2 class="text-4xl font-bold text-gray-800"><i class="fas fa-magic text-pink-500"></i> Step 3. 예시: 아이브(IVE) 플레이리스트 변신 (5/5)</h2>
                     <button onclick="copySkeleton()" id="copyBtn" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded-full shadow-md transition-all flex items-center gap-2 text-lg border-2 border-pink-400 active:scale-95">
                         <i class="fas fa-copy"></i> 뼈대 복사
                     </button>
@@ -460,27 +556,33 @@
                             <span class="text-gray-400 font-mono text-sm ml-2">style.css & HTML</span>
                         </div>
                         <pre class="text-gray-300 font-mono text-[13px] leading-relaxed overflow-y-auto flex-1 custom-scrollbar pr-2">
-<span class="text-gray-500">/* 플레이리스트 전체 박스 */</span>
-<span class="text-blue-400">.playlist-box</span> {
+<span class="text-gray-500">/* 0. 배경색과 전체 폰트 색상 */</span>
+<span class="text-blue-400">body</span> {
   <span class="text-blue-300">background</span>: <span class="text-yellow-300">linear-gradient(135deg, #ff9a9e, #fecfef)</span>;
-  <span class="text-blue-300">border-radius</span>: <span class="text-yellow-300">20px</span>;
-  <span class="text-blue-300">padding</span>: <span class="text-yellow-300">25px</span>;
   <span class="text-blue-300">color</span>: <span class="text-yellow-300">white</span>;
 }
-<span class="text-gray-500">/* 테이블 테두리 합치기 */</span>
-<span class="text-blue-400">table</span> {
+<span class="text-gray-500">/* 2. 가사 영역 꾸미기 */</span>
+<span class="text-blue-400">.lyrics-box</span> {
+  <span class="text-blue-300">background</span>: <span class="text-yellow-300">rgba(255,255,255,0.2)</span>;
+  <span class="text-blue-300">border-radius</span>: <span class="text-yellow-300">12px</span>;
+}
+<span class="text-blue-400">.highlight</span> {
+  <span class="text-blue-300">color</span>: <span class="text-yellow-300">#db2777</span>; <span class="text-gray-500">/* 핫핑크 */</span>
+  <span class="text-blue-300">background</span>: <span class="text-yellow-300">white</span>;
+}
+<span class="text-gray-500">/* 4. 표(table) 꾸미기 */</span>
+<span class="text-blue-400">#track-table</span> {
   <span class="text-blue-300">width</span>: <span class="text-yellow-300">100%</span>;
   <span class="text-blue-300">border-collapse</span>: <span class="text-yellow-300">collapse</span>;
 }
-<span class="text-gray-500">/* 각 곡 하단 선 긋기 */</span>
 <span class="text-blue-400">th, td</span> {
   <span class="text-blue-300">border-bottom</span>: <span class="text-yellow-300">1px solid rgba(255,255,255,0.3)</span>;
-  <span class="text-blue-300">padding</span>: <span class="text-yellow-300">10px 5px</span>;
 }
-<span class="text-gray-500">/* 가사 영역 꾸미기 */</span>
-<span class="text-blue-400">.lyrics-section</span> {
-  <span class="text-blue-300">text-align</span>: <span class="text-yellow-300">center</span>;
-  <span class="text-blue-300">margin-top</span>: <span class="text-yellow-300">15px</span>;
+<span class="text-gray-500">/* 5. 버튼 꾸미기 */</span>
+<span class="text-blue-400">.listen-btn</span> {
+  <span class="text-blue-300">background</span>: <span class="text-yellow-300">white</span>;
+  <span class="text-blue-300">color</span>: <span class="text-yellow-300">#ec4899</span>;
+  <span class="text-blue-300">border-radius</span>: <span class="text-yellow-300">50px</span>;
 }
                         </pre>
                     </div>
@@ -489,73 +591,77 @@
                     <div class="bg-gray-100 p-8 rounded-3xl shadow-xl flex flex-col justify-center items-center border border-gray-300 relative h-full">
                         <div class="absolute top-4 right-6 text-gray-400 font-bold bg-white px-3 py-1 rounded-full text-xs shadow-sm"><i class="fas fa-eye"></i> 브라우저</div>
                         
-                        <!-- CSS가 적용된 결과물 시각화 -->
-                        <div class="w-full max-w-[360px] transform hover:scale-105 transition duration-300" style="background: linear-gradient(135deg, #ff9a9e, #fecfef); border-radius: 20px; padding: 20px; box-shadow: 0 10px 25px -5px rgba(255, 154, 158, 0.5); color: white;">
-                            <div class="flex items-center gap-4 mb-4">
-                                <div class="w-20 h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center text-[10px] text-pink-300 font-bold text-center overflow-hidden border-2 border-white/50 leading-tight">
-                                    [아이브<br>앨범 커버]
-                                </div>
-                                <div>
-                                    <h3 class="text-2xl font-black drop-shadow-md mb-1">I'VE MINE</h3>
-                                    <p class="text-sm font-bold opacity-90">IVE (아이브)</p>
+                        <!-- 새로운 뼈대 코드가 핑크 테마 CSS로 렌더링된 모습 -->
+                        <div class="w-full max-w-[380px] transform hover:scale-105 transition duration-300" style="background: linear-gradient(135deg, #ff9a9e, #fecfef); border-radius: 20px; padding: 20px; box-shadow: 0 10px 25px -5px rgba(255, 154, 158, 0.5); color: white;">
+                            <!-- Header -->
+                            <div class="text-center mb-4 border-b border-white/30 pb-3">
+                                <p class="text-white/90 text-xs font-bold tracking-widest mb-1">아이브 (IVE)</p>
+                                <h3 class="text-2xl font-black mb-1 drop-shadow-md">EP 1집 'I'VE MINE'</h3>
+                                <p class="text-[10px] text-white/80">다채로운 매력으로 가득 찬 플레이리스트</p>
+                            </div>
+
+                            <!-- Lyrics -->
+                            <div class="mb-4">
+                                <h4 class="text-[11px] font-bold mb-2 flex items-center gap-1 drop-shadow-sm"><i class="fas fa-music"></i> 킬링 파트 가사</h4>
+                                <div class="bg-white/20 backdrop-blur-sm p-3 rounded-xl border border-white/40 text-[10px] text-center leading-relaxed shadow-inner">
+                                    <p>숨참고 Love Dive</p>
+                                    <p class="text-pink-600 font-extrabold my-1 bg-white inline-block px-2 py-0.5 rounded-full shadow-sm">우리만의 자유로운 nineteen's kitsch</p>
+                                    <p>아주 오묘한 그 빛깔로 날 빼곡히 채워</p>
                                 </div>
                             </div>
-                            <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">
-                                <thead>
-                                    <tr>
-                                        <th style="border-bottom: 2px solid rgba(255,255,255,0.6); padding: 6px 5px; text-align: left; width: 30px;">#</th>
-                                        <th style="border-bottom: 2px solid rgba(255,255,255,0.6); padding: 6px 5px; text-align: left;">제목</th>
-                                        <th style="border-bottom: 2px solid rgba(255,255,255,0.6); padding: 6px 5px; text-align: right;">시간</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">1</td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">Baddie <span class="bg-red-500 text-white text-[8px] px-1 py-0.5 rounded ml-1 font-black">TITLE</span></td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; text-align: right; opacity: 0.8;">2:34</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">2</td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">Either Way <span class="bg-red-500 text-white text-[8px] px-1 py-0.5 rounded ml-1 font-black">TITLE</span></td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; text-align: right; opacity: 0.8;">2:46</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">3</td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">Love Dive</td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; text-align: right; opacity: 0.8;">2:57</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">4</td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">Kitsch</td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; text-align: right; opacity: 0.8;">3:15</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">5</td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">I AM <span class="bg-red-500 text-white text-[8px] px-1 py-0.5 rounded ml-1 font-black">TITLE</span></td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; text-align: right; opacity: 0.8;">3:03</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">6</td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; font-weight: bold;">After LIKE <span class="bg-red-500 text-white text-[8px] px-1 py-0.5 rounded ml-1 font-black">TITLE</span></td>
-                                        <td style="border-bottom: 1px solid rgba(255,255,255,0.3); padding: 8px 5px; text-align: right; opacity: 0.8;">2:56</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="mt-3 pt-2 border-t border-white/30 text-center">
-                                <h4 class="text-[10px] font-bold mb-1">🎵 킬링 파트 (프랑켄슈타인 가사)</h4>
-                                <p class="text-[9px] leading-relaxed opacity-90">
-                                    숨참고 Love Dive<br>
-                                    우리만의 자유로운 nineteen's kitsch<br>
-                                    넌 그냥 믿으면 돼 I'm on my way
-                                </p>
+
+                            <!-- Charm List -->
+                            <div class="mb-4">
+                                <h4 class="text-[11px] font-bold mb-2 flex items-center gap-1 drop-shadow-sm"><i class="fas fa-sparkles"></i> 입덕 포인트</h4>
+                                <ul class="text-[10px] space-y-1.5 pl-1 opacity-95">
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-pink-500 text-[8px] bg-white rounded-full p-0.5"></i> 귀에 쏙쏙 박히는 트렌디한 비트와 멜로디</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-pink-500 text-[8px] bg-white rounded-full p-0.5"></i> 당당하고 주체적인 '나'를 외치는 가사</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check text-pink-500 text-[8px] bg-white rounded-full p-0.5"></i> 멤버들의 완벽한 비주얼과 퍼포먼스</li>
+                                </ul>
                             </div>
+
+                            <!-- Track Table -->
+                            <div class="mb-5">
+                                <h4 class="text-[11px] font-bold mb-2 flex items-center gap-1 drop-shadow-sm"><i class="fas fa-headphones"></i> 추천 플레이리스트</h4>
+                                <table class="w-full text-[10px] text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b-2 border-white/50">
+                                            <th class="py-1.5 px-2">Track</th>
+                                            <th class="py-1.5 px-2">곡명</th>
+                                            <th class="py-1.5 px-2 text-right">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-white/20 bg-white/10">
+                                            <td class="py-1.5 px-2 font-mono opacity-80">01</td>
+                                            <td class="py-1.5 px-2 font-bold">Baddie</td>
+                                            <td class="py-1.5 px-2 text-right opacity-80">2:34</td>
+                                        </tr>
+                                        <tr class="border-b border-white/20">
+                                            <td class="py-1.5 px-2 font-mono opacity-80">02</td>
+                                            <td class="py-1.5 px-2 font-bold">Either Way</td>
+                                            <td class="py-1.5 px-2 text-right opacity-80">2:46</td>
+                                        </tr>
+                                        <tr class="border-b border-white/20 bg-white/10">
+                                            <td class="py-1.5 px-2 font-mono opacity-80">03</td>
+                                            <td class="py-1.5 px-2 font-bold">Love Dive</td>
+                                            <td class="py-1.5 px-2 text-right opacity-80">2:57</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Footer Button -->
+                            <button class="w-full bg-white text-pink-500 hover:bg-pink-50 hover:text-pink-600 font-bold py-2.5 rounded-full text-[11px] transition-all shadow-md active:scale-95 border border-pink-100">
+                                <i class="fas fa-play-circle mr-1"></i> 전곡 스밍하러 가기
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 9: GitHub 인트로 -->
+        <!-- Slide 10: GitHub 인트로 -->
         <div class="slide">
             <div class="max-w-5xl w-full text-center">
                 <div class="text-7xl mb-6 text-gray-800"><i class="fab fa-github"></i></div>
@@ -591,7 +697,7 @@
             </div>
         </div>
 
-        <!-- Slide 10: GitHub 프로세스 -->
+        <!-- Slide 11: GitHub 프로세스 -->
         <div class="slide">
             <div class="max-w-6xl w-full text-center">
                 <h2 class="text-4xl font-bold text-gray-800 mb-10"><i class="fas fa-server text-indigo-600"></i> GitHub Pages 배포 프로세스 3단계</h2>
@@ -630,7 +736,7 @@
             </div>
         </div>
 
-        <!-- Slide 11: 과제 안내 -->
+        <!-- Slide 12: 과제 안내 -->
         <div class="slide">
             <div class="max-w-4xl w-full text-center">
                 <h2 class="text-5xl font-extrabold mb-12 text-indigo-900">
@@ -658,7 +764,7 @@
             </div>
         </div>
 
-        <!-- Slide 12: 다음 주 예고 -->
+        <!-- Slide 13: 다음 주 예고 -->
         <div class="slide">
             <div class="max-w-5xl w-full text-center">
                 <div class="text-8xl text-indigo-400 mb-8"><i class="fab fa-css3-alt"></i> <i class="fab fa-github text-gray-800 ml-4"></i></div>
