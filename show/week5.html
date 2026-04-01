@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프론트엔드 프로그래밍 - 5주차 CSS Layout & GitHub Collab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        body {
+            font-family: 'Pretendard', sans-serif;
+            overflow: hidden; /* 슬라이드 모드를 위한 스크롤 숨김 */
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b;
+        }
+
+        /* Slide Transition Style */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateX(20px);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .slide.prev-slide {
+            transform: translateX(-20px);
+        }
+
+        #progress-bar {
+            transition: width 0.3s ease;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* 복사 기능을 위한 숨김 텍스트 영역 */
+        .copy-area {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            opacity: 0;
+        }
+
+        /* 3D Box Animation for Hero Section */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .floating-box {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal-200 selection:text-teal-900 text-gray-800">
+
+    <!-- 숨겨진 뼈대 코드 (복사용) -->
+    <textarea id="leaderCode" class="copy-area" readonly><!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>우리 조 버킷리스트 아트 월</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Nanum Pen Script', cursive;
+            background-color: #d4b895;
+            background-image: url('https://www.transparenttextures.com/patterns/cork-board.png');
+            background-attachment: fixed;
+            text-align: center;
+            padding-bottom: 100px;
+        }
+        header {
+            margin: 60px auto 40px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: inline-block;
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        h1 { color: #333; font-size: 2.8rem; margin-bottom: 10px; }
+        .clearfix::after { content: ""; display: block; clear: both; }
+        .gallery-container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        
+        /* 공통 카드 스타일 */
+        .card {
+            float: left; width: 31.33%; margin: 1%;
+            background: linear-gradient(135deg, #fffcf0 0%, #fff3b0 100%);
+            padding: 15px 15px 35px 15px;
+            border-radius: 2px 2px 15px 5px;
+            box-shadow: 3px 5px 15px rgba(0,0,0,0.15);
+            position: relative; /* 자식인 badge의 기준점 */
+            transform: rotate(-3deg);
+            transition: transform 0.3s ease, z-index 0s;
+        }
+        .card:hover {
+            transform: scale(1.05) rotate(0deg);
+            z-index: 10;
+        }
+        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 5px; margin-bottom: 15px; }
+        .card h2 { color: #2c3e50; font-size: 1.8rem; margin-bottom: 10px; }
+        .card p { color: #444; font-size: 1.3rem; text-align: left; line-height: 1.5; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏖️ 2026 버킷리스트 아트 월 🏖️</h1>
+        <p style="font-size: 1.5rem; color: #555;">우리 조의 꿈들을 코르크 보드에 붙였습니다!</p>
+    </header>
+    <main class="gallery-container clearfix">
+        <!-- 팀원들의 코드가 들어갈 자리입니다 -->
+
+    </main>
+</body>
+</html></textarea>
+
+    <textarea id="memberCode" class="copy-area" readonly>        <!-- 팀원 카드 시작 -->
+        <div class="card">
+            <!-- 개인별로 배지 추가하기 (absolute 실습) -->
+            <!-- <div class="badge" style="position: absolute; ...">Hot🔥</div> -->
+            
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&auto=format&fit=crop&q=60" alt="바다 풍경">
+            <h2>✨ 000의 꿈</h2>
+            <p>🌊 1. 바다 가서 서핑 배우기</p>
+            <p>💻 2. 첫 웹사이트 배포하기</p>
+            
+            <!-- 개인별로 비밀 메모 추가하기 (visibility 실습) -->
+            <!-- <div class="secret-memo" style="visibility: hidden;">🤫 TMI: 수영 못함</div> -->
+        </div>
+        <!-- 팀원 카드 끝 --></textarea>
+
+    <!-- Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-gray-200 z-50">
+        <div id="progress-bar" class="h-full bg-teal-500 w-0"></div>
+    </div>
+
+    <!-- Slides Container -->
+    <div id="slides-container" class="relative w-full h-screen">
+
+        <!-- Slide 1: Hero Intro -->
+        <div class="slide active">
+            <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-teal-400 rounded-lg mix-blend-multiply opacity-20 floating-box transform rotate-12"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-40 h-40 bg-orange-400 rounded-full mix-blend-multiply opacity-20 floating-box" style="animation-delay: 1s;"></div>
+            
+            <div class="bg-white p-12 rounded-3xl shadow-xl max-w-4xl w-full border-t-8 border-teal-500 relative z-10 text-center">
+                <div class="text-7xl mb-6">📦✨</div>
+                <h1 class="text-5xl font-extrabold text-slate-800 mb-4 tracking-tight">CSS Layout & 팀 협업</h1>
+                <h2 class="text-2xl text-gray-500 font-medium mb-8">5주차: 3차원으로 띄우고, 깃허브로 하나 되기</h2>
+                <div class="h-1 w-24 bg-teal-400 mx-auto mb-8"></div>
+                <div class="text-lg text-gray-600 space-y-3 bg-slate-50 p-6 rounded-2xl inline-block text-center w-full">
+                    <p class="font-bold text-xl text-teal-700 mb-2">오늘의 핵심 미션</p>
+                    <p>1. 네모 상자들의 마법, 박스 모델(Box Model) 정복</p>
+                    <p>2. 명령어 없이 클릭만으로 깃허브(GitHub) 협업 성공하기</p>
+                    <p>3. 조원들과 함께 <strong>'2026 버킷리스트 아트 월'</strong> 완성하기</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 뇌풀기 퀴즈 -->
+        <div class="slide">
+            <div class="max-w-6xl w-full">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">Step 1. 뇌풀기 Quiz 타임 🧠</h2>
+                    <p class="text-gray-500 text-xl">지난 플립러닝 영상에서 배운 Layout 개념들을 점검합니다.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="bg-teal-900 p-10 rounded-3xl text-white shadow-xl relative overflow-hidden flex flex-col justify-center">
+                        <div class="absolute -right-10 -bottom-10 text-teal-800 text-9xl opacity-50"><i class="fas fa-mobile-alt"></i></div>
+                        <div class="relative z-10">
+                            <div class="inline-block bg-orange-400 text-teal-900 px-4 py-1.5 rounded-full text-sm font-bold mb-6">QuizN 스피드 퀴즈</div>
+                            <h3 class="text-4xl font-extrabold mb-4">박스 모델 & 포지션</h3>
+                            <p class="text-teal-100 mb-6 text-lg leading-relaxed">
+                                margin, padding, border부터<br>
+                                float, position, display까지!<br>
+                                스마트폰을 꺼내고 준비해주세요!
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-orange-50 to-amber-50 p-10 rounded-3xl border border-orange-200 flex flex-col justify-center items-start gap-6 shadow-sm transform hover:-translate-y-1 transition h-full">
+                        <div class="text-7xl text-orange-500"><i class="fas fa-dice"></i></div>
+                        <div>
+                            <h4 class="text-3xl font-bold text-orange-900 mb-3">오늘의 시상: 행운의 6등!</h4>
+                            <p class="text-orange-700 text-lg leading-relaxed">
+                                박스 모델은 육면체(6면체)죠! 📦<br>
+                                오늘은 1등이 아니라, 끝까지 집중해서<br>
+                                <strong>행운의 6등</strong>을 차지한 학생에게 특별 간식을 증정합니다! 🍀
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 과제 공유 안내 -->
+        <div class="slide">
+            <div class="max-w-5xl w-full text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-10 flex items-center justify-center gap-3">
+                    <span class="text-teal-600"><i class="fas fa-compact-disc"></i></span> Step 2. 지난주 과제 공유하기
+                </h2>
+                
+                <div class="bg-white p-12 rounded-3xl shadow-xl border border-gray-200 text-left">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-8 border-b-2 border-teal-100 pb-4">조별 과제 공유 가이드</h3>
+                    <ul class="space-y-8 text-gray-700 text-xl">
+                        <li class="flex items-start gap-4">
+                            <i class="fas fa-headphones text-teal-500 text-3xl mt-1"></i>
+                            <div class="flex-1">
+                                <strong class="text-2xl text-teal-900 mb-2 block">발표 순서 정하기</strong>
+                                음악이라는 테마에 맞게, <span class="bg-teal-100 text-teal-800 px-2 py-1 rounded font-bold">가장 최근에 노래를 부른 사람 (샤워 중 흥얼거림, 길거리 포함!)</span>부터 시계 방향으로 돌아갑니다.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <i class="fas fa-laptop-code text-orange-500 text-3xl mt-1"></i>
+                            <div class="flex-1">
+                                <strong class="text-2xl text-teal-900 mb-2 block">무엇을 발표하나요?</strong>
+                                자신이 직접 CSS 스타일링을 적용한 '4주차 플레이리스트' 화면을 띄우고, 어떤 테마와 컬러를 적용했는지 조원들에게 자랑합니다.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: 우수작 선정 -->
+        <div class="slide">
+            <div class="max-w-6xl w-full text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-3">
+                    <span class="text-yellow-500"><i class="fas fa-crown"></i></span> Step 2. 우리 조 대표 뽑기
+                </h2>
+                <p class="text-center text-xl text-gray-600 mb-10">각 조에서 <strong>다음 기준 중 하나에 가장 잘 맞는 1명</strong>을 선정해 반 전체에 공유합니다!</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <div class="bg-blue-50 rounded-3xl p-8 border-t-8 border-blue-400 shadow-lg text-center transform hover:-translate-y-2 transition">
+                        <div class="text-5xl mb-4">🎨</div>
+                        <h3 class="text-2xl font-bold text-blue-900 mb-4">색감 천재 상</h3>
+                        <p class="text-blue-800 text-lg leading-relaxed">
+                            당장 핀터레스트에 올려도 될 만큼, 뽑았던 테마에 찰떡같이 어울리는 색상과 분위기를 완벽하게 뽑아낸 사람
+                        </p>
+                    </div>
+                    <div class="bg-emerald-50 rounded-3xl p-8 border-t-8 border-emerald-400 shadow-lg text-center transform hover:-translate-y-2 transition">
+                        <div class="text-5xl mb-4">🤯</div>
+                        <h3 class="text-2xl font-bold text-emerald-900 mb-4">은은한 광기 상</h3>
+                        <p class="text-emerald-800 text-lg leading-relaxed">
+                            도대체 테마를 어떻게 해석한 건지 모르겠지만, 알 수 없는 광기(?)와 파격적인 디자인으로 시선을 강탈한 사람
+                        </p>
+                    </div>
+                    <div class="bg-purple-50 rounded-3xl p-8 border-t-8 border-purple-400 shadow-lg text-center transform hover:-translate-y-2 transition">
+                        <div class="text-5xl mb-4">💻</div>
+                        <h3 class="text-2xl font-bold text-purple-900 mb-4">코딩 깎는 노인 상</h3>
+                        <p class="text-purple-800 text-lg leading-relaxed">
+                            안 배운 CSS 속성까지 구글링해 오고, 픽셀 단위로 집요하게 코드를 깎아내며 디자인에 진심이었던 사람
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 핵심 개념 리마인드 -->
+        <div class="slide">
+            <div class="max-w-6xl w-full">
+                <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">
+                    <span class="text-orange-500"><i class="fas fa-bolt"></i></span> Step 3. 실습 전 핵심 개념 장착하기
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <!-- Box Model -->
+                    <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 shadow-xl">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2">1. 박스 모델 (Box Model)</h3>
+                        <div class="relative w-full aspect-square max-w-[300px] mx-auto text-center font-mono text-sm font-bold">
+                            <!-- Margin -->
+                            <div class="absolute inset-0 bg-orange-100 border-2 border-dashed border-orange-400 flex justify-center items-start pt-2 text-orange-600 rounded-xl">Margin (바깥 여백)</div>
+                            <!-- Border -->
+                            <div class="absolute inset-6 bg-yellow-100 border-4 border-yellow-500 flex justify-center items-start pt-2 text-yellow-700 rounded-lg">Border (테두리)</div>
+                            <!-- Padding -->
+                            <div class="absolute inset-12 bg-green-100 border-2 border-green-400 flex justify-center items-start pt-2 text-green-700 rounded-md">Padding (안쪽 여백)</div>
+                            <!-- Content -->
+                            <div class="absolute inset-20 bg-blue-100 border-2 border-blue-400 flex justify-center items-center text-blue-700 rounded text-lg">Content<br>(100x100)</div>
+                        </div>
+                        <p class="text-center mt-6 text-gray-600 bg-white p-3 rounded-lg shadow-sm border border-gray-100">
+                            * 필수 공식: <code class="bg-gray-100 text-pink-600 px-2 py-1 rounded">box-sizing: border-box;</code>를 쓰면 패딩과 테두리가 너비 안으로 쏙!
+                        </p>
+                    </div>
+
+                    <!-- Position -->
+                    <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 shadow-xl">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2">2. 마법의 Position 속성</h3>
+                        <div class="bg-white p-6 rounded-2xl shadow-inner border border-gray-200 mb-6 relative h-48 mt-8">
+                            <div class="absolute top-2 left-2 text-xs text-gray-400 font-bold">부모 컨테이너 (.card)</div>
+                            <div class="w-full h-full border-2 border-teal-400 rounded-xl bg-teal-50 flex items-center justify-center text-teal-800 font-bold text-lg relative">
+                                position: relative;
+                                <!-- Absolute Child -->
+                                <div class="absolute -top-4 -right-4 bg-red-500 text-white px-4 py-2 rounded-full font-bold shadow-lg animate-bounce">
+                                    absolute!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-r-xl">
+                            <p class="font-bold text-teal-800 mb-1">💡 3차원 레이아웃 실무 공식</p>
+                            <p class="text-gray-700 text-sm">공중에 띄울 자식 요소에게 <code class="bg-white px-1 rounded text-red-500">absolute</code>를 주려면, 반드시 부모 요소에게 기준점이 되는 <code class="bg-white px-1 rounded text-teal-600">relative</code>를 주어야 밖으로 도망가지 않습니다!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: GitHub 프로세스 -->
+        <div class="slide">
+            <div class="max-w-6xl w-full text-center">
+                <div class="text-6xl mb-6 text-teal-400"><i class="fab fa-github"></i></div>
+                <h2 class="text-4xl font-extrabold mb-4 tracking-tight">Step 4. 에러 없는 깃허브 조립식 협업 🧩</h2>
+                <p class="text-gray-500 text-xl mb-12">"동시에 수정하면 코드가 날아갑니다! 철저한 역할 분담이 핵심!"</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left relative">
+                    <!-- 단계 1 -->
+                    <div class="bg-gray-800 p-8 rounded-3xl border border-gray-700 shadow-xl relative">
+                        <div class="w-10 h-10 bg-teal-500 text-white rounded-full flex items-center justify-center text-xl font-bold absolute -top-5 left-8 shadow-lg">1</div>
+                        <h4 class="text-xl font-bold text-teal-300 mb-4 mt-2">팀장의 기초 공사</h4>
+                        <ul class="text-gray-300 space-y-3 leading-relaxed text-sm">
+                            <li><i class="fas fa-caret-right text-teal-500"></i> <strong class="text-white">저장소 생성:</strong> <code class="text-yellow-300">bucket-list</code> Repo 생성</li>
+                            <li><i class="fas fa-caret-right text-teal-500"></i> <strong class="text-white">팀원 초대:</strong> <span class="bg-gray-700 px-1 rounded text-teal-200">Settings</span> ➡️ <span class="bg-gray-700 px-1 rounded text-teal-200">Collaborators</span> ➡️ <span class="bg-gray-700 px-1 rounded text-teal-200">Add people</span></li>
+                            <li><i class="fas fa-caret-right text-teal-500"></i> <strong class="text-yellow-400">초대 수락(중요):</strong> 이메일/알림 🔔 수락!</li>
+                            <li><i class="fas fa-caret-right text-teal-500"></i> <strong class="text-white">뼈대 세우기:</strong> <code class="text-yellow-300">index.html</code> (뼈대) 업로드</li>
+                        </ul>
+                    </div>
+
+                    <!-- 단계 2 -->
+                    <div class="bg-gray-800 p-8 rounded-3xl border border-gray-700 shadow-xl relative">
+                        <div class="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center text-xl font-bold absolute -top-5 left-8 shadow-lg">2</div>
+                        <h4 class="text-xl font-bold text-orange-300 mb-4 mt-2">팀원의 부품 업로드</h4>
+                        <ul class="text-gray-300 space-y-3 leading-relaxed text-sm">
+                            <li><i class="fas fa-caret-right text-orange-500"></i> 내 컴퓨터에서 내 카드 코드만 작성</li>
+                            <li><i class="fas fa-caret-right text-orange-500"></i> 내 이름으로 파일 저장 <span class="opacity-70">(ex: minji.html)</span></li>
+                            <li><i class="fas fa-caret-right text-orange-500"></i> 팀장 Repo에 <strong class="text-white">Upload files</strong> 버튼 클릭</li>
+                            <li><i class="fas fa-caret-right text-orange-500"></i> 파일과 이미지를 <strong>드래그앤드롭!</strong></li>
+                        </ul>
+                        <div class="mt-4 bg-red-900/50 p-3 rounded-lg border border-red-500/50 text-red-200 text-xs font-bold leading-relaxed">
+                            🚨 주의: 깃허브 웹에서 뼈대 파일(index.html) 동시 수정 절대 금지!
+                        </div>
+                    </div>
+
+                    <!-- 단계 3 -->
+                    <div class="bg-gray-800 p-8 rounded-3xl border border-gray-700 shadow-xl relative">
+                        <div class="w-10 h-10 bg-indigo-500 text-white rounded-full flex items-center justify-center text-xl font-bold absolute -top-5 left-8 shadow-lg">3</div>
+                        <h4 class="text-xl font-bold text-indigo-300 mb-4 mt-2">팀장의 조립 & 배포</h4>
+                        <ul class="text-gray-300 space-y-3 leading-relaxed text-sm">
+                            <li><i class="fas fa-caret-right text-indigo-500"></i> 팀장 혼자 <code class="text-yellow-300">index.html</code> Edit(✏️) 클릭</li>
+                            <li><i class="fas fa-caret-right text-indigo-500"></i> 팀원들이 올린 코드를 복사해서 조립</li>
+                            <li><i class="fas fa-caret-right text-indigo-500"></i> <strong class="text-green-400">Commit changes</strong> 눌러 1차 저장</li>
+                            <li><i class="fas fa-caret-right text-indigo-500"></i> <span class="bg-gray-700 px-1 rounded text-indigo-200">Settings</span> ➡️ <span class="bg-gray-700 px-1 rounded text-indigo-200">Pages</span> ➡️ <strong>main 브랜치</strong>로 최종 배포!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 아트 월 실습 -->
+        <div class="slide">
+            <div class="max-w-6xl w-full text-center">
+                <h2 class="text-4xl font-extrabold text-gray-800 mb-6 tracking-tight">Step 5. 조별 미션: 디지털 아트 월 만들기 🖼️</h2>
+                <p class="text-xl text-gray-600 mb-10">"우리의 2026년 버킷리스트를 코르크 보드 위에 힙하게 붙여봅시다!"</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                    <!-- 팀장 역할 -->
+                    <div class="bg-white p-8 rounded-3xl border-2 border-teal-200 shadow-lg text-left">
+                        <h3 class="text-2xl font-bold text-teal-800 mb-4 flex items-center gap-2"><i class="fas fa-crown text-yellow-500"></i> 팀장용 뼈대 코드 (index.html)</h3>
+                        <p class="text-gray-600 mb-6">팀장은 아래 코드를 복사하여 레포지토리의 기본 틀을 잡습니다.</p>
+                        <button onclick="copyCode('leaderCode', 'btnLeader')" id="btnLeader" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl transition-colors flex justify-center items-center gap-2 shadow-md">
+                            <i class="fas fa-copy"></i> 전체 뼈대 코드 복사하기
+                        </button>
+                    </div>
+
+                    <!-- 팀원 역할 -->
+                    <div class="bg-white p-8 rounded-3xl border-2 border-orange-200 shadow-lg text-left">
+                        <h3 class="text-2xl font-bold text-orange-800 mb-4 flex items-center gap-2"><i class="fas fa-user-edit text-orange-500"></i> 팀원용 카드 부품 (card.html)</h3>
+                        <p class="text-gray-600 mb-6">팀원은 본인 컴퓨터에서 아래 부품 코드를 수정하여 업로드합니다.</p>
+                        <button onclick="copyCode('memberCode', 'btnMember')" id="btnMember" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors flex justify-center items-center gap-2 shadow-md">
+                            <i class="fas fa-copy"></i> 카드 부품 코드 복사하기
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CSS 구현 팁 -->
+                <div class="bg-gradient-to-r from-teal-800 to-indigo-900 rounded-3xl p-8 text-left text-white shadow-xl relative overflow-hidden">
+                    <i class="fas fa-paint-brush absolute -right-6 -bottom-6 text-7xl text-white opacity-10 transform rotate-12"></i>
+                    <h3 class="text-2xl font-bold mb-4 text-yellow-300">🎨 CSS 디자인 필수 가이드</h3>
+                    <ul class="space-y-3 text-base">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-teal-400 mt-1"></i>
+                            <div><strong>카드 나란히 배치:</strong> <code class="bg-black/30 px-2 py-0.5 rounded text-pink-300 text-sm">float: left;</code> 와 <code class="bg-black/30 px-2 py-0.5 rounded text-pink-300 text-sm">margin</code>을 이용해 배치합니다.</div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-teal-400 mt-1"></i>
+                            <div><strong>부모 높이 붕괴 방지:</strong> 팀장 코드의 <code class="bg-black/30 px-2 py-0.5 rounded text-pink-300 text-sm">&lt;main&gt;</code> 에 있는 <code class="bg-black/30 px-2 py-0.5 rounded text-pink-300 text-sm">clearfix</code> 가 에러를 막아줍니다.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: CSS 해설 -->
+        <div class="slide">
+            <div class="max-w-6xl w-full">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-extrabold mb-4 tracking-tight text-teal-600">
+                        <i class="fas fa-search-dollar"></i> Step 5-1. 예시 코드 CSS 완벽 해부
+                    </h2>
+                    <p class="text-xl text-gray-500">복사한 뼈대 코드 안에 5주차 핵심 이론이 어떻게 녹아있는지 확인해봅시다!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-lg transform hover:-translate-y-1 transition duration-300">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4"><i class="fas fa-thumbtack text-yellow-500"></i> 마법의 배경 고정</h3>
+                        <div class="bg-gray-100 p-4 rounded-xl font-mono text-sm text-pink-600 mb-4 border border-gray-200">
+                            body {<br>
+                            &nbsp;&nbsp;background-attachment: <span class="text-blue-600 font-bold">fixed</span>;<br>
+                            }
+                        </div>
+                        <p class="text-gray-600 text-base">코르크 보드 이미지가 화면에 못 박힌 듯 고정되어 입체적인 스크롤 효과를 줍니다.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-lg transform hover:-translate-y-1 transition duration-300">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4"><i class="fas fa-magnet text-teal-500"></i> 찰싹 붙는 제목</h3>
+                        <div class="bg-gray-100 p-4 rounded-xl font-mono text-sm text-pink-600 mb-4 border border-gray-200">
+                            header {<br>
+                            &nbsp;&nbsp;position: <span class="text-blue-600 font-bold">sticky</span>;<br>
+                            &nbsp;&nbsp;top: <span class="text-orange-500">20px</span>;<br>
+                            }
+                        </div>
+                        <p class="text-gray-600 text-base">제목 박스가 화면 상단 20px 위치에 닿는 순간 <code class="bg-gray-200 px-1 rounded">fixed</code>처럼 끈적하게 따라옵니다.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-lg transform hover:-translate-y-1 transition duration-300">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4"><i class="fas fa-layer-group text-orange-500"></i> 가로 배치와 방파제</h3>
+                        <div class="bg-gray-100 p-4 rounded-xl font-mono text-sm text-pink-600 mb-4 border border-gray-200">
+                            .card { <span class="text-blue-600 font-bold">float: left;</span> }<br>
+                            .clearfix::after { <span class="text-blue-600 font-bold">clear: both;</span> }
+                        </div>
+                        <p class="text-gray-600 text-base">카드를 <code class="bg-gray-200 px-1 rounded">float</code>으로 가로 나열하고, 부모 높이가 0이 되는 것을 <code class="bg-gray-200 px-1 rounded">clearfix</code>로 방어합니다.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-lg transform hover:-translate-y-1 transition duration-300">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4"><i class="fas fa-mouse-pointer text-indigo-500"></i> 포스트잇 애니메이션</h3>
+                        <div class="bg-gray-100 p-4 rounded-xl font-mono text-sm text-pink-600 mb-4 border border-gray-200">
+                            .card:hover {<br>
+                            &nbsp;&nbsp;transform: scale(<span class="text-orange-500">1.05</span>) rotate(<span class="text-orange-500">0deg</span>);<br>
+                            &nbsp;&nbsp;<span class="text-blue-600 font-bold">z-index: 10;</span><br>
+                            }
+                        </div>
+                        <p class="text-gray-600 text-base">마우스를 올리면 똑바로 서며 커집니다. <code class="bg-gray-200 px-1 rounded">z-index</code>를 높여 주변 카드를 가리고 위로 올라옵니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 개별 과제 안내 -->
+        <div class="slide">
+            <div class="max-w-5xl w-full text-center">
+                <h2 class="text-4xl font-extrabold mb-10 text-teal-700">
+                    🚀 Step 6. 오늘의 개별 과제
+                </h2>
+                
+                <div class="bg-teal-900 p-12 rounded-3xl inline-block text-left w-full border-4 border-teal-200 shadow-2xl relative">
+                    <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-orange-500 text-white font-extrabold px-8 py-2 rounded-full text-xl shadow-lg border-2 border-white">
+                        기한: 다음 주 수업 전까지 (집에서 각자 진행!)
+                    </div>
+                    
+                    <h3 class="text-3xl font-bold mb-6 mt-4 text-white">"내 포스트잇에 입체감과 디테일 더하기"</h3>
+                    <p class="text-teal-100 mb-8 text-xl leading-relaxed">
+                        수업 시간에 조원들과 뼈대를 합치는 실습은 끝났습니다! 이제 조모임 할 필요 없이, <strong>집에서 각자 자신의 카드 코드만 업그레이드</strong>하여 제출하는 개인 과제입니다.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                        <!-- 미션 -->
+                        <div class="bg-teal-800 p-6 rounded-2xl border border-teal-600 shadow-sm text-white">
+                            <h4 class="text-xl font-bold text-orange-400 mb-4"><i class="fas fa-tasks"></i> 2가지 필수 구현</h4>
+                            <ul class="space-y-4 text-sm">
+                                <li><span class="bg-orange-500 text-white font-bold px-2 py-0.5 rounded">1. 배지</span> <code class="text-pink-300">position: absolute</code>로 모서리에 스티커(Hot🔥 등) 띄우기 (부모는 relative!)</li>
+                                <li><span class="bg-orange-500 text-white font-bold px-2 py-0.5 rounded">2. 메모</span> <code class="text-pink-300">visibility: hidden</code>으로 숨기고 hover 시 나타나게 하기</li>
+                            </ul>
+                        </div>
+
+                        <!-- 제출 -->
+                        <div class="bg-teal-800 p-6 rounded-2xl border border-teal-600 shadow-sm text-white">
+                            <h4 class="text-xl font-bold text-yellow-300 mb-4"><i class="fas fa-file-pdf"></i> 과제 제출 방법</h4>
+                            <ul class="space-y-3 text-sm">
+                                <li><i class="fas fa-caret-right text-yellow-400"></i> 본인이 작성한 카드 1개 분량 <strong>코드만</strong> 마크다운 복사</li>
+                                <li><i class="fas fa-caret-right text-yellow-400"></i> <strong>스크린샷 2장:</strong> 배지 띄운 캡처 + hover 메모 캡처</li>
+                                <li><i class="fas fa-caret-right text-yellow-400"></i> 마크다운 작성 후 <strong>PDF로 내보내어 제출!</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 다음 주 예고 -->
+        <div class="slide">
+            <div class="max-w-5xl w-full text-center">
+                <div class="text-8xl text-teal-400 mb-8"><i class="fas fa-expand-arrows-alt"></i> <i class="fas fa-mobile-alt text-gray-800 ml-4"></i></div>
+                <h2 class="text-5xl font-extrabold text-gray-800 mb-10 leading-tight">
+                    다음 주, <span class="text-teal-600">궁극의 배치 무기와 반응형 웹</span>
+                </h2>
+                
+                <div class="bg-white p-12 rounded-3xl shadow-2xl inline-block text-left w-full border-t-8 border-teal-500">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div class="bg-gray-100 p-6 rounded-2xl border-l-4 border-teal-400">
+                            <h4 class="text-2xl font-bold text-teal-900 mb-4"><i class="fas fa-th-large"></i> Flexbox 마스터</h4>
+                            <ul class="text-gray-700 text-lg space-y-3 font-medium">
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-1"></i> <div class="flex-1">Float을 대체하는 마법의 정렬</div></li>
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-1"></i> <div class="flex-1">가로/세로 정렬 1초 컷</div></li>
+                                <li class="flex items-start gap-2 text-teal-700 font-bold bg-teal-50 p-2 rounded"><i class="fas fa-gamepad text-orange-500 mt-1"></i> <div class="flex-1">Flexbox Froggy 게임 실습!</div></li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-100 p-6 rounded-2xl border-l-4 border-orange-400">
+                            <h4 class="text-2xl font-bold text-orange-900 mb-4"><i class="fas fa-mobile-alt"></i> 반응형 웹 디자인</h4>
+                            <ul class="text-gray-700 text-lg space-y-3 font-medium">
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-1"></i> <div class="flex-1">모바일 시대의 필수 기술</div></li>
+                                <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-1"></i> <div class="flex-1">미디어 쿼리(Media Query) 사용법</div></li>
+                                <li class="flex items-start gap-2 text-orange-800 font-bold bg-orange-50 p-2 rounded"><i class="fas fa-laptop text-gray-800 mt-1"></i> <div class="flex-1">PC, 태블릿, 모바일에 맞게 변신!</div></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="inline-block bg-gradient-to-r from-teal-500 to-emerald-600 text-white px-8 py-3 rounded-full text-2xl font-extrabold shadow-lg animate-pulse mb-4">
+                            프론트엔드의 꽃, 레이아웃의 완성!
+                        </div>
+                        <p class="text-xl text-gray-500">다음 주 플립러닝 영상에서 만나요! 고생하셨습니다. 👏</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="fixed bottom-6 right-6 flex gap-4 z-50">
+        <button onclick="prevSlide()" class="bg-white text-gray-700 hover:bg-gray-100 p-4 rounded-full shadow-lg transition active:scale-95 border border-gray-200">
+            <i class="fas fa-chevron-left text-xl"></i>
+        </button>
+        <button onclick="nextSlide()" class="bg-teal-600 text-white hover:bg-teal-700 p-4 rounded-full shadow-lg transition active:scale-95">
+            <i class="fas fa-chevron-right text-xl"></i>
+        </button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        let isAnimating = false;
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev-slide');
+                if (index === currentSlide) slide.classList.add('active');
+                else if (index < currentSlide) slide.classList.add('prev-slide');
+            });
+            document.getElementById('progress-bar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } }
+        function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            else if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        window.addEventListener('wheel', (e) => {
+            // 스크롤이 가능한 영역(.overflow-y-auto) 안에 있는지 확인
+            const scrollable = e.target.closest('.overflow-y-auto');
+            if (scrollable) {
+                const atTop = scrollable.scrollTop <= 0;
+                const atBottom = Math.abs(scrollable.scrollHeight - scrollable.clientHeight - scrollable.scrollTop) <= 2;
+                
+                // 내부 스크롤이 끝에 다다르지 않았다면 슬라이드가 넘어가지 않게 방지
+                if (e.deltaY > 0 && !atBottom) return; 
+                if (e.deltaY < 0 && !atTop) return; 
+            }
+
+            if (isAnimating) return;
+            if (e.deltaY > 0) nextSlide(); 
+            else prevSlide();
+            
+            isAnimating = true;
+            setTimeout(() => { isAnimating = false; }, 600);
+        }, { passive: false });
+
+        updateSlide();
+
+        // 뼈대 코드 복사 기능
+        function copyCode(elementId, btnId) {
+            const textarea = document.getElementById(elementId);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); 
+
+            try {
+                document.execCommand('copy');
+                
+                const btn = document.getElementById(btnId);
+                const originalHTML = btn.innerHTML;
+                const originalBg = btn.className.match(/bg-[a-z]+-\d+/)[0]; // 현재 배경색 클래스 찾기
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> 복사 완료! (붙여넣기 하세요)';
+                btn.classList.remove(originalBg);
+                btn.classList.add('bg-green-500');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('bg-green-500');
+                    btn.classList.add(originalBg);
+                }, 3000);
+            } catch (err) {
+                alert("복사에 실패했습니다.");
+            }
+        }
+    </script>
+</body>
+</html>
