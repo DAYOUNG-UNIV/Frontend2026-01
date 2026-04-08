@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프론트엔드 프로그래밍 - 6주차 Flexbox & 반응형 웹</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f8fafc; /* slate-50 (밝은 테마 기본) */
+            color: #1e293b;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* 복사 기능을 위한 숨김 텍스트 영역 */
+        .copy-area { position: absolute; left: -9999px; top: 0; opacity: 0; }
+
+        /* Flexbox 실습용 배경 패턴 */
+        .grid-pattern {
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-purple-200 selection:text-purple-900">
+
+    <!-- ==========================================
+         숨겨진 뼈대 코드 (팀장용 복사용) 
+         ========================================== -->
+    <textarea id="leaderCode" class="copy-area" readonly><!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우리 조 커스텀 티어 리스트</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    
+    <style>
+        /* 1. 전체 초기화 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            padding: 40px 20px;
+            background-color: #f4f4f5;
+        }
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; color: #333; }
+        p { color: #666; font-size: 1.1rem; }
+
+        /* =========================================
+           [실습 1] 메인 레이아웃 (보드와 사이드 패널 가로 배치)
+           ========================================= */
+        .layout-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            
+            /* TODO 1: 보드와 사이드 패널을 가로로 배치하고, 공간이 좁아지면 자연스럽게 줄바꿈되도록 설정하세요. (간격: 20px) */
+            /* 💡 힌트: display, flex-wrap, gap 속성을 사용하세요. */
+            
+        }
+
+        /* 2. 티어 리스트 보드 (좌측 넓은 영역) */
+        .tier-board {
+            background: #1e1e1e;
+            border-radius: 12px;
+            border: 2px solid #333;
+            overflow: hidden;
+            
+            /* TODO 2: 남은 가로 공간을 꽉 채우도록 설정하고, 내부 행(Row)들이 세로로 쌓이도록 방향을 지정하세요. */
+            /* 💡 힌트: flex-grow와 flex-direction 속성이 필요합니다. (우선 display: flex; 를 선언하는 것도 잊지 마세요!) */
+            
+        }
+
+        /* 3. 사이드 패널 (우측 미리보기 및 대기소 영역) */
+        .side-panel {
+            width: 320px; /* 고정 너비 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* =========================================
+           [실습 2] 티어 행 내부 배치
+           ========================================= */
+        .tier-row {
+            border-bottom: 2px solid #333;
+            min-height: 120px;
+            
+            /* TODO 3: 좌측 등급 라벨과 우측 아이템 드롭 영역을 가로로 배치하세요. */
+            /* 💡 힌트: 요소를 가로로 나열하는 가장 기본적인 Flexbox 속성 1가지만 적용하면 됩니다. */
+            
+        }
+        .tier-row:last-child { border-bottom: none; }
+
+        /* 티어 라벨 (좌측 등급 표시) */
+        .tier-label {
+            width: 120px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0; /* 창이 줄어도 라벨 크기는 고정 */
+        }
+        .rank-s { background-color: #ff7f7f; }
+        .rank-a { background-color: #ffbf7f; }
+        .rank-b { background-color: #ffff7f; }
+        .rank-c { background-color: #7fff7f; }
+        .rank-d { background-color: #7fbfff; }
+
+        /* =========================================
+           [실습 3] 드롭 영역 및 아이템 정렬
+           ========================================= */
+        .tier-items, .item-pool {
+            padding: 15px;
+            gap: 10px;
+        }
+        .tier-items {
+            background-color: #2b2b2b;
+            
+            /* TODO 4: 아이템들을 가로로 나열하되 넘치면 줄바꿈되도록 하고, 라벨을 제외한 남은 공간을 꽉 채우세요. */
+            /* 💡 힌트: display, flex-wrap, flex-grow 세 가지 속성을 모두 조합해야 합니다. */
+            
+        }
+
+        /* 아이템 대기소 */
+        .item-pool {
+            background-color: #e5e7eb;
+            border-radius: 12px;
+            min-height: 200px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* 미리보기 창 디자인 */
+        .preview-box {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .preview-box img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+        .preview-box p { font-weight: bold; font-size: 1.2rem; color: #333; }
+        .preview-placeholder { color: #9ca3af; font-size: 0.9rem; }
+
+        /* 개별 아이템 디자인 */
+        .item {
+            width: 80px; height: 80px;
+            cursor: grab; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative;
+            transition: transform 0.2s;
+        }
+        .item:hover { transform: scale(1.05); border: 2px solid #3b82f6; }
+        .item img { width: 100%; height: 100%; object-fit: cover; }
+        .item .item-name {
+            position: absolute; bottom: 0; width: 100%;
+            background: rgba(0,0,0,0.7); color: white;
+            font-size: 0.7rem; text-align: center; padding: 4px 0; pointer-events: none;
+        }
+
+        /* 4. 반응형 레이아웃 (Media Query) */
+        @media (max-width: 800px) {
+            .side-panel { width: 100%; } /* 모바일에서는 사이드 패널이 전체 너비 차지 */
+            .tier-row { 
+                /* TODO 5: 모바일 화면에서는 라벨과 드롭 영역이 세로로 배치되도록 방향을 바꾸세요. */
+                /* 💡 힌트: flex-direction 속성을 활용하여 정렬 축을 세로 방향으로 변경하세요. */
+                
+            }
+            .tier-label { width: 100%; height: 50px; font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏆 우리 조 커스텀 티어 리스트</h1>
+        <p>우리 조원들이 직접 선정한 10개 내외의 항목을 평가해 봅시다.</p>
+    </header>
+
+    <div class="layout-wrapper">
+        <main class="tier-board">
+            <div class="tier-row">
+                <div class="tier-label rank-s">S</div>
+                <div class="tier-items" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+            <div class="tier-row">
+                <div class="tier-label rank-a">A</div>
+                <div class="tier-items" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+            <div class="tier-row">
+                <div class="tier-label rank-b">B</div>
+                <div class="tier-items" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+            <div class="tier-row">
+                <div class="tier-label rank-c">C</div>
+                <div class="tier-items" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+            <div class="tier-row">
+                <div class="tier-label rank-d">D</div>
+                <div class="tier-items" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+        </main>
+
+        <aside class="side-panel">
+            <div class="preview-box" id="previewBox">
+                <p class="preview-placeholder">아이템에 마우스를 올리면<br>상세 정보가 표시됩니다.</p>
+            </div>
+
+            <h2 style="font-size: 1.2rem; margin-bottom: 10px; color: #333;">📌 아이템 대기열</h2>
+            <div class="item-pool" id="pool" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <!-- 조원들이 전달해준 아이템 코드를 여기에 붙여넣습니다. -->
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var draggedElement = document.getElementById(data);
+            if (ev.target.classList.contains('tier-items') || ev.target.classList.contains('item-pool')) {
+                ev.target.appendChild(draggedElement);
+            } else if (ev.target.closest('.tier-items')) {
+                ev.target.closest('.tier-items').appendChild(draggedElement);
+            } else if (ev.target.closest('.item-pool')) {
+                ev.target.closest('.item-pool').appendChild(draggedElement);
+            }
+        }
+        
+        // 아이템 미리보기 기능
+        function showPreview(element) {
+            var imgSrc = element.querySelector('img').src;
+            var itemName = element.querySelector('.item-name').innerText;
+            var preview = document.getElementById('previewBox');
+            preview.innerHTML = '<img src="' + imgSrc + '" alt="미리보기 이미지"><p>' + itemName + '</p>';
+        }
+    </script>
+</body>
+</html></textarea>
+
+    <!-- ==========================================
+         숨겨진 뼈대 코드 (팀원용 복사용) 
+         ========================================== -->
+    <textarea id="memberCode" class="copy-area" readonly>            <!-- 팀원 아이템 시작 (주의: id 값은 팀원마다 고유하게 변경하세요) -->
+            <div class="item" draggable="true" ondragstart="drag(event)" onmouseover="showPreview(this)" id="item_yourname_1">
+                <img src="./images/item_1.jpg" alt="항목 이름">
+                <div class="item-name">항목 이름 1</div>
+            </div>
+            
+            <div class="item" draggable="true" ondragstart="drag(event)" onmouseover="showPreview(this)" id="item_yourname_2">
+                <img src="./images/item_2.jpg" alt="항목 이름">
+                <div class="item-name">항목 이름 2</div>
+            </div>
+            <!-- 팀원 아이템 끝 --></textarea>
+
+
+    <!-- ==========================================
+         Navigation 
+         ========================================== -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center flex-wrap">
+                <div class="font-extrabold text-xl text-purple-700 flex items-center gap-2">
+                    <i class="fas fa-list-ol"></i> FRONTEND WEEK 6
+                </div>
+                <div class="hidden md:flex space-x-4 lg:space-x-6 text-sm font-bold text-gray-600">
+                    <a href="#intro" class="hover:text-purple-600 transition">오늘의 목표</a>
+                    <a href="#quiz" class="hover:text-purple-600 transition">복습퀴즈</a>
+                    <a href="#review" class="hover:text-purple-600 transition">코드조립</a>
+                    <a href="#concept" class="text-cyan-600 hover:text-cyan-800 transition">Flexbox 실습실</a>
+                    <a href="#activity" class="text-orange-500 hover:text-orange-700 transition">티어 리스트 미션</a>
+                    <a href="#css-explanation" class="hover:text-purple-600 transition">코드해설</a>
+                    <a href="#homework" class="hover:text-purple-600 transition">과제제출</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         Section 1: Hero Intro 
+         ========================================== -->
+    <section id="intro" class="py-20 md:py-32 px-4 flex justify-center items-center text-center relative overflow-hidden bg-slate-50">
+        <!-- 배경 장식 -->
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-cyan-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+        
+        <div class="bg-white p-12 rounded-3xl shadow-xl max-w-4xl w-full border-t-8 border-purple-500 relative z-10">
+            <div class="text-7xl mb-6"><i class="fas fa-layer-group text-purple-500"></i></div>
+            <h1 class="text-5xl font-extrabold text-gray-800 mb-4 tracking-tight drop-shadow-sm">Flexbox & 반응형 웹</h1>
+            <h2 class="text-2xl text-gray-500 font-medium mb-8">6주차: 기기 화면을 완벽하게 제어하는 유연한 배치</h2>
+            <div class="h-1 w-24 bg-gradient-to-r from-purple-400 to-cyan-400 mx-auto mb-8 rounded-full"></div>
+            
+            <div class="text-lg text-gray-600 space-y-3 bg-slate-50 p-8 rounded-2xl inline-block text-center w-full border border-gray-100 shadow-inner">
+                <p class="font-bold text-xl text-purple-600 mb-4"><i class="fas fa-crosshairs"></i> 오늘의 학습 목표</p>
+                <p>1. 문서 흐름의 한계를 넘는 <strong>Flexbox</strong> 속성 이해하기</p>
+                <p>2. 화면 크기에 맞춰 레이아웃을 변화시키는 <strong>Media Query</strong> 활용하기</p>
+                <p>3. 조별 평가 기준에 맞춘 <strong>'티어 리스트(Tier List)'</strong> 레이아웃 구현하기</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 2: 뇌풀기 퀴즈 
+         ========================================== -->
+    <section id="quiz" class="py-24 px-4 bg-white border-y border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">Step 1. 복습 퀴즈 타임 🧠</h2>
+                <p class="text-gray-500 text-xl">지난 주에 학습한 박스 모델(Box Model)과 Position 속성을 점검해 봅시다.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="bg-indigo-900 p-10 rounded-3xl text-white shadow-xl relative overflow-hidden flex flex-col justify-center border border-indigo-800">
+                    <div class="absolute -right-6 -bottom-6 text-indigo-800 text-9xl"><i class="fab fa-css3-alt"></i></div>
+                    <div class="relative z-10">
+                        <div class="inline-block bg-cyan-300 text-indigo-900 px-4 py-1.5 rounded-full text-sm font-bold mb-6 shadow-md">QuizN 스피드 퀴즈</div>
+                        <h3 class="text-4xl font-extrabold mb-4 text-white">박스 모델 & Position</h3>
+                        <p class="text-indigo-200 mb-6 text-lg leading-relaxed">
+                            여백(margin/padding) 설정부터<br>
+                            요소의 위치를 지정하는 absolute, fixed까지!<br>
+                            스마트폰을 준비해 주세요.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 p-10 rounded-3xl border border-yellow-200 flex flex-col justify-center items-start gap-6 shadow-md transform hover:-translate-y-1 transition h-full relative">
+                    <div class="absolute top-0 right-0 bg-yellow-400 text-yellow-900 font-black px-4 py-2 rounded-bl-2xl rounded-tr-2xl shadow-sm">EVENT</div>
+                    <div class="text-7xl text-yellow-500"><i class="fas fa-trophy"></i></div>
+                    <div>
+                        <h4 class="text-3xl font-bold text-yellow-800 mb-3">오늘의 시상: <span class="text-orange-600">행운의 5등!</span></h4>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            1등만 시상하면 아쉽죠! 🙅‍♂️<br>
+                            오늘 복습할 Position 속성은 static, relative, absolute, fixed, sticky 총 <strong>5개</strong>입니다.<br>
+                            이에 맞춰 모든 문제를 끝까지 완주한 <strong>5등</strong> 학생에게 특별 간식을 증정합니다! 🎯
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 3: 과제 공유 (리뷰)
+         ========================================== -->
+    <section id="review" class="py-24 px-4 bg-slate-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-gray-800 mb-12 flex items-center justify-center gap-3 text-center">
+                <span class="text-cyan-500"><i class="fas fa-tools"></i></span> Step 2. 지난주 '아트 월' 라이브 조립 🛠️
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+                <!-- 깃허브 조립 매뉴얼 -->
+                <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-gray-100 pb-4">GitHub 웹 조립 매뉴얼</h3>
+                    
+                    <div class="space-y-6 mb-6">
+                        <div class="flex items-start gap-4">
+                            <span class="bg-purple-100 text-purple-800 border border-purple-200 px-3 py-1 rounded-lg font-bold text-sm shrink-0 mt-0.5 shadow-sm">팀원</span>
+                            <p class="text-gray-700 text-lg leading-relaxed">개별적으로 작성한 코드(<code class="bg-gray-100 px-1 rounded text-gray-800">member_이름.html</code>)를 팀장 저장소에 <strong>Upload files</strong> 기능으로 업로드합니다.</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="bg-cyan-100 text-cyan-800 border border-cyan-200 px-3 py-1 rounded-lg font-bold text-sm shrink-0 mt-0.5 shadow-sm">팀장</span>
+                            <p class="text-gray-700 text-lg leading-relaxed"><code class="bg-gray-100 px-1 rounded text-gray-800">index.html</code> 수정(✏️) 버튼을 클릭하여, 팀원들의 코드를 정해진 영역에 복사하여 붙여넣은 뒤 <strong>Commit changes</strong>를 진행합니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50 border border-red-200 p-5 rounded-xl shadow-sm">
+                        <p class="font-bold text-red-600 text-lg flex items-center gap-2 mb-2"><i class="fas fa-exclamation-triangle"></i> 충돌(Conflict) 주의보</p>
+                        <p class="text-gray-700 leading-relaxed">여러 명이 동시에 <code class="bg-red-100 px-1 rounded text-red-800">index.html</code>을 수정하고 저장하면 기존 코드가 손실될 수 있습니다. <strong>반드시 팀장 1명만 파일을 통합하세요.</strong></p>
+                    </div>
+                </div>
+
+                <!-- 시상 기준 -->
+                <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-center">
+                    <div class="text-6xl mb-6 text-center">👑</div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-8 text-center">우리 조 아트 월 리뷰</h3>
+                    <div class="space-y-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border-l-4 border-yellow-400 flex items-center gap-4 border border-gray-100">
+                            <div class="text-3xl">🤹‍♂️</div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-lg">현대미술 상</h4>
+                                <p class="text-gray-500 text-sm">코드가 겹치는 오류가 있었지만, 이를 창의적인 결과물로 승화시킨 조</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border-l-4 border-cyan-400 flex items-center gap-4 border border-gray-100">
+                            <div class="text-3xl">📐</div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-lg">포지션 깎는 장인 상</h4>
+                                <p class="text-gray-500 text-sm">배지와 숨겨진 메모 디테일을 가장 섬세하고 정교하게 구현한 학생</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 4: Flexbox 핵심 개념 (Interactive)
+         ========================================== -->
+    <section id="concept" class="py-24 px-4 bg-white border-y border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6 tracking-tight">
+                    Step 3. 실습실: <span class="text-cyan-600">Flexbox 제어 패널</span> 🎛️
+                </h2>
+                <p class="text-xl text-gray-500">복잡한 float 설정 대신 직관적인 Flexbox 속성을 통해 레이아웃의 변화를 확인합니다.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 bg-slate-50 p-10 rounded-3xl shadow-lg border border-gray-200">
+                
+                <!-- 컨트롤 패널 (좌측) -->
+                <div class="lg:col-span-5 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm flex flex-col">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4"><i class="fas fa-sliders-h text-purple-500"></i> 속성 제어기</h3>
+                    
+                    <div class="space-y-8 flex-1">
+                        <!-- flex-direction -->
+                        <div>
+                            <label class="block text-cyan-600 font-mono font-bold mb-3 text-lg">flex-direction <span class="text-gray-400 text-sm font-sans">(정렬 방향)</span></label>
+                            <select id="ctrl-direction" class="w-full bg-white border border-gray-300 text-gray-800 rounded-lg p-3 outline-none focus:border-cyan-500 font-mono shadow-sm" onchange="updateFlex()">
+                                <option value="row">row (가로, 기본값)</option>
+                                <option value="column">column (세로)</option>
+                                <option value="row-reverse">row-reverse (가로 역순)</option>
+                                <option value="column-reverse">column-reverse (세로 역순)</option>
+                            </select>
+                        </div>
+
+                        <!-- justify-content -->
+                        <div>
+                            <label class="block text-purple-600 font-mono font-bold mb-3 text-lg">justify-content <span class="text-gray-400 text-sm font-sans">(메인축 정렬)</span></label>
+                            <select id="ctrl-justify" class="w-full bg-white border border-gray-300 text-gray-800 rounded-lg p-3 outline-none focus:border-purple-500 font-mono shadow-sm" onchange="updateFlex()">
+                                <option value="flex-start">flex-start (시작점)</option>
+                                <option value="center">center (중앙)</option>
+                                <option value="flex-end">flex-end (끝점)</option>
+                                <option value="space-between">space-between (양끝 밀착)</option>
+                                <option value="space-around">space-around (둘레 여백)</option>
+                                <option value="space-evenly">space-evenly (균등 여백)</option>
+                            </select>
+                        </div>
+
+                        <!-- align-items -->
+                        <div>
+                            <label class="block text-orange-500 font-mono font-bold mb-3 text-lg">align-items <span class="text-gray-400 text-sm font-sans">(교차축 정렬)</span></label>
+                            <select id="ctrl-align" class="w-full bg-white border border-gray-300 text-gray-800 rounded-lg p-3 outline-none focus:border-orange-400 font-mono shadow-sm" onchange="updateFlex()">
+                                <option value="stretch">stretch (늘리기, 기본값)</option>
+                                <option value="flex-start">flex-start (시작점)</option>
+                                <option value="center">center (중앙)</option>
+                                <option value="flex-end">flex-end (끝점)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 시각화 패널 (우측) -->
+                <div class="lg:col-span-7 flex flex-col gap-6">
+                    <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm min-h-[80px] flex items-center justify-center text-center">
+                        <p id="flex-desc" class="text-lg text-gray-700 font-medium">속성을 변경하면 변경된 결과에 대한 설명이 출력됩니다.</p>
+                    </div>
+
+                    <!-- 부모 컨테이너 -->
+                    <div class="flex-1 bg-slate-50 rounded-2xl border-4 border-dashed border-gray-300 relative overflow-hidden grid-pattern p-6">
+                        <span class="absolute top-2 left-3 text-gray-500 font-bold font-mono text-sm bg-white/80 px-2 rounded">.container { display: flex; }</span>
+                        
+                        <!-- Flex 아이템들이 움직일 무대 -->
+                        <div id="flex-stage" style="display: flex; height: 100%; width: 100%; transition: all 0.3s ease;">
+                            <div class="bg-cyan-400 rounded-xl shadow-lg flex items-center justify-center text-3xl font-black text-white m-1 transition-all duration-300 border border-cyan-500" data-w="6rem" data-h="6rem" style="width: 6rem; height: 6rem;">1</div>
+                            <div class="bg-purple-400 rounded-xl shadow-lg flex items-center justify-center text-3xl font-black text-white m-1 transition-all duration-300 border border-purple-500" data-w="8rem" data-h="8rem" style="width: 8rem; height: 8rem;">2</div>
+                            <div class="bg-yellow-400 rounded-xl shadow-lg flex items-center justify-center text-3xl font-black text-gray-800 m-1 transition-all duration-300 border border-yellow-500" data-w="5rem" data-h="5rem" style="width: 5rem; height: 5rem;">3</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 5: 조별 미션 (Tier List 메이커)
+         ========================================== -->
+    <section id="activity" class="py-24 px-4 bg-slate-50 border-b border-gray-200">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-5xl font-extrabold text-gray-800 mb-6 tracking-tight">Step 4. 조별 미션: 티어 리스트(Tier List) 구현 🏆</h2>
+            <p class="text-xl text-gray-600 mb-12">"수업 중 합의된 레이아웃 기준에 따라, Flexbox를 활용하여 등급별 항목을 배치해 봅시다."</p>
+
+            <!-- 주제 뽑기 룰렛 -->
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-200 mb-12 max-w-4xl mx-auto">
+                <h4 class="font-bold text-gray-800 text-2xl mb-3"><i class="fas fa-random text-purple-500"></i> 조별 실습 주제 뽑기</h4>
+                <p class="text-gray-600 mb-6 text-lg">주제 선정에 고민할 필요 없이, 버튼을 눌러 우리 조의 티어 리스트 주제를 랜덤으로 결정해 봅시다.</p>
+                
+                <div class="bg-slate-50 border-2 border-dashed border-gray-300 rounded-2xl p-6 mb-6 h-32 flex items-center justify-center shadow-inner overflow-hidden">
+                    <span id="topic-display" class="text-3xl font-extrabold text-gray-400 transition-all duration-100">❓ 버튼을 눌러주세요 ❓</span>
+                </div>
+
+                <button onclick="drawTopic()" id="draw-btn" class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-3.5 px-10 rounded-full text-xl shadow-md transform transition hover:scale-105">
+                    <i class="fas fa-dice"></i> 주제 뽑기 시작!
+                </button>
+                
+                <!-- 룰렛 후보 리스트 추가 -->
+                <div class="mt-8 pt-6 border-t border-gray-100">
+                    <p class="text-sm font-bold text-gray-400 mb-4"><i class="fas fa-list-ul"></i> 룰렛 후보 리스트 (총 10개)</p>
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">🍔 학교 주변 식당/맛집 티어</span>
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">📚 1학년 전공/교양 체감 난이도</span>
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">🎮 장르별 게임 선호도</span>
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">🎬 명작 영화/드라마 랭킹</span>
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">🍜 배달 음식 야식 메뉴 티어</span>
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">📱 대학생 필수 스마트폰 앱</span>
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">☕ 프랜차이즈 카페 브랜드 선호도</span>
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">🍪 편의점 과자/아이스크림 취향</span>
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">🎵 작업할 때 듣기 좋은 노동요 장르</span>
+                        <span class="bg-white border border-gray-200 text-gray-500 text-sm px-3 py-1.5 rounded-lg shadow-sm hover:border-purple-300 hover:text-purple-600 transition-colors cursor-default">🚌 최악의 통학/출근 지옥철 노선</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- 팀장 역할 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-md text-left relative overflow-hidden group hover:border-cyan-400 transition-colors">
+                    <div class="absolute -right-4 -top-4 text-7xl text-cyan-100 group-hover:scale-110 transition-transform"><i class="fas fa-desktop"></i></div>
+                    <h3 class="text-2xl font-bold text-cyan-600 mb-4 flex items-center gap-2 relative z-10"><i class="fas fa-sitemap"></i> 팀장: 티어 리스트 뼈대 구성</h3>
+                    <ul class="text-gray-600 mb-8 space-y-3 relative z-10 text-[15px] font-medium">
+                        <li>1. GitHub에 <code class="bg-gray-100 px-1 rounded text-gray-800">tier-maker</code> 저장소 생성</li>
+                        <li>2. 아래 <strong>뼈대 코드</strong>를 복사하여 <code class="bg-gray-100 px-1 rounded text-gray-800">index.html</code> 작성</li>
+                        <li>3. CSS 내의 <code>/* TODO: ... */</code> 주석을 찾아 Flexbox 속성을 작성합니다.</li>
+                    </ul>
+                    <button onclick="copyCode('leaderCode', 'btnLeader')" id="btnLeader" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3.5 rounded-xl transition-all flex justify-center items-center gap-2 shadow-sm relative z-10">
+                        <i class="fas fa-copy"></i> 팀장용 뼈대 코드 복사하기
+                    </button>
+                </div>
+
+                <!-- 팀원 역할 -->
+                <div class="bg-white p-8 rounded-3xl border border-gray-200 shadow-md text-left relative overflow-hidden group hover:border-purple-400 transition-colors">
+                    <div class="absolute -right-4 -top-4 text-7xl text-purple-100 group-hover:scale-110 transition-transform"><i class="fas fa-images"></i></div>
+                    <h3 class="text-2xl font-bold text-purple-600 mb-4 flex items-center gap-2 relative z-10"><i class="fas fa-puzzle-piece"></i> 팀원: 평가 항목 등록</h3>
+                    <ul class="text-gray-600 mb-8 space-y-3 relative z-10 text-[15px] font-medium">
+                        <li>1. 주제에 맞는 이미지를 <strong>1인당 2~3개씩 (총 10개 내외)</strong> 준비합니다.</li>
+                        <li>2. 조장의 <code class="bg-gray-100 px-1 rounded text-gray-800">images</code> 폴더에 이미지 업로드</li>
+                        <li>3. 아래 <strong>아이템 코드</strong>를 작성하여 조장에게 전달합니다.</li>
+                    </ul>
+                    <button onclick="copyCode('memberCode', 'btnMember')" id="btnMember" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3.5 rounded-xl transition-all flex justify-center items-center gap-2 shadow-sm relative z-10">
+                        <i class="fas fa-copy"></i> 팀원용 아이템 코드 복사하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- 구현 방식 안내 -->
+            <div class="bg-blue-50 border border-blue-200 p-8 rounded-3xl text-left shadow-sm max-w-4xl mx-auto">
+                <h4 class="text-blue-700 font-bold text-xl mb-3 flex items-center gap-2"><i class="fas fa-info-circle"></i> 구현 및 테스트 안내</h4>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    팀장이 CSS의 <strong>TODO 주석 영역에 Flexbox 코드를 올바르게 작성해야만</strong> 레이아웃이 정상적으로 출력됩니다. 코드를 완성한 후, 화면 우측에 미리보기 패널이 표시되는지 확인하세요.
+                </p>
+                <p class="text-gray-700 leading-relaxed">
+                    또한, 브라우저에서 항목을 마우스로 이동할 수 있는 자바스크립트(Drag & Drop) 기능과 이미지를 올려두면 우측 미리보기 창에 표시되는 기능이 내장되어 있습니다. 완성 후 조원들과 함께 드래그 기능을 테스트해 보세요.<br>
+                    <span class="text-sm font-bold text-gray-500">(※ 드래그 앤 드롭 및 미리보기 기능은 PC 환경 기준으로 제공됩니다.)</span>
+                </p>
+            </div>
+
+            <!-- 브라우저 렌더링 미리보기 화면 -->
+            <div class="bg-gray-100 p-8 rounded-3xl shadow-xl flex flex-col justify-center items-center border border-gray-300 relative h-[750px] mt-16 text-left">
+                <div class="absolute top-6 right-8 text-gray-500 font-bold bg-white px-4 py-1.5 rounded-full text-sm shadow-md z-20"><i class="fas fa-eye"></i> 브라우저 렌더링 미리보기</div>
+                
+                <div class="w-full h-full overflow-y-auto custom-scrollbar rounded-2xl border-4 border-slate-300 relative bg-[#f4f4f5]" style="font-family: 'Pretendard', sans-serif;">
+                    
+                    <!-- 내부 헤더 -->
+                    <div class="text-center py-10 px-4">
+                        <h1 class="text-3xl md:text-4xl font-bold text-[#333] mb-3">🏆 우리 조 커스텀 티어 리스트</h1>
+                        <p class="text-gray-600 text-lg">수업 중 도출된 <span class="font-bold text-teal-600 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded">Flexbox 정답</span> 레이아웃이 적용된 완성 화면입니다.</p>
+                    </div>
+    
+                    <!-- 래퍼 (flex, wrap) -->
+                    <div class="flex flex-wrap lg:flex-nowrap gap-5 max-w-[1200px] mx-auto px-5 pb-10">
+                        
+                        <!-- 보드 (flex-grow, column) -->
+                        <div class="flex-grow flex flex-col bg-[#1e1e1e] rounded-xl border-2 border-[#333] overflow-hidden min-w-[300px] shadow-lg">
+                            
+                            <!-- Row S -->
+                            <div class="flex border-b-2 border-[#333] min-h-[120px]">
+                                <div class="w-[100px] md:w-[120px] shrink-0 flex items-center justify-center text-3xl md:text-4xl font-bold text-[#333] bg-[#ff7f7f]">S</div>
+                                <div class="flex-grow flex flex-wrap items-center gap-3 p-4 bg-[#2b2b2b]">
+                                    <!-- item -->
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-md border-2 border-blue-500 transform scale-105">
+                                        <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=150&fit=crop" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">최우수작 1</div>
+                                    </div>
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-md border border-transparent">
+                                        <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=150&fit=crop" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">최우수작 2</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- Row A -->
+                            <div class="flex border-b-2 border-[#333] min-h-[120px]">
+                                <div class="w-[100px] md:w-[120px] shrink-0 flex items-center justify-center text-3xl md:text-4xl font-bold text-[#333] bg-[#ffbf7f]">A</div>
+                                <div class="flex-grow flex flex-wrap items-center gap-3 p-4 bg-[#2b2b2b]">
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-md border border-transparent">
+                                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=150&fit=crop" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">우수작 1</div>
+                                    </div>
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-md border border-transparent">
+                                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=150&fit=crop" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">우수작 2</div>
+                                    </div>
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-md border border-transparent">
+                                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=150&fit=crop" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">우수작 3</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- Row B -->
+                            <div class="flex border-b-2 border-[#333] min-h-[120px]">
+                                <div class="w-[100px] md:w-[120px] shrink-0 flex items-center justify-center text-3xl md:text-4xl font-bold text-[#333] bg-[#ffff7f]">B</div>
+                                <div class="flex-grow flex flex-wrap items-center gap-3 p-4 bg-[#2b2b2b]">
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-md border border-transparent">
+                                        <img src="https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=150&fit=crop" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">평작 1</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- Row C -->
+                            <div class="flex border-b-2 border-[#333] min-h-[120px]">
+                                <div class="w-[100px] md:w-[120px] shrink-0 flex items-center justify-center text-3xl md:text-4xl font-bold text-[#333] bg-[#7fff7f]">C</div>
+                                <div class="flex-grow flex flex-wrap items-center gap-3 p-4 bg-[#2b2b2b]">
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-md border border-transparent">
+                                        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=150&fit=crop" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">취향작</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- Row D -->
+                            <div class="flex min-h-[120px]">
+                                <div class="w-[100px] md:w-[120px] shrink-0 flex items-center justify-center text-3xl md:text-4xl font-bold text-[#333] bg-[#7fbfff]">D</div>
+                                <div class="flex-grow flex flex-wrap items-center gap-3 p-4 bg-[#2b2b2b]"></div>
+                            </div>
+                        </div>
+    
+                        <!-- 사이드 패널 (flex col, width fixed on PC, full on mobile) -->
+                        <div class="w-full lg:w-[320px] shrink-0 flex flex-col gap-5">
+                            
+                            <!-- 미리보기 창 (flex col, center) -->
+                            <div class="bg-white rounded-xl p-5 shadow-lg flex flex-col items-center justify-center min-h-[250px] border border-gray-200">
+                                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=400&fit=crop" class="w-full h-[160px] object-cover rounded-lg mb-4 shadow-sm">
+                                <p class="font-bold text-xl text-[#333]">최우수작 1</p>
+                            </div>
+                            
+                            <!-- 대기소 (flex wrap) -->
+                            <div>
+                                <h2 class="font-bold text-gray-800 mb-3 ml-1 text-lg">📌 아이템 대기열</h2>
+                                <div class="bg-[#e5e7eb] rounded-xl p-4 flex flex-wrap gap-3 min-h-[150px] shadow-inner border border-gray-300">
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-sm border-2 border-dashed border-gray-400 opacity-60">
+                                        <img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=150&fit=crop" class="w-full h-full object-cover grayscale">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">대기 1</div>
+                                    </div>
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-sm border-2 border-dashed border-gray-400 opacity-60">
+                                        <img src="https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=150&fit=crop" class="w-full h-full object-cover grayscale">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">대기 2</div>
+                                    </div>
+                                    <div class="w-[70px] h-[70px] md:w-[80px] md:h-[80px] rounded-lg overflow-hidden relative shadow-sm border-2 border-dashed border-gray-400 opacity-60">
+                                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=150&fit=crop" class="w-full h-full object-cover grayscale">
+                                        <div class="absolute bottom-0 w-full bg-black/70 text-white text-[10px] md:text-xs text-center py-0.5">대기 3</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 6: CSS 해설
+         ========================================== -->
+    <section id="css-explanation" class="py-24 px-4 bg-white border-b border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-extrabold mb-6 tracking-tight text-gray-800">
+                    <i class="fas fa-code text-cyan-500"></i> Step 4-1. 티어 리스트 레이아웃 분석
+                </h2>
+                <p class="text-xl text-gray-500">작성해야 할 TODO 영역의 Flexbox 적용 원리를 분석합니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Flex Direction Row -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-gray-200 shadow-sm">
+                    <h3 class="text-2xl font-bold text-cyan-600 mb-4"><i class="fas fa-arrows-alt-h"></i> 가로 배치 (라벨과 아이템 영역)</h3>
+                    <div class="bg-gray-800 p-4 rounded-xl font-mono text-sm text-green-400 mb-4 border border-gray-700 shadow-inner">
+                        .tier-row {<br>
+                        &nbsp;&nbsp;<span class="text-white font-bold bg-gray-700 px-1 rounded">display: flex;</span><br>
+                        }
+                    </div>
+                    <p class="text-gray-600 text-lg leading-relaxed">각 등급을 나타내는 행(Row)입니다. 기본값인 <code>flex-direction: row;</code>를 적용하여 좌측의 라벨(S, A..)과 우측의 아이템 드롭 영역이 가로로 나란히 배치되도록 합니다.</p>
+                </div>
+
+                <!-- Flex Wrap -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-gray-200 shadow-sm">
+                    <h3 class="text-2xl font-bold text-purple-600 mb-4"><i class="fas fa-level-down-alt"></i> 유연한 줄바꿈 (Flex-wrap)</h3>
+                    <div class="bg-gray-800 p-4 rounded-xl font-mono text-sm text-pink-400 mb-4 border border-gray-700 shadow-inner">
+                        .tier-items {<br>
+                        &nbsp;&nbsp;display: flex;<br>
+                        &nbsp;&nbsp;<span class="text-white font-bold bg-gray-700 px-1 rounded">flex-wrap: wrap;</span><br>
+                        }
+                    </div>
+                    <p class="text-gray-600 text-lg leading-relaxed">특정 등급에 많은 이미지가 몰릴 경우, 요소들이 영역을 벗어나지 않고 자연스럽게 다음 줄로 배치되도록 설정하는 속성입니다.</p>
+                </div>
+
+                <!-- Flex Grow -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-gray-200 shadow-sm">
+                    <h3 class="text-2xl font-bold text-yellow-600 mb-4"><i class="fas fa-expand"></i> 잔여 공간 채우기 (Flex-grow)</h3>
+                    <div class="bg-gray-800 p-4 rounded-xl font-mono text-sm text-blue-300 mb-4 border border-gray-700 shadow-inner">
+                        .tier-items { <br>
+                        &nbsp;&nbsp;<span class="text-white font-bold bg-gray-700 px-1 rounded">flex-grow: 1;</span><br>
+                        }
+                    </div>
+                    <p class="text-gray-600 text-lg leading-relaxed">고정된 너비를 가진 요소(예: 등급 라벨, 사이드 패널)를 제외하고, 남은 가로 공간을 특정 영역(드롭 영역 또는 메인 보드)이 꽉 채우도록 점유율을 지정합니다.</p>
+                </div>
+
+                <!-- Media Query -->
+                <div class="bg-slate-50 p-8 rounded-3xl border border-gray-200 shadow-sm">
+                    <h3 class="text-2xl font-bold text-orange-500 mb-4"><i class="fas fa-mobile-alt"></i> 반응형 화면 대응 (Media Query)</h3>
+                    <div class="bg-gray-800 p-4 rounded-xl font-mono text-sm text-orange-300 mb-4 border border-gray-700 shadow-inner">
+                        <span class="text-white font-bold bg-gray-700 px-1 rounded">@media (max-width: 800px)</span> {<br>
+                        &nbsp;&nbsp;.tier-row { <span class="text-yellow-300">flex-direction: column;</span> }<br>
+                        }
+                    </div>
+                    <p class="text-gray-600 text-lg leading-relaxed">디바이스 화면 너비가 특정 크기 이하로 줄어들면, 기존에 가로로 배치되던 영역들을 세로(column) 방향으로 전환하여 모바일 환경에서도 가독성을 유지합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 7: 과제 안내
+         ========================================== -->
+    <section id="homework" class="py-24 px-4 bg-indigo-900 text-white text-center">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-5xl font-extrabold mb-12 text-yellow-300">
+                🚀 Step 5. 개별 과제 제출 안내
+            </h2>
+            
+            <div class="bg-indigo-800 p-10 md:p-14 rounded-3xl inline-block text-left w-full border border-indigo-600 shadow-2xl relative">
+                <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-yellow-400 text-indigo-900 font-extrabold px-8 py-2 rounded-full text-lg md:text-xl shadow-lg whitespace-nowrap">
+                    제출 기한: 다음 주 수업 전까지
+                </div>
+                
+                <h3 class="text-3xl font-bold mb-6 mt-4 text-white">"나만의 우선순위에 맞춰 티어 리스트를 재배열하세요"</h3>
+                <p class="text-indigo-200 mb-10 text-xl leading-relaxed">
+                    수업 시간에 완성한 조별 티어 리스트 코드를 바탕으로, <strong>항목들을 나만의 기준에 따라 S~D 등급으로 재배치</strong>합니다. Flexbox 속성을 세밀하게 조정하여 가장 완성도 높은 웹페이지를 제출하세요.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <!-- 레이아웃 과제 -->
+                    <div class="bg-indigo-950 p-8 rounded-2xl border border-indigo-700 shadow-sm">
+                        <h4 class="text-2xl font-bold text-cyan-300 mb-6"><i class="fas fa-sliders-h"></i> 레이아웃 필수 적용 요소</h4>
+                        <ul class="space-y-4 text-base text-indigo-100">
+                            <li class="flex items-start gap-3">
+                                <span class="bg-cyan-900/50 text-cyan-300 border border-cyan-700 px-2 py-0.5 rounded font-mono text-sm shrink-0">나만의 배치</span> 
+                                <div>조별 실습 때 합의했던 순서는 잊으세요! <strong>오직 내 취향과 평가 기준에 맞춰</strong> 아이템들의 티어를 새롭게 지정해 봅니다. HTML 코드의 위치를 직접 다른 등급으로 옮기거나, CSS의 <code class="text-pink-300">order</code> 속성을 활용하여 화면에 출력되는 순서를 손쉽게 바꿀 수 있습니다.</div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="bg-cyan-900/50 text-cyan-300 border border-cyan-700 px-2 py-0.5 rounded font-mono text-sm shrink-0">정렬 최적화</span> 
+                                <div><code class="text-pink-300">justify-content</code>, <code class="text-pink-300">align-items</code>, <code class="text-pink-300">gap</code> 등을 조절하여 각 등급 내 아이템들이 가장 깔끔하게 정렬되도록 미세 조정</div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="bg-cyan-900/50 text-cyan-300 border border-cyan-700 px-2 py-0.5 rounded font-mono text-sm shrink-0">반응형 유지</span> 
+                                <div>모바일 화면 크기로 줄였을 때 뷰포트가 깨지지 않고 자연스럽게 세로 레이아웃으로 변경되는지 확인</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 제출 방법 -->
+                    <div class="bg-indigo-950 p-8 rounded-2xl border border-indigo-700 shadow-sm">
+                        <h4 class="text-2xl font-bold text-yellow-300 mb-6"><i class="fas fa-file-pdf"></i> 과제 제출 형식</h4>
+                        <ul class="space-y-4 text-base text-indigo-100">
+                            <li><i class="fas fa-caret-right text-yellow-400 mr-2"></i> <strong>필수 스크린샷 2장:</strong><br>1. 나만의 기준으로 재배열이 완료된 PC 전체 화면 캡처<br>2. 브라우저 폭을 줄여 <strong>모바일 레이아웃으로 변경된 화면 캡처</strong></li>
+                            <li><i class="fas fa-caret-right text-yellow-400 mr-2"></i> 정렬을 위해 추가/수정한 주요 CSS 코드 블록 (마크다운 포맷)</li>
+                            <li><i class="fas fa-caret-right text-yellow-400 mr-2"></i> <strong>GitHub Pages 배포 링크</strong> 필수 포함</li>
+                            <li><i class="fas fa-caret-right text-yellow-400 mr-2"></i> 마크다운 작성 후 <strong>PDF 문서로 변환하여 제출</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 스크립트 -->
+    <script>
+        // 코드 복사 스크립트
+        function copyCode(elementId, btnId) {
+            const textarea = document.getElementById(elementId);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); 
+
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById(btnId);
+                const originalHTML = btn.innerHTML;
+                const originalBg = Array.from(btn.classList).find(c => c.startsWith('bg-'));
+                
+                btn.innerHTML = '<i class="fas fa-check text-xl"></i> 복사 완료! (붙여넣기 하세요)';
+                btn.classList.remove(originalBg, 'hover:'+originalBg.replace('500','600'));
+                btn.classList.add('bg-green-500', 'hover:bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                    btn.classList.add(originalBg, 'hover:'+originalBg.replace('500','600'));
+                }, 3000);
+            } catch (err) {
+                alert("복사에 실패했습니다.");
+            }
+        }
+
+        // Flexbox 인터랙티브 스크립트
+        function updateFlex() {
+            const direction = document.getElementById('ctrl-direction').value;
+            const justify = document.getElementById('ctrl-justify').value;
+            const align = document.getElementById('ctrl-align').value;
+            const stage = document.getElementById('flex-stage');
+            const desc = document.getElementById('flex-desc');
+
+            // Apply styles
+            stage.style.flexDirection = direction;
+            stage.style.justifyContent = justify;
+            stage.style.alignItems = align;
+
+            // 🌟 stretch 정상 작동을 위한 교차축 길이(auto) 처리
+            const items = stage.children;
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                if (align === 'stretch') {
+                    if (direction.includes('column')) {
+                        item.style.width = 'auto'; // 세로 방향일 땐 가로 크기를 풂
+                        item.style.height = item.getAttribute('data-h');
+                    } else {
+                        item.style.height = 'auto'; // 가로 방향일 땐 세로 크기를 풂
+                        item.style.width = item.getAttribute('data-w');
+                    }
+                } else {
+                    item.style.width = item.getAttribute('data-w');
+                    item.style.height = item.getAttribute('data-h');
+                }
+            }
+
+            // Generate description
+            let text = "";
+            
+            if (direction === 'column') {
+                text += "<span class='text-cyan-600 font-bold'>세로 방향</span>으로 배치하며, ";
+            } else if (direction === 'column-reverse') {
+                text += "<span class='text-cyan-600 font-bold'>세로 역방향</span>으로 배치하며, ";
+            } else if (direction === 'row-reverse') {
+                text += "<span class='text-cyan-600 font-bold'>가로 역방향</span>으로 배치하며, ";
+            } else {
+                text += "<span class='text-cyan-600 font-bold'>가로 방향</span>으로 배치하며, ";
+            }
+            
+            if(direction.includes('column')) {
+                if(justify === 'center') text += "세로 중앙에 모으고 ";
+                else if(justify === 'space-between') text += "세로 양끝으로 밀어내고 ";
+                else text += "세로 방향으로 정렬하며 ";
+                
+                if(align === 'center') text += "<span class='text-orange-600 font-bold'>가로 중앙</span>에 위치합니다.";
+                else text += "<span class='text-orange-600 font-bold'>가로(교차축) 방향</span>을 정렬합니다.";
+            } else {
+                text += "<span class='text-cyan-600 font-bold'>가로 방향</span>으로 배치하며, ";
+                if(justify === 'center') text += "<span class='text-purple-600 font-bold'>가운데</span>로 모으고 ";
+                else if(justify === 'space-between') text += "<span class='text-purple-600 font-bold'>양끝</span>으로 밀어내고 ";
+                else if(justify === 'space-around') text += "요소 주위에 <span class='text-purple-600 font-bold'>동일한 여백</span>을 주고 ";
+                else text += "가로 방향으로 정렬하며 ";
+
+                if(align === 'stretch') text += "<span class='text-orange-600 font-bold'>세로 높이를 꽉 차게 늘립니다.</span>";
+                else if(align === 'center') text += "<span class='text-orange-600 font-bold'>세로 정중앙</span>에 위치합니다.";
+                else text += "<span class='text-orange-600 font-bold'>세로축 방향</span>을 정렬합니다.";
+            }
+
+            desc.innerHTML = text;
+        }
+
+        // === 주제 뽑기 (룰렛) 스크립트 ===
+        const topics = [
+            "🍔 학교 주변 식당/맛집 티어",
+            "📚 1학년 전공/교양 체감 난이도",
+            "🎮 장르별 게임 선호도",
+            "🎬 명작 영화/드라마 랭킹",
+            "🍜 배달 음식 야식 메뉴 티어",
+            "📱 대학생 필수 스마트폰 앱",
+            "☕ 프랜차이즈 카페 브랜드 선호도",
+            "🍪 편의점 과자/아이스크림 취향",
+            "🎵 작업할 때 듣기 좋은 노동요 장르",
+            "🚌 최악의 통학/출근 지옥철 노선"
+        ];
+
+        function drawTopic() {
+            const display = document.getElementById('topic-display');
+            const btn = document.getElementById('draw-btn');
+            
+            // 버튼 비활성화
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            // 이전 당첨 효과 클래스 제거
+            display.classList.remove('text-4xl', 'text-purple-600', 'drop-shadow-lg', 'animate-bounce');
+            
+            let counter = 0;
+            const interval = setInterval(() => {
+                // 촤르르륵 돌아가는 효과
+                const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+                display.innerText = randomTopic;
+                display.className = "text-3xl font-extrabold text-gray-500 scale-95";
+                
+                counter++;
+                
+                // 20번 깜빡인 후 정지
+                if (counter > 20) {
+                    clearInterval(interval);
+                    const finalTopic = topics[Math.floor(Math.random() * topics.length)];
+                    display.innerText = "🎉 " + finalTopic + " 🎉";
+                    // 화려한 당첨 효과 적용 (이모지 렌더링을 위해 그라데이션 대신 단색+그림자 사용)
+                    display.className = "text-4xl font-extrabold text-purple-600 drop-shadow-lg animate-bounce transition-all duration-300 scale-100";
+                    
+                    // 버튼 복구
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btn.innerHTML = '<i class="fas fa-redo"></i> 다른 주제 다시 뽑기';
+                }
+            }, 80); // 0.08초마다 텍스트 변경
+        }
+        
+        // 초기화
+        window.onload = updateFlex;
+    </script>
+</body>
+</html>
