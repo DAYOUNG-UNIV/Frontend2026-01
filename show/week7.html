@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프론트엔드 프로그래밍 - 7주차 Grid & Animation (Show 모드)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        body {
+            font-family: 'Pretendard', sans-serif;
+            overflow: hidden; /* 슬라이드 모드를 위한 스크롤 숨김 */
+            background-color: #f8fafc; /* slate-50 (밝은 테마 기본) */
+            color: #1e293b;
+        }
+
+        /* Slide Transition Style */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateX(20px);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem; 
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: none; 
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .slide.prev-slide {
+            transform: translateX(-20px);
+        }
+
+        #progress-bar {
+            transition: width 0.3s ease;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* 복사 기능을 위한 숨김 텍스트 영역 */
+        .copy-area { position: absolute; left: -9999px; top: 0; opacity: 0; }
+
+        /* 실습용 커스텀 애니메이션 */
+        @keyframes float-lab {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes spin-lab {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes pulse-lab {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background-color: #f472b6; }
+            100% { transform: scale(1); }
+        }
+        
+        .anim-float { animation: float-lab 2s ease-in-out infinite; }
+        .anim-spin { animation: spin-lab 2s linear infinite; }
+        .anim-pulse { animation: pulse-lab 1.5s ease-in-out infinite; }
+
+        /* 매거진 렌더링 미리보기 내 애니메이션 */
+        @keyframes slide-left-preview {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .preview-marquee {
+            display: inline-block; white-space: nowrap; animation: slide-left-preview 12s linear infinite;
+        }
+        @keyframes bounce-preview {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+        .preview-badge { animation: bounce-preview 2s infinite; }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-200 selection:text-indigo-900">
+
+    <!-- ==========================================
+         숨겨진 뼈대 코드 (개인 미션용 단일 템플릿)
+         ========================================== -->
+    <textarea id="missionCode" class="copy-area" readonly><!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 마법 매거진</title>
+    <style>
+        /* 1. 기본 설정 및 테마 변수 */
+        :root {
+            --bg-color: #f4f4f0;
+            --text-color: #222;
+            --point-color: #e11d48;
+            --border-color: #333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Pretendard', 'Georgia', serif; background-color: var(--bg-color); color: var(--text-color); padding: 20px; }
+
+        /* =========================================
+           [실습 1] CSS Grid 메인 레이아웃 만들기
+           ========================================= */
+        .magazine-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 4px solid var(--border-color);
+            padding: 20px;
+            /* TODO 1: 여기를 Grid로 만들고, 가로를 3등분(1fr 2fr 1fr) 하세요. 간격은 20px! */
+        }
+
+        header {
+            /* TODO 2: 헤더가 첫 칸부터 끝 칸까지 전체 너비를 차지하게 하세요. */
+            text-align: center;
+            border-bottom: 4px solid var(--border-color);
+            padding-bottom: 20px; margin-bottom: 20px;
+        }
+        header h1 { font-size: 3rem; font-weight: 900; }
+        
+        aside { padding: 10px; }
+        main { border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); padding: 0 20px; }
+
+        /* =========================================
+           [실습 2] 내부 기사 카드 Grid 배열
+           ========================================= */
+        .article-grid {
+            /* TODO 3: 메인 영역 내부 기사들도 Grid로 만드세요 (1fr 1fr 2단 구성, 간격 15px) */
+        }
+
+        /* 기사 카드 스타일 및 Transition (마우스 오버 효과) */
+        .magic-card {
+            border-bottom: 1px solid #ccc; padding-bottom: 15px; overflow: hidden;
+            /* TODO 4: 마우스를 올렸을 때 부드럽게 위로 살짝 떠오르도록 Transition과 transform을 추가해보세요. */
+        }
+        .magic-card img { width: 100%; height: 180px; object-fit: cover; }
+
+        /* =========================================
+           [실습 3] @keyframes 애니메이션 만들기
+           ========================================= */
+        .ticker-wrap { width: 100%; overflow: hidden; background: var(--border-color); color: #fff; padding: 10px 0; margin-bottom: 20px; }
+        .ticker-move {
+            display: inline-block; white-space: nowrap;
+            /* TODO 5: 아래 만든 slide-left 애니메이션을 10초 동안 무한 반복(infinite) 선형(linear)으로 적용하세요. */
+        }
+        
+        /* 텍스트가 흘러가는 애니메이션 */
+        @keyframes slide-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* NEW 뱃지 깜빡임 애니메이션 */
+        .badge-new {
+            display: inline-block; background: var(--point-color); color: white; padding: 2px 8px; font-size: 0.8rem; border-radius: 12px; margin-bottom: 10px;
+            /* TODO 6: 여기에 직접 새로운 @keyframes를 만들어 적용해보세요! (예: 둥둥 뜨기, 깜빡이기) */
+        }
+
+        /* 반응형 모바일 설정 */
+        @media (max-width: 800px) {
+            .magazine-layout { grid-template-columns: 1fr; }
+            header { grid-column: 1; }
+            main { border: none; padding: 0; margin: 20px 0; }
+            .article-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="magazine-layout">
+        <header>
+            <h1>나만의 매거진 제목</h1>
+            <p>Vol. 1 | 2026. 04. XX | 내가 직접 큐레이션한 소식</p>
+        </header>
+
+        <div class="ticker-wrap" style="grid-column: 1 / -1;">
+            <div class="ticker-move">🔥 [속보] 중간고사 대비 프론트엔드 핵심 요약! · 내가 좋아하는 최애 등극 · 오늘 저녁 메뉴 추천 🔥</div>
+        </div>
+
+        <aside>
+            <h2 style="border-bottom: 2px solid var(--point-color); margin-bottom: 15px;">Profile</h2>
+            <div style="background: #fff; padding: 15px; border: 1px solid #ddd;">
+                <h4>편집장의 말</h4>
+                <p style="font-size: 0.9rem; color: #666;">이곳에 자기소개나 매거진 소개를 짧게 적어보세요.</p>
+            </div>
+        </aside>
+
+        <main>
+            <div class="article-grid">
+                <article class="magic-card">
+                    <span class="badge-new">NEW</span>
+                    <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=500&fit=crop" alt="기사 썸네일">
+                    <h3 style="font-size: 1.1rem; margin: 10px 0;">첫 번째 기사 제목</h3>
+                    <p style="font-size: 0.9rem; color: #555;">기사에 대한 짧은 요약을 적어주세요. 이미지는 unsplash에서 가져왔습니다.</p>
+                </article>
+
+                <article class="magic-card">
+                    <span class="badge-new" style="background:#3b82f6;">HOT</span>
+                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&fit=crop" alt="기사 썸네일">
+                    <h3 style="font-size: 1.1rem; margin: 10px 0;">두 번째 기사 제목</h3>
+                    <p style="font-size: 0.9rem; color: #555;">Grid를 사용하면 이렇게 카드들을 쉽게 다단으로 배치할 수 있습니다.</p>
+                </article>
+            </div>
+        </main>
+
+        <aside>
+            <h2 style="border-bottom: 2px solid var(--point-color); margin-bottom: 15px;">Ad</h2>
+            <div style="background: #333; color: #fff; height: 250px; display: flex; align-items: center; justify-content: center; text-align: center;">
+                <p>배너 광고<br>영역</p>
+            </div>
+        </aside>
+    </div>
+</body>
+</html></textarea>
+
+    <!-- Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-slate-200 z-50">
+        <div id="progress-bar" class="h-full bg-indigo-500 w-0"></div>
+    </div>
+
+    <!-- Slides Container -->
+    <div id="slides-container" class="relative w-full h-screen">
+
+        <!-- Slide 0: Hero Intro -->
+        <div class="slide active bg-slate-50">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-pink-400 rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+            
+            <div class="bg-white p-12 rounded-3xl shadow-xl max-w-4xl w-full border-t-8 border-indigo-500 relative z-10 text-center">
+                <div class="text-7xl mb-6"><i class="fas fa-paint-roller text-indigo-500"></i></div>
+                <h1 class="text-5xl font-extrabold text-gray-800 mb-4 tracking-tight drop-shadow-sm">웹 디자인의 완성</h1>
+                <h2 class="text-2xl text-gray-500 font-medium mb-8">7주차: Grid 레이아웃 & 동적 애니메이션</h2>
+                <div class="h-1 w-24 bg-gradient-to-r from-indigo-400 to-pink-400 mx-auto mb-8 rounded-full"></div>
+                
+                <div class="text-lg text-gray-600 space-y-3 bg-slate-50 p-8 rounded-2xl inline-block text-center w-full border border-gray-100 shadow-inner">
+                    <p class="font-bold text-xl text-indigo-600 mb-4"><i class="fas fa-crosshairs"></i> 오늘의 학습 목표 (중간고사 전 핵심!)</p>
+                    <p>1. 2차원(행과 열) 레이아웃의 끝판왕, <strong>CSS Grid</strong> 마스터</p>
+                    <p>2. 유연한 코딩을 위한 스마트한 <strong>CSS 변수(var)</strong> 활용</p>
+                    <p>3. <strong>Transition & Animation</strong>으로 웹페이지에 생동감 불어넣기</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 1: 뇌풀기 퀴즈 -->
+        <div class="slide bg-white">
+            <div class="max-w-6xl w-full">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4 tracking-tight">Step 1. 복습 퀴즈 타임 🧠</h2>
+                    <p class="text-gray-500 text-xl">지난 주에 학습한 Flexbox와 Media Query를 점검해 봅시다.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="bg-slate-800 p-10 rounded-3xl text-white shadow-xl relative overflow-hidden flex flex-col justify-center border border-slate-700 min-h-[300px]">
+                        <div class="absolute -right-6 -bottom-6 text-slate-700 text-9xl"><i class="fas fa-layer-group"></i></div>
+                        <div class="relative z-10">
+                            <div class="inline-block bg-cyan-400 text-slate-900 px-5 py-2 rounded-full text-base font-bold mb-6 shadow-md">QuizN 스피드 퀴즈</div>
+                            <h3 class="text-4xl font-extrabold mb-6 text-white">Flexbox & 반응형</h3>
+                            <p class="text-slate-300 mb-6 text-xl leading-relaxed">
+                                justify-content와 align-items의 차이!<br>
+                                그리고 모바일 화면 대응 방법까지!<br>
+                                스마트폰을 준비해 주세요.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 p-12 rounded-3xl border border-indigo-200 flex flex-col justify-center items-start gap-6 shadow-md transform hover:-translate-y-1 transition relative min-h-[300px]">
+                        <div class="absolute top-0 right-0 bg-indigo-400 text-white font-black px-6 py-3 rounded-bl-2xl rounded-tr-2xl shadow-sm text-lg">EVENT</div>
+                        <div class="text-7xl text-indigo-500"><i class="fas fa-trophy"></i></div>
+                        <div>
+                            <h4 class="text-3xl font-bold text-indigo-800 mb-4">오늘의 시상: <span class="text-pink-600">행운의 4등!</span></h4>
+                            <p class="text-gray-600 text-xl leading-relaxed">
+                                Flexbox의 뼈대인 <strong>flex-direction</strong> 속성!<br>
+                                row, column, row-reverse, column-reverse 총 <strong>4가지</strong>죠.<br>
+                                이에 맞춰 오늘 <strong>4등</strong>을 차지한 학생에게 달콤한 간식을 증정합니다! 🎯
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 지난주 과제 공유 -->
+        <div class="slide bg-slate-50">
+            <div class="max-w-7xl w-full text-center">
+                <h2 class="text-5xl font-bold text-gray-800 mb-6 tracking-tight">Step 2. 6주차 '티어 게임' 조별 발표</h2>
+                <p class="text-2xl text-gray-600 mb-12">지난주 제출한 티어 리스트로, 실제 티어 게임을 진행해 봅시다!</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <div class="bg-white p-10 rounded-2xl border-t-8 border-indigo-400 shadow-md">
+                        <div class="text-5xl mb-6 text-indigo-500"><i class="fas fa-gamepad"></i></div>
+                        <h4 class="font-bold text-gray-800 text-3xl mb-4">1. 조별 플레이 타임</h4>
+                        <p class="text-gray-600 text-xl leading-relaxed">제출한 우리 조의 티어 리스트를 띄우고, 조원들과 열띤 토론을 거쳐 아이템들의 티어를 직접 배치해 보세요.</p>
+                    </div>
+                    <div class="bg-white p-10 rounded-2xl border-t-8 border-pink-400 shadow-md">
+                        <div class="text-5xl mb-6 text-pink-500"><i class="fas fa-mouse-pointer"></i></div>
+                        <h4 class="font-bold text-gray-800 text-3xl mb-4">2. 1인당 1픽 릴레이!</h4>
+                        <p class="text-gray-600 text-lg leading-relaxed">조원 전체가 앞으로 나옵니다! 저장 기능이 없으므로, 돌아가며 마우스를 잡고 <strong>자신이 소개하고 싶은 아이템 딱 1개씩만</strong> 직접 드래그하여 배치 이유를 설명합니다.</p>
+                    </div>
+                    <div class="bg-white p-10 rounded-2xl border-t-8 border-yellow-400 shadow-md">
+                        <div class="text-5xl mb-6 text-yellow-500"><i class="fas fa-hands-clapping"></i></div>
+                        <h4 class="font-bold text-gray-800 text-3xl mb-4">3. 청중의 자세</h4>
+                        <p class="text-gray-600 text-xl leading-relaxed">다른 조의 재미있는 결과와 Flexbox 레이아웃 구현 방식을 눈여겨보고, 공감의 리액션과 큰 박수를 보내주세요!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Grid 실습 패널 -->
+        <div class="slide bg-white relative">
+            <div class="max-w-7xl w-full h-full flex flex-col justify-center">
+                <div class="text-center mb-10 shrink-0">
+                    <h2 class="text-5xl font-bold text-gray-800 mb-4 tracking-tight">
+                        Step 3-1. 실습실: <span class="text-indigo-600">CSS Grid 실습 패널</span> 🎛️
+                    </h2>
+                    <p class="text-2xl text-gray-500">2차원 배치를 가능하게 하는 Grid의 열(Column)과 간격(Gap)을 조작해 보세요.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-slate-50 p-8 rounded-3xl shadow-lg border border-gray-200">
+                    <div class="lg:col-span-4 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm flex flex-col">
+                        <h3 class="text-3xl font-bold text-gray-800 mb-6 border-b border-gray-100 pb-4"><i class="fas fa-th text-indigo-500"></i> Grid 설정</h3>
+                        <div class="space-y-8 flex-1 mt-2">
+                            <div>
+                                <label class="block text-indigo-600 font-mono font-bold mb-3 text-lg">grid-template-columns</label>
+                                <select id="ctrl-grid-col" class="w-full bg-slate-50 border border-gray-300 text-gray-800 rounded-lg p-3 text-lg outline-none focus:border-indigo-500 font-mono" onchange="updateGrid()">
+                                    <option value="1fr 1fr">1fr 1fr (2단 균등)</option>
+                                    <option value="repeat(3, 1fr)">repeat(3, 1fr) (3단 균등)</option>
+                                    <option value="2fr 1fr">2fr 1fr (비대칭 2단)</option>
+                                    <option value="1fr 2fr 1fr">1fr 2fr 1fr (중앙 집중)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-pink-600 font-mono font-bold mb-3 text-lg">gap <span class="text-gray-400 text-sm font-sans">(그리드 간격)</span></label>
+                                <input type="range" id="ctrl-grid-gap" min="0" max="40" value="10" class="w-full accent-pink-500" oninput="updateGrid()">
+                                <div class="text-right text-lg text-gray-500 font-mono mt-2"><span id="val-grid-gap">10px</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-8 flex flex-col gap-6">
+                        <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex items-center justify-center text-center">
+                            <p id="grid-desc" class="text-xl text-gray-700 font-medium">속성을 변경하면 Grid 레이아웃이 실시간으로 변화합니다.</p>
+                        </div>
+                        <div class="flex-1 bg-slate-100 rounded-2xl border-4 border-dashed border-indigo-300 relative overflow-hidden p-8 min-h-[350px]">
+                            <span class="absolute top-3 left-4 text-indigo-600 font-bold font-mono text-base bg-white/90 px-3 py-1 rounded">display: grid;</span>
+                            <div id="grid-stage" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; height: 100%; transition: all 0.4s ease;">
+                                <div class="bg-indigo-400 rounded-xl shadow-md flex items-center justify-center text-4xl font-black text-white">1</div>
+                                <div class="bg-indigo-400 rounded-xl shadow-md flex items-center justify-center text-4xl font-black text-white">2</div>
+                                <div class="bg-indigo-500 rounded-xl shadow-md flex items-center justify-center text-4xl font-black text-white">3</div>
+                                <div class="bg-indigo-500 rounded-xl shadow-md flex items-center justify-center text-4xl font-black text-white">4</div>
+                                <div class="bg-indigo-600 rounded-xl shadow-md flex items-center justify-center text-4xl font-black text-white">5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Animation 실습 패널 -->
+        <div class="slide bg-slate-50">
+            <div class="max-w-7xl w-full">
+                <div class="text-center mb-10">
+                    <h2 class="text-5xl font-bold text-gray-800 mb-4 tracking-tight">
+                        Step 3-2. 실습실: <span class="text-pink-600">Animation 실습 패널</span> ✨
+                    </h2>
+                    <p class="text-2xl text-gray-500">화면에 생동감을 불어넣는 트랜지션과 키프레임 애니메이션을 테스트해 보세요.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-white p-8 rounded-3xl shadow-lg border border-gray-200">
+                    <div class="lg:col-span-5 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm flex flex-col">
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b border-gray-100 pb-4"><i class="fas fa-magic text-pink-500"></i> 애니메이션 설정 패널</h3>
+                        <p class="text-base text-gray-600 mb-6 pb-6 border-b border-gray-100 leading-relaxed">
+                            <strong class="text-indigo-600">1. Transition:</strong> A에서 B로 변할 때의 부드러운 다리 역할<br>
+                            <strong class="text-pink-600">2. Animation:</strong> 내가 원할 때 스스로 움직이는 영화
+                        </p>
+                        
+                        <div class="space-y-6 flex-1">
+                            <div class="bg-indigo-50 p-5 rounded-xl border border-indigo-100">
+                                <label class="block text-indigo-700 text-lg font-bold mb-2"><i class="fas fa-hand-pointer"></i> Transition (전환 효과)</label>
+                                <p class="text-sm text-indigo-500 mb-4">마우스를 별(<i class="fas fa-star"></i>)에 올려 상태를 변화시켜 보세요.</p>
+                                <select id="ctrl-hover" class="w-full bg-white border border-indigo-200 text-gray-800 rounded-lg p-3 text-base outline-none focus:border-indigo-400" onchange="applyHover()">
+                                    <option value="none">효과 없음</option>
+                                    <option value="scale">확대 (transform: scale)</option>
+                                    <option value="rotate">회전 (transform: rotate)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="bg-pink-50 p-5 rounded-xl border border-pink-100">
+                                <label class="block text-pink-700 text-lg font-bold mb-2"><i class="fas fa-film"></i> Animation (@keyframes)</label>
+                                <p class="text-sm text-pink-500 mb-4">프레임에 따라 무한 반복됩니다.</p>
+                                <div class="flex gap-2">
+                                    <button onclick="triggerAnim('anim-float')" class="flex-1 bg-white hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-lg border border-pink-200 text-base transition">둥둥 띄우기</button>
+                                    <button onclick="triggerAnim('anim-pulse')" class="flex-1 bg-white hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-lg border border-pink-200 text-base transition">심장 박동</button>
+                                    <button onclick="triggerAnim('anim-spin')" class="flex-1 bg-white hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-lg border border-pink-200 text-base transition">계속 회전</button>
+                                </div>
+                                <button onclick="triggerAnim('none')" class="w-full mt-3 bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 rounded-lg text-base transition">애니메이션 정지</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 flex items-center justify-center bg-gray-900 rounded-2xl relative overflow-hidden min-h-[400px] shadow-inner">
+                        <span class="absolute top-5 left-5 text-gray-500 font-mono text-lg">Preview</span>
+                        <div id="anim-target" class="w-40 h-40 bg-gradient-to-br from-pink-500 to-orange-400 rounded-3xl shadow-[0_0_40px_rgba(236,72,153,0.5)] flex items-center justify-center text-white text-6xl cursor-pointer" style="transition: transform 0.3s ease;">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: 주제 후보 리스트 -->
+        <div class="slide bg-white border-b border-gray-200">
+            <div class="max-w-6xl w-full text-center">
+                <h2 class="text-5xl font-extrabold text-gray-800 mb-6 tracking-tight">Step 4. 오늘의 미션: 나만의 매거진 📰</h2>
+                <p class="text-2xl text-gray-600 mb-12">"중간고사 전 마지막 실습! 나만의 관심사로 가득 찬 매거진 커버 만들기"</p>
+
+                <div class="bg-slate-50 p-16 rounded-3xl shadow-sm border border-gray-200">
+                    <h4 class="font-bold text-gray-800 text-4xl mb-10"><i class="fas fa-list-ul text-indigo-500"></i> 내 매거진 테마 룰렛 후보</h4>
+                    
+                    <div class="flex flex-wrap justify-center gap-5">
+                        <span class="bg-white border-2 border-gray-200 text-gray-600 text-2xl px-6 py-4 rounded-xl shadow-sm cursor-default">🏫 나의 캠퍼스 생존기</span>
+                        <span class="bg-white border-2 border-gray-200 text-gray-600 text-2xl px-6 py-4 rounded-xl shadow-sm cursor-default">💻 나만의 최애 전자기기</span>
+                        <span class="bg-white border-2 border-gray-200 text-gray-600 text-2xl px-6 py-4 rounded-xl shadow-sm cursor-default">🎤 나의 최애 덕질 탐구</span>
+                        <span class="bg-white border-2 border-gray-200 text-gray-600 text-2xl px-6 py-4 rounded-xl shadow-sm cursor-default">🍳 내가 제일 좋아하는 음식</span>
+                        <span class="bg-white border-2 border-gray-200 text-gray-600 text-2xl px-6 py-4 rounded-xl shadow-sm cursor-default">✈️ 떠나고 싶은 여행지</span>
+                        <span class="bg-white border-2 border-gray-200 text-gray-600 text-2xl px-6 py-4 rounded-xl shadow-sm cursor-default">🧠 나의 MBTI 파헤치기</span>
+                        <span class="bg-white border-2 border-gray-200 text-gray-600 text-2xl px-6 py-4 rounded-xl shadow-sm cursor-default">🎬 인생 영화/드라마 리뷰</span>
+                        <span class="bg-white border-2 border-gray-200 text-gray-600 text-2xl px-6 py-4 rounded-xl shadow-sm cursor-default">👗 나만의 OOTD 스타일</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: 실제 룰렛 화면 -->
+        <div class="slide bg-slate-100 border-b border-gray-200">
+            <div class="max-w-5xl w-full text-center">
+                <h2 class="text-5xl font-extrabold text-gray-800 mb-6 tracking-tight">어떤 매거진을 만들까? 🎲</h2>
+                <p class="text-2xl text-gray-600 mb-12">버튼을 눌러 오늘 제작할 내 매거진의 주제를 랜덤으로 결정해 봅시다.</p>
+
+                <div class="bg-white p-16 rounded-3xl shadow-xl border border-gray-200">
+                    <div class="bg-slate-50 border-4 border-dashed border-gray-300 rounded-2xl p-10 mb-12 h-64 flex items-center justify-center shadow-inner overflow-hidden">
+                        <span id="topic-display" class="text-5xl font-extrabold text-gray-400 transition-all duration-100">❓ 버튼을 눌러주세요 ❓</span>
+                    </div>
+
+                    <button onclick="drawTopic()" id="draw-btn" class="bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-600 hover:to-pink-700 text-white font-bold py-6 px-16 rounded-full text-3xl shadow-lg transform transition hover:scale-105">
+                        <i class="fas fa-play"></i> 주제 뽑기 시작!
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: 뼈대 코드 복사 -->
+        <div class="slide bg-white border-b border-gray-200">
+            <div class="max-w-5xl w-full text-center">
+                <h2 class="text-5xl font-extrabold text-gray-800 mb-8 tracking-tight">Step 4-1. 실습 코드 복사하기 📋</h2>
+                <p class="text-2xl text-gray-600 mb-12">아래 코드를 복사하여 `index.html` 파일을 만들고, 주석(`/* TODO */`)을 따라 완성하세요.</p>
+
+                <div class="bg-slate-50 p-12 rounded-3xl border border-gray-200 shadow-md text-left relative overflow-hidden group hover:border-indigo-400 transition-colors">
+                    <div class="absolute -right-4 -top-4 text-8xl text-indigo-100 group-hover:scale-110 transition-transform"><i class="fas fa-file-code"></i></div>
+                    <h3 class="text-4xl font-bold text-indigo-600 mb-8 flex items-center gap-3 relative z-10"><i class="fas fa-laptop-code"></i> 단일 페이지 매거진 템플릿</h3>
+                    <ul class="text-gray-600 mb-10 space-y-5 relative z-10 text-xl font-medium">
+                        <li>1. 제공된 코드를 복사해서 VS Code에 붙여넣습니다.</li>
+                        <li>2. <code>TODO 1 ~ 3</code>을 찾아 <strong>CSS Grid</strong> 속성을 사용해 레이아웃을 다듬습니다.</li>
+                        <li>3. <code>TODO 4 ~ 6</code>을 찾아 <strong>Transition & Animation</strong>을 추가하여 페이지에 생동감을 줍니다.</li>
+                    </ul>
+                    <button onclick="copyCode('missionCode', 'btnMission')" id="btnMission" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-6 rounded-2xl transition-all flex justify-center items-center gap-3 shadow-sm relative z-10 text-2xl">
+                        <i class="fas fa-copy"></i> 매거진 뼈대 코드 복사하기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: 브라우저 렌더링 미리보기 -->
+        <div class="slide bg-slate-100 border-b border-gray-200 py-10">
+            <div class="max-w-6xl w-full h-full flex flex-col px-4">
+                <div class="text-center mb-8 shrink-0">
+                    <h2 class="text-4xl font-extrabold text-gray-800 tracking-tight flex items-center justify-center gap-3">
+                        <i class="fas fa-eye text-pink-500"></i> Step 4-2. 완성 미리보기 (정답 예시)
+                    </h2>
+                    <p class="text-gray-500 mt-3 text-lg">TODO 주석을 모두 해결하면, 브라우저에서 아래와 같이 보입니다.</p>
+                </div>
+                
+                <div class="w-full flex-1 overflow-y-auto custom-scrollbar bg-[#f4f4f0] p-6 rounded-3xl shadow-xl border border-gray-300 relative text-[#222]" style="font-family: 'Pretendard', 'Georgia', serif; max-height: 80vh;">
+                    <div style="max-width: 1000px; margin: 0 auto; border: 4px solid #333; padding: 20px;">
+                        <header style="text-align: center; border-bottom: 4px solid #333; padding-bottom: 20px; margin-bottom: 20px;">
+                            <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 10px;">나만의 마법 매거진</h1>
+                            <p style="color: #555;">Vol. 1 | 2026. 04. XX | 내가 직접 큐레이션한 소식</p>
+                        </header>
+
+                        <div style="width: 100%; overflow: hidden; background: #333; color: #fff; padding: 10px 0; margin-bottom: 20px;">
+                            <div class="preview-marquee">
+                                🔥 [속보] 중간고사 대비 프론트엔드 핵심 요약! · 내가 좋아하는 최애 등극 · 오늘 저녁 메뉴 추천 🔥
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 20px;">
+                            <aside>
+                                <h2 style="font-size: 1.2rem; border-bottom: 2px solid #e11d48; margin-bottom: 15px; padding-bottom: 5px;">Profile</h2>
+                                <div style="background: #fff; padding: 15px; border: 1px solid #ddd;">
+                                    <h4 style="font-weight: bold; margin-bottom: 5px;">편집장의 말</h4>
+                                    <p style="font-size: 0.9rem; color: #666;">안녕하세요! 프론트엔드를 사랑하는 예비 개발자입니다. 제가 좋아하는 것들을 모아봤어요.</p>
+                                </div>
+                            </aside>
+
+                            <main style="border-left: 1px solid #333; border-right: 1px solid #333; padding: 0 20px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <article style="border-bottom: 1px solid #ccc; padding-bottom: 15px; transition: transform 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='none'">
+                                        <span class="preview-badge" style="display: inline-block; background: #e11d48; color: white; padding: 2px 8px; font-size: 0.7rem; font-weight: bold; border-radius: 12px; margin-bottom: 10px;">NEW</span>
+                                        <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=500&fit=crop" style="width: 100%; height: 160px; object-fit: cover;">
+                                        <h3 style="font-size: 1.1rem; margin: 10px 0; font-weight: bold;">첫 번째 기사 제목</h3>
+                                        <p style="font-size: 0.85rem; color: #555;">기사에 대한 짧은 요약을 적어주세요. 이미지는 unsplash에서 가져왔습니다.</p>
+                                    </article>
+                                    
+                                    <article style="border-bottom: 1px solid #ccc; padding-bottom: 15px; transition: transform 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='none'">
+                                        <span class="preview-badge" style="display: inline-block; background: #3b82f6; color: white; padding: 2px 8px; font-size: 0.7rem; font-weight: bold; border-radius: 12px; margin-bottom: 10px; animation-delay: 0.5s;">HOT</span>
+                                        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&fit=crop" style="width: 100%; height: 160px; object-fit: cover;">
+                                        <h3 style="font-size: 1.1rem; margin: 10px 0; font-weight: bold;">두 번째 기사 제목</h3>
+                                        <p style="font-size: 0.85rem; color: #555;">Grid를 사용하면 이렇게 카드들을 쉽게 다단으로 배치할 수 있습니다.</p>
+                                    </article>
+                                </div>
+                            </main>
+
+                            <aside>
+                                <h2 style="font-size: 1.2rem; border-bottom: 2px solid #e11d48; margin-bottom: 15px; padding-bottom: 5px;">Ad</h2>
+                                <div style="background: #333; color: #fff; height: 250px; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 8px;">
+                                    <p style="font-weight: bold;">배너 광고<br>영역</p>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: 과제 제출 안내 -->
+        <div class="slide bg-slate-900 text-white">
+            <div class="max-w-6xl w-full px-4 text-center">
+                <h2 class="text-5xl font-extrabold mb-12 text-pink-400">🚀 Step 5. 과제 제출 안내</h2>
+                
+                <div class="bg-slate-800 p-12 rounded-3xl inline-block text-left w-full border border-slate-600 shadow-2xl relative">
+                    <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-pink-500 text-white font-extrabold px-10 py-3 rounded-full text-2xl shadow-lg border-2 border-slate-800 whitespace-nowrap">
+                        기한: 다음 주 수업 전까지 (중간고사 화이팅!)
+                    </div>
+                    
+                    <h3 class="text-4xl font-bold mb-8 mt-4 text-white">"Grid Garden 완수 & 나만의 매거진 커버 완성"</h3>
+                    <div class="text-slate-300 mb-10 text-2xl leading-relaxed space-y-4">
+                        <p><span class="font-bold text-yellow-400">[1단계]</span> 먼저 <a href="https://cssgridgarden.com/#ko" target="_blank" class="text-indigo-300 underline hover:text-indigo-200">Grid Garden</a> 게임의 모든 단계를 클리어하며 Grid의 기초 감각을 완벽히 익힙니다.</p>
+                        <p><span class="font-bold text-pink-400">[2단계]</span> 수업 시간에 배포한 매거진 커버 HTML 파일의 빈칸(TODO)을 채워 나만의 페이지를 완성합니다.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-slate-900 p-8 rounded-2xl border border-slate-700 shadow-sm">
+                            <h4 class="text-3xl font-bold text-indigo-400 mb-6"><i class="fas fa-check-circle"></i> 필수 포함 사항</h4>
+                            <ul class="space-y-4 text-xl text-slate-200">
+                                <li class="flex items-start gap-4">
+                                    <span class="bg-indigo-900/50 text-indigo-300 border border-indigo-700 px-3 py-1 rounded font-mono shrink-0">Grid</span> 
+                                    <div><code class="text-pink-300">grid-template-columns</code>를 사용하여 레이아웃이 다단으로 나뉘어 있는지 확인.</div>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <span class="bg-indigo-900/50 text-indigo-300 border border-indigo-700 px-3 py-1 rounded font-mono shrink-0">Animation</span> 
+                                    <div><code class="text-pink-300">@keyframes</code>를 이용해 텍스트나 뱃지 등 애니메이션 효과가 적용되었는지 확인.</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-indigo-950 p-8 rounded-2xl border border-indigo-700 shadow-sm">
+                            <h4 class="text-3xl font-bold text-yellow-300 mb-6"><i class="fas fa-file-pdf"></i> 과제 제출 형식</h4>
+                            <ul class="space-y-5 text-xl text-indigo-100">
+                                <li><i class="fas fa-caret-right text-yellow-400 mr-2"></i> <strong>필수 스크린샷 2장:</strong><br>1. 재배열된 PC 전체 화면<br>2. 브라우저 폭을 줄인 <strong>모바일 화면</strong></li>
+                                <li><i class="fas fa-caret-right text-yellow-400 mr-2"></i> 추가/수정한 CSS 코드 블록 (마크다운)</li>
+                                <li><i class="fas fa-caret-right text-yellow-400 mr-2"></i> <strong>GitHub Pages 배포 링크</strong> 필수</li>
+                                <li><i class="fas fa-caret-right text-yellow-400 mr-2"></i> 마크다운 작성 후 <strong>PDF 문서로 제출</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: 다음 주 예고 -->
+        <div class="slide bg-white">
+            <div class="max-w-5xl w-full text-center">
+                <div class="text-9xl text-yellow-400 mb-10"><i class="fas fa-book-open"></i></div>
+                <h2 class="text-7xl font-extrabold text-gray-800 mb-10 leading-tight">
+                    다음 주는 <span class="text-yellow-500">중간고사 주간</span>입니다!
+                </h2>
+                <p class="text-3xl text-gray-600 font-medium mb-12">지금까지 배운 HTML과 CSS 내용들을 잘 복습하시길 바랍니다.</p>
+                
+                <div class="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-10 py-5 rounded-full text-4xl font-extrabold shadow-lg animate-pulse mb-4">
+                    JavaScript는 중간고사 이후에 만나요! 👏
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="fixed bottom-6 right-6 flex gap-4 z-50">
+        <button onclick="prevSlide()" class="bg-white text-gray-700 hover:bg-gray-100 p-4 rounded-full shadow-lg transition active:scale-95 border border-gray-200">
+            <i class="fas fa-chevron-left text-xl"></i>
+        </button>
+        <button onclick="nextSlide()" class="bg-indigo-600 text-white hover:bg-indigo-700 p-4 rounded-full shadow-lg transition active:scale-95">
+            <i class="fas fa-chevron-right text-xl"></i>
+        </button>
+    </div>
+
+    <!-- 스크립트 -->
+    <script>
+        // === 프레젠테이션(Show Mode) 슬라이드 로직 ===
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let isAnimating = false;
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev-slide');
+                if (index === currentSlide) slide.classList.add('active');
+                else if (index < currentSlide) slide.classList.add('prev-slide');
+            });
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+            }
+        }
+
+        function nextSlide() { 
+            if (currentSlide < totalSlides - 1) { 
+                currentSlide++; 
+                updateSlide(); 
+            } 
+        }
+
+        function prevSlide() { 
+            if (currentSlide > 0) { 
+                currentSlide--; 
+                updateSlide(); 
+            } 
+        }
+
+        // 키보드 네비게이션 (방향키, 스페이스바)
+        document.addEventListener('keydown', (e) => {
+            if(e.target.tagName.toLowerCase() === 'textarea' || e.target.tagName.toLowerCase() === 'input') return;
+
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // 휠 스크롤 제어 로직 (내부 스크롤 허용)
+        window.addEventListener('wheel', (e) => {
+            const scrollable = e.target.closest('.overflow-y-auto');
+            if (scrollable) {
+                const atTop = scrollable.scrollTop <= 0;
+                const atBottom = Math.abs(scrollable.scrollHeight - scrollable.clientHeight - scrollable.scrollTop) <= 2;
+                
+                if (e.deltaY > 0 && !atBottom) return; 
+                if (e.deltaY < 0 && !atTop) return; 
+            }
+
+            if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
+            if (isAnimating) return;
+            if (e.deltaY > 0) nextSlide(); 
+            else prevSlide();
+            
+            isAnimating = true;
+            setTimeout(() => { isAnimating = false; }, 600);
+        }, { passive: false });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSlide();
+            updateGrid();
+            applyHover();
+        });
+
+
+        // === 기존 콘텐츠 기능 로직 ===
+        function copyCode(elementId, btnId) {
+            const textarea = document.getElementById(elementId);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); 
+
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById(btnId);
+                const originalHTML = btn.innerHTML;
+                const originalBg = Array.from(btn.classList).find(c => c.startsWith('bg-'));
+                
+                btn.innerHTML = '<i class="fas fa-check text-xl"></i> 복사 완료!';
+                btn.classList.remove(originalBg, 'hover:'+originalBg.replace('500','600'));
+                btn.classList.add('bg-green-500', 'hover:bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                    btn.classList.add(originalBg, 'hover:'+originalBg.replace('500','600'));
+                }, 3000);
+            } catch (err) {
+                console.error("복사에 실패했습니다.");
+            }
+        }
+
+        // Grid Lab JS
+        function updateGrid() {
+            const col = document.getElementById('ctrl-grid-col')?.value;
+            const gap = document.getElementById('ctrl-grid-gap')?.value;
+            const stage = document.getElementById('grid-stage');
+            const desc = document.getElementById('grid-desc');
+            const valGap = document.getElementById('val-grid-gap');
+
+            if(stage) {
+                stage.style.gridTemplateColumns = col;
+                stage.style.gap = gap + 'px';
+            }
+            if(valGap) valGap.innerText = gap + 'px';
+
+            if(desc) {
+                let descText = `가로 축을 <strong>${col}</strong> 비율로 나누고, 그리드 사이의 간격을 <strong>${gap}px</strong>로 설정합니다.`;
+                desc.innerHTML = descText;
+            }
+        }
+
+        // Anim Lab JS
+        function applyHover() {
+            const hoverType = document.getElementById('ctrl-hover')?.value;
+            const target = document.getElementById('anim-target');
+            if(!target) return;
+
+            target.onmouseover = null;
+            target.onmouseout = null;
+            target.style.transform = 'none';
+
+            if (hoverType === 'scale') {
+                target.onmouseover = () => target.style.transform = 'scale(1.2)';
+                target.onmouseout = () => target.style.transform = 'scale(1)';
+            } else if (hoverType === 'rotate') {
+                target.onmouseover = () => target.style.transform = 'rotate(45deg) scale(1.1)';
+                target.onmouseout = () => target.style.transform = 'rotate(0deg) scale(1)';
+            }
+        }
+
+        function triggerAnim(animClass) {
+            const target = document.getElementById('anim-target');
+            if(!target) return;
+            
+            target.classList.remove('anim-float', 'anim-spin', 'anim-pulse');
+            void target.offsetWidth; 
+            
+            if(animClass !== 'none') {
+                target.classList.add(animClass);
+            }
+        }
+
+        // 룰렛 JS
+        const topics = [
+            "🏫 나의 캠퍼스 생존기",
+            "💻 나만의 최애 전자기기",
+            "🎤 나의 최애 덕질 탐구",
+            "🍳 내가 제일 좋아하는 음식",
+            "✈️ 떠나고 싶은 여행지",
+            "🧠 나의 MBTI 파헤치기",
+            "🎬 인생 영화/드라마 리뷰",
+            "👗 나만의 OOTD 스타일"
+        ];
+
+        function drawTopic() {
+            const display = document.getElementById('topic-display');
+            const btn = document.getElementById('draw-btn');
+            
+            if(!display || !btn) return;
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            display.classList.remove('text-5xl', 'text-indigo-600', 'drop-shadow-lg', 'animate-bounce');
+            
+            let counter = 0;
+            const interval = setInterval(() => {
+                const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+                display.innerText = randomTopic;
+                display.className = "text-4xl font-extrabold text-gray-500 scale-95";
+                
+                counter++;
+                
+                if (counter > 20) {
+                    clearInterval(interval);
+                    const finalTopic = topics[Math.floor(Math.random() * topics.length)];
+                    display.innerText = "🎉 " + finalTopic + " 🎉";
+                    display.className = "text-5xl font-extrabold text-indigo-600 drop-shadow-lg animate-bounce transition-all duration-300 scale-100";
+                    
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btn.innerHTML = '<i class="fas fa-redo"></i> 다른 주제 다시 뽑기';
+                }
+            }, 80); 
+        }
+    </script>
+</body>
+</html>
