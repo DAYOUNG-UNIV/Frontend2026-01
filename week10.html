@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth scroll-pt-24">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프론트엔드 프로그래밍 - 10주차 팀 빌딩 & Git 협업</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f8fafc; 
+            color: #1e293b;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* 둥둥 떠다니는 배경 요소 */
+        @keyframes float-slow {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .anim-float { animation: float-slow 4s ease-in-out infinite; }
+
+        /* 맥박 효과 */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(99, 102, 241, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+        .anim-pulse-ring { animation: pulse-ring 2s infinite; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .copy-area { position: absolute; left: -9999px; top: 0; opacity: 0; }
+        
+        /* 터미널 탭 스타일 */
+        .tab-btn.active {
+            color: #4f46e5; /* indigo-600 */
+            border-bottom: 2px solid #4f46e5;
+            background-color: #e0e7ff; /* indigo-50 */
+        }
+
+        /* SVG Branch 애니메이션 스타일 */
+        .draw-path {
+            stroke-dasharray: 500;
+            stroke-dashoffset: 500;
+            animation: drawPath 0.8s ease-out forwards;
+        }
+        @keyframes drawPath {
+            to { stroke-dashoffset: 0; }
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.4s ease-out 0.4s forwards;
+        }
+        .fade-in-fast {
+            opacity: 0;
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .pr-pulse {
+            animation: prPulse 1.5s infinite alternate ease-in-out;
+        }
+        @keyframes prPulse {
+            from { transform: translateY(0); filter: drop-shadow(0 4px 6px rgba(163, 113, 247, 0.4)); }
+            to { transform: translateY(-5px); filter: drop-shadow(0 10px 15px rgba(163, 113, 247, 0.8)); }
+        }
+        
+        /* 스텝 버튼 활성화 스타일 */
+        .step-btn { transition: all 0.3s ease; }
+        .step-btn.active { background-color: #4f46e5; color: white; border-color: #4f46e5; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3); }
+        .step-btn.active .step-num { background-color: white; color: #4f46e5; }
+        
+        /* Details Summary 스타일 (기본 화살표 제거) */
+        summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-200 selection:text-indigo-900">
+
+    <!-- ==========================================
+         Navigation 
+         ========================================== -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center flex-wrap">
+                <div class="font-extrabold text-xl text-indigo-700 flex items-center gap-2">
+                    <i class="fab fa-github text-indigo-500"></i> FRONTEND WEEK 10
+                </div>
+                <div class="hidden md:flex space-x-4 lg:space-x-6 text-sm font-bold text-gray-600">
+                    <a href="#intro" class="hover:text-indigo-600 transition">수업안내</a>
+                    <a href="#teambuilding" class="hover:text-indigo-600 transition">팀매칭</a>
+                    <a href="#roles" class="hover:text-indigo-600 transition">직무분배</a>
+                    <a href="#branch" class="text-pink-500 hover:text-pink-700 transition">Branch개념</a>
+                    <a href="#github" class="text-indigo-500 hover:text-indigo-700 transition">Git실습</a>
+                    <a href="#template" class="hover:text-indigo-600 transition">기획서양식</a>
+                    <a href="#homework" class="hover:text-indigo-600 transition">과제제출</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         Section 1: Hero Intro 
+         ========================================== -->
+    <section id="intro" class="py-20 md:py-32 px-4 flex justify-center items-center text-center relative overflow-hidden bg-slate-50">
+        <!-- 배경 데코레이션 -->
+        <div class="absolute top-1/4 right-1/4 w-64 h-64 bg-indigo-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-30"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-[100px] opacity-30"></div>
+        
+        <div class="bg-white p-8 md:p-12 rounded-3xl shadow-xl max-w-4xl w-full border-t-8 border-indigo-500 relative z-10 text-center">
+            <div class="text-6xl mb-6 text-indigo-500"><i class="fas fa-laptop-code"></i></div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 tracking-tight drop-shadow-sm">본격적인 프로젝트 시작</h1>
+            <h2 class="text-xl md:text-2xl text-gray-500 font-medium mb-8">10주차: 실전 팀 빌딩 & README 기반 Git 협업</h2>
+            <div class="h-1 w-24 bg-gradient-to-r from-indigo-400 to-blue-400 mx-auto mb-8 rounded-full"></div>
+            
+            <div class="text-lg text-gray-600 space-y-3 bg-slate-50 p-6 md:p-8 rounded-2xl inline-block text-left w-full border border-gray-100 shadow-inner">
+                <p class="font-bold text-xl text-indigo-600 mb-4 text-center"><i class="fas fa-list-ul"></i> 오늘의 수업 일정</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 font-bold flex items-center justify-center shrink-0">1</span>
+                        <span class="text-sm font-bold text-gray-700">QuizN: Git 기초 복습</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 font-bold flex items-center justify-center shrink-0">2</span>
+                        <span class="text-sm font-bold text-gray-700">1분 피칭 & 팀 매칭</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 font-bold flex items-center justify-center shrink-0">3</span>
+                        <span class="text-sm font-bold text-gray-700">실무형 직무 분배</span>
+                    </div>
+                    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200 shadow-sm flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-indigo-500 text-white font-bold flex items-center justify-center shrink-0">4</span>
+                        <span class="text-sm font-bold text-indigo-800">Branch & Git 실습</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 2: Quiz & Pitching 
+         ========================================== -->
+    <section id="quiz" class="py-24 px-4 bg-white border-t border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                
+                <!-- QuizN -->
+                <div class="bg-slate-50 p-10 rounded-3xl border border-gray-200 shadow-md transform hover:-translate-y-1 transition">
+                    <div class="text-4xl text-yellow-500 mb-4"><i class="fas fa-bolt"></i></div>
+                    <span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 font-bold text-xs rounded-full mb-4">Step 1. Warm-up</span>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">QuizN 스피드 복습 퀴즈</h3>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        Git의 기본 명령어(add, commit, push) 등 핵심 개념을 점검합니다. 스마트폰 브라우저를 열고 대기해 주세요!
+                    </p>
+                    <div class="bg-white rounded-lg p-4 font-mono text-sm text-center border border-dashed border-gray-300 text-gray-500 font-bold">
+                        PIN 번호: 화면의 스크린을 확인하세요
+                    </div>
+                </div>
+
+                <!-- Pitching -->
+                <div id="teambuilding" class="bg-indigo-50 p-10 rounded-3xl border border-indigo-100 shadow-md transform hover:-translate-y-1 transition relative overflow-hidden group">
+                    <div class="absolute -right-6 -bottom-6 text-8xl text-indigo-100 group-hover:scale-110 transition-transform"><i class="fas fa-users"></i></div>
+                    <div class="relative z-10">
+                        <div class="text-4xl text-indigo-500 mb-4"><i class="fas fa-microphone-alt"></i></div>
+                        <span class="inline-block px-3 py-1 bg-indigo-200 text-indigo-800 font-bold text-xs rounded-full mb-4">Step 2. Team Building</span>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">아이디어 피칭 & 팀 매칭</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            선정된 아이디어 제안자들의 <strong>1분 피칭</strong>을 듣습니다. 이후 제공되는 <strong>Figma Jam 링크</strong>에 접속하여, 참여하고 싶은 프로젝트 보드에 자신의 이름표(포스트잇)를 붙여주세요! <br><span class="text-indigo-600 font-bold inline-block mt-2 bg-white px-2 py-1 rounded shadow-sm">(팀당 6명 내외 구성)</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 3: Roles (실무형 역할 분배)
+         ========================================== -->
+    <section id="roles" class="py-24 px-4 bg-slate-50 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4 tracking-tight">Step 3. 우리는 원팀! 직무 분배 💼</h2>
+                <p class="text-lg text-gray-500">
+                    팀을 구성한 후, 프로젝트에 필요한 <strong>실무형 필수 역할</strong>을 나누어 맡습니다.<br>
+                    이력서와 포트폴리오에 당당히 기재할 수 있는 실제 IT 기업의 직무 명칭입니다.<br>
+                    <span class="text-indigo-600 font-bold bg-indigo-100 px-3 py-1.5 rounded-lg inline-block mt-3 shadow-sm border border-indigo-200">인원수에 따라 두 가지 이상의 역할을 겸직하며 책임감을 가져봅시다!</span>
+                </p>
+            </div>
+
+            <!-- items-start를 적용하여 한 카드가 늘어나도 다른 카드의 길이가 강제로 늘어나지 않게 함 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
+                
+                <!-- Role 1: PM -->
+                <div class="bg-white p-6 rounded-2xl border-t-4 border-indigo-500 shadow-sm hover:shadow-md transition group flex flex-col">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="text-3xl text-indigo-500 group-hover:scale-110 transition origin-left"><i class="fas fa-sitemap"></i></div>
+                        <h4 class="text-xl font-bold text-gray-800">Product Manager</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">프로젝트의 리더입니다. 핵심 기능이 산으로 가지 않도록 기획의 방향성을 꽉 잡아주는 역할을 합니다.</p>
+                    <div class="space-y-3 mt-auto">
+                        <div class="bg-gray-50 p-3 rounded-lg text-xs text-gray-700 border border-gray-200">
+                            <p><strong class="text-indigo-600">🎯 핵심 업무:</strong> 프로젝트 요구사항 정의 및 전체 일정 관리</p>
+                        </div>
+                        
+                        <details class="group/accordion bg-white border border-indigo-200 rounded-lg overflow-hidden shadow-sm">
+                            <summary class="p-3 text-xs text-indigo-700 font-bold cursor-pointer flex justify-between items-center bg-indigo-50 hover:bg-indigo-100 transition list-none rounded-lg">
+                                <span class="flex items-center gap-1.5"><i class="fas fa-lightbulb text-yellow-500"></i> 산출물 예시 보기</span>
+                                <i class="fas fa-chevron-down text-indigo-400 group-open/accordion:rotate-180 transition-transform"></i>
+                            </summary>
+                            <div class="p-3 bg-white text-xs border-t border-indigo-100">
+                                <p class="font-bold text-indigo-700 mb-2">📄 Notion 주간 칸반보드 관리</p>
+                                <ul class="space-y-1.5 text-gray-700">
+                                    <li class="flex items-center"><span class="bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded text-[10px] mr-2 shrink-0 border border-gray-200">To-do</span>지도 API 발급받기</li>
+                                    <li class="flex items-center"><span class="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded text-[10px] mr-2 shrink-0 border border-blue-200">진행중</span>룰렛 로직 구현</li>
+                                    <li class="flex items-center"><span class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded text-[10px] mr-2 shrink-0 border border-green-200">완료</span>디자인 시스템 픽스</li>
+                                </ul>
+                            </div>
+                        </details>
+
+                        <div class="bg-indigo-50 p-2.5 rounded-lg text-xs text-indigo-800 font-medium border border-indigo-100">
+                            💡 <strong class="text-indigo-600">추천:</strong> 꼼꼼한 일정 관리와 팀 소통 능력이 뛰어난 분
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Role 2: Tech Lead -->
+                <div class="bg-white p-6 rounded-2xl border-t-4 border-green-500 shadow-sm hover:shadow-md transition group flex flex-col">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="text-3xl text-green-500 group-hover:scale-110 transition origin-left"><i class="fas fa-code-branch"></i></div>
+                        <h4 class="text-xl font-bold text-gray-800">Tech Lead</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">Git 마스터! 레포지토리를 관리하고, 코드 충돌이 났을 때 해결사로 활약합니다.</p>
+                    <div class="space-y-3 mt-auto">
+                        <div class="bg-gray-50 p-3 rounded-lg text-xs text-gray-700 border border-gray-200">
+                            <p><strong class="text-green-600">🎯 핵심 업무:</strong> PR 최종 코드 리뷰 및 브랜치 병합(Merge)</p>
+                        </div>
+                        
+                        <details class="group/accordion bg-white border border-green-200 rounded-lg overflow-hidden shadow-sm">
+                            <summary class="p-3 text-xs text-green-700 font-bold cursor-pointer flex justify-between items-center bg-green-50 hover:bg-green-100 transition list-none rounded-lg">
+                                <span class="flex items-center gap-1.5"><i class="fas fa-lightbulb text-yellow-500"></i> 산출물 예시 보기</span>
+                                <i class="fas fa-chevron-down text-green-400 group-open/accordion:rotate-180 transition-transform"></i>
+                            </summary>
+                            <div class="p-3 bg-white text-xs border-t border-green-100">
+                                <p class="font-bold text-green-600 mb-2">📄 GitHub PR 승인 내역</p>
+                                <div class="bg-gray-800 rounded p-2 font-mono text-[11px] text-gray-300 leading-relaxed">
+                                    <span class="text-green-400"><i class="fas fa-check"></i> Approve</span> 리뷰 완료.<br>
+                                    <span class="text-purple-400">#4 Pull Request</span> 룰렛 기능<br>
+                                    <div class="mt-2 bg-green-600 text-white text-center py-1.5 rounded font-sans font-bold shadow-sm">Merge pull request</div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <div class="bg-green-50 p-2.5 rounded-lg text-xs text-green-800 font-medium border border-green-100">
+                            💡 <strong class="text-green-600">추천:</strong> 터미널 에러에 당황하지 않고 원인을 찾는 분
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role 3: UI/UX -->
+                <div class="bg-white p-6 rounded-2xl border-t-4 border-pink-500 shadow-sm hover:shadow-md transition group flex flex-col">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="text-3xl text-pink-500 group-hover:scale-110 transition origin-left"><i class="fas fa-palette"></i></div>
+                        <h4 class="text-xl font-bold text-gray-800">UI/UX Designer</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">서비스의 첫인상을 책임집니다. 디자인 시스템을 정하고 UI 설계(와이어프레임)를 주도합니다.</p>
+                    <div class="space-y-3 mt-auto">
+                        <div class="bg-gray-50 p-3 rounded-lg text-xs text-gray-700 border border-gray-200">
+                            <p><strong class="text-pink-600">🎯 핵심 업무:</strong> 웹 디자인 가이드라인 및 와이어프레임 제작</p>
+                        </div>
+                        
+                        <details class="group/accordion bg-white border border-pink-200 rounded-lg overflow-hidden shadow-sm">
+                            <summary class="p-3 text-xs text-pink-700 font-bold cursor-pointer flex justify-between items-center bg-pink-50 hover:bg-pink-100 transition list-none rounded-lg">
+                                <span class="flex items-center gap-1.5"><i class="fas fa-lightbulb text-yellow-500"></i> 산출물 예시 보기</span>
+                                <i class="fas fa-chevron-down text-pink-400 group-open/accordion:rotate-180 transition-transform"></i>
+                            </summary>
+                            <div class="p-3 bg-white text-xs border-t border-pink-100">
+                                <p class="font-bold text-pink-600 mb-2">📄 Figma 디자인 시스템</p>
+                                <div class="flex items-center gap-3 text-gray-700 bg-gray-50 p-2 rounded border border-gray-200">
+                                    <div class="flex flex-col items-center gap-1"><div class="w-6 h-6 rounded-full bg-[#FF5A5F] shadow-sm border border-gray-200"></div></div>
+                                    <div class="flex flex-col items-center gap-1"><div class="w-6 h-6 rounded-full bg-[#00A699] shadow-sm border border-gray-200"></div></div>
+                                    <div class="border-l border-gray-300 pl-3 leading-relaxed">
+                                        <p><strong>Font:</strong> Pretendard</p>
+                                        <p><strong>Radius:</strong> 12px</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <div class="bg-pink-50 p-2.5 rounded-lg text-xs text-pink-800 font-medium border border-pink-100">
+                            💡 <strong class="text-pink-600">추천:</strong> 예쁜 레퍼런스 사이트 찾기를 즐기는 분
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role 4: QA -->
+                <div class="bg-white p-6 rounded-2xl border-t-4 border-red-500 shadow-sm hover:shadow-md transition group flex flex-col">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="text-3xl text-red-500 group-hover:scale-110 transition origin-left"><i class="fas fa-bug"></i></div>
+                        <h4 class="text-xl font-bold text-gray-800">QA Engineer</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">버그 탐색기! PR이 올라오면 코드를 직접 실행해보고 남들이 놓친 빈틈을 날카롭게 찾아냅니다.</p>
+                    <div class="space-y-3 mt-auto">
+                        <div class="bg-gray-50 p-3 rounded-lg text-xs text-gray-700 border border-gray-200">
+                            <p><strong class="text-red-500">🎯 핵심 업무:</strong> 기기별 반응형 테스트 및 기능 버그 리포팅</p>
+                        </div>
+                        
+                        <details class="group/accordion bg-white border border-red-200 rounded-lg overflow-hidden shadow-sm">
+                            <summary class="p-3 text-xs text-red-700 font-bold cursor-pointer flex justify-between items-center bg-red-50 hover:bg-red-100 transition list-none rounded-lg">
+                                <span class="flex items-center gap-1.5"><i class="fas fa-lightbulb text-yellow-500"></i> 산출물 예시 보기</span>
+                                <i class="fas fa-chevron-down text-red-400 group-open/accordion:rotate-180 transition-transform"></i>
+                            </summary>
+                            <div class="p-3 bg-white text-xs border-t border-red-100">
+                                <p class="font-bold text-red-600 mb-2">📄 GitHub Issue 리포트</p>
+                                <div class="border border-red-200 bg-red-50 rounded p-2.5 text-red-800 leading-relaxed">
+                                    <strong>[Bug] 모바일 UI 깨짐</strong><br>
+                                    - 현상: 아이폰13에서 룰렛 이탈<br>
+                                    <span class="inline-block mt-2 bg-red-200 px-1.5 py-0.5 rounded text-[10px] font-bold border border-red-300">High Priority</span>
+                                </div>
+                            </div>
+                        </details>
+
+                        <div class="bg-red-50 p-2.5 rounded-lg text-xs text-red-800 font-medium border border-red-100">
+                            💡 <strong class="text-red-600">추천:</strong> "이렇게 누르면 고장 나지 않을까?" 비판적 시각을 가진 분
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role 5: Scrum Master -->
+                <div class="bg-white p-6 rounded-2xl border-t-4 border-yellow-500 shadow-sm hover:shadow-md transition group flex flex-col">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="text-3xl text-yellow-500 group-hover:scale-110 transition origin-left"><i class="fas fa-stopwatch"></i></div>
+                        <h4 class="text-xl font-bold text-gray-800">Scrum Master</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">회의 진행자이자 타임키퍼. 팀의 규칙이 잘 지켜지는지 체크하고 원활한 소통을 이끌어냅니다.</p>
+                    <div class="space-y-3 mt-auto">
+                        <div class="bg-gray-50 p-3 rounded-lg text-xs text-gray-700 border border-gray-200">
+                            <p><strong class="text-yellow-600">🎯 핵심 업무:</strong> 정기 회의 주도 및 팀원 간 블로커(장애물) 파악</p>
+                        </div>
+                        
+                        <details class="group/accordion bg-white border border-yellow-200 rounded-lg overflow-hidden shadow-sm">
+                            <summary class="p-3 text-xs text-yellow-700 font-bold cursor-pointer flex justify-between items-center bg-yellow-50 hover:bg-yellow-100 transition list-none rounded-lg">
+                                <span class="flex items-center gap-1.5"><i class="fas fa-lightbulb text-yellow-500"></i> 산출물 예시 보기</span>
+                                <i class="fas fa-chevron-down text-yellow-400 group-open/accordion:rotate-180 transition-transform"></i>
+                            </summary>
+                            <div class="p-3 bg-white text-xs border-t border-yellow-100">
+                                <p class="font-bold text-yellow-600 mb-2">📄 Discord 데일리 회의록</p>
+                                <div class="bg-gray-50 p-2.5 rounded border border-gray-200 text-gray-700 space-y-1.5">
+                                    <p>✅ <strong>어제:</strong> 기획서 작성 완료</p>
+                                    <p>🚧 <strong>오늘:</strong> 각자 뼈대 코드 작성</p>
+                                    <p>🚨 <strong>이슈:</strong> A팀원 노트북 고장</p>
+                                </div>
+                            </div>
+                        </details>
+
+                        <div class="bg-yellow-50 p-2.5 rounded-lg text-xs text-yellow-800 font-medium border border-yellow-100">
+                            💡 <strong class="text-yellow-600">추천:</strong> 팀의 텐션을 끌어올리고 회의 시간을 잘 지키는 분
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role 6: Tech Writer -->
+                <div class="bg-white p-6 rounded-2xl border-t-4 border-blue-400 shadow-sm hover:shadow-md transition group flex flex-col">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="text-3xl text-blue-400 group-hover:scale-110 transition origin-left"><i class="fas fa-book"></i></div>
+                        <h4 class="text-xl font-bold text-gray-800">Tech Writer</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">기록의 달인! 노션/디스코드 등 협업 공간을 세팅하고 깃허브 README의 최종 문맥을 깔끔하게 다듬습니다.</p>
+                    <div class="space-y-3 mt-auto">
+                        <div class="bg-gray-50 p-3 rounded-lg text-xs text-gray-700 border border-gray-200">
+                            <p><strong class="text-blue-500">🎯 핵심 업무:</strong> 프로젝트 문서 정리, README 레이아웃 고도화</p>
+                        </div>
+                        
+                        <details class="group/accordion bg-white border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+                            <summary class="p-3 text-xs text-blue-700 font-bold cursor-pointer flex justify-between items-center bg-blue-50 hover:bg-blue-100 transition list-none rounded-lg">
+                                <span class="flex items-center gap-1.5"><i class="fas fa-lightbulb text-yellow-500"></i> 산출물 예시 보기</span>
+                                <i class="fas fa-chevron-down text-blue-400 group-open/accordion:rotate-180 transition-transform"></i>
+                            </summary>
+                            <div class="p-3 bg-white text-xs border-t border-blue-100">
+                                <p class="font-bold text-blue-600 mb-2">📄 팀 코드 컨벤션 문서화</p>
+                                <div class="bg-slate-100 rounded p-2.5 font-mono text-[11px] text-gray-700 border border-slate-200 leading-relaxed">
+                                    # 커밋 메시지 규칙<br>
+                                    - <span class="text-pink-600 font-bold">feat:</span> 새로운 기능<br>
+                                    - <span class="text-pink-600 font-bold">fix:</span> 버그 수정<br>
+                                    - <span class="text-pink-600 font-bold">design:</span> CSS 변경
+                                </div>
+                            </div>
+                        </details>
+
+                        <div class="bg-blue-50 p-2.5 rounded-lg text-xs text-blue-800 font-medium border border-blue-100">
+                            💡 <strong class="text-blue-600">추천:</strong> 평소 블로그나 문서 정리를 깔끔하게 잘 하시는 분
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role 7: DevRel / Presenter -->
+                <div class="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-2xl border-t-4 border-indigo-800 shadow-sm hover:shadow-md transition group flex flex-col lg:col-span-2">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="text-3xl text-indigo-800 group-hover:scale-110 transition origin-left"><i class="fas fa-bullhorn"></i></div>
+                        <h4 class="text-xl font-bold text-gray-800">DevRel / Presenter</h4>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-4">우리 프로젝트의 가치를 100% 돋보이게 포장하는 스토리텔러입니다.</p>
+                    
+                    <div class="space-y-3 mt-auto">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-3 rounded-lg text-xs text-gray-700 border border-gray-200">
+                                <p><strong class="text-indigo-800">🎯 핵심 업무:</strong> 데모 시연 시나리오 기획, 프로젝트 최종 발표</p>
+                            </div>
+                            <div class="bg-indigo-100/50 p-3 rounded-lg text-xs text-indigo-900 font-medium border border-indigo-200 flex items-center">
+                                <span>💡 <strong class="text-indigo-700">추천:</strong> PPT 제작에 능하며, 시선을 사로잡는 스토리텔링을 좋아하는 분</span>
+                            </div>
+                        </div>
+                        
+                        <details class="group/accordion bg-white border border-indigo-200 rounded-lg overflow-hidden shadow-sm">
+                            <summary class="p-3 text-xs text-indigo-800 font-bold cursor-pointer flex justify-between items-center bg-indigo-50 hover:bg-indigo-100 transition list-none rounded-lg">
+                                <span class="flex items-center gap-1.5"><i class="fas fa-lightbulb text-yellow-500"></i> 산출물 예시 보기</span>
+                                <i class="fas fa-chevron-down text-indigo-400 group-open/accordion:rotate-180 transition-transform"></i>
+                            </summary>
+                            <div class="p-4 bg-white text-xs border-t border-indigo-100">
+                                <p class="font-bold text-indigo-800 mb-2">📄 최종 데모 시연 대본</p>
+                                <p class="text-gray-700 bg-gray-50 p-3 rounded border border-gray-200 italic leading-relaxed text-[13px]">
+                                    "여러분, 오늘 점심 정하셨나요? 5분 넘게 고민만 하다가 결국 가던 곳을 또 가지는 않으셨나요? 저희 팀은 이를 해결하기 위해..."
+                                </p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 4: Git Branch Explanation (Interactive)
+         ========================================== -->
+    <section id="branch" class="py-24 px-4 bg-white border-t border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="bg-pink-100 text-pink-800 px-4 py-1.5 rounded-full text-sm font-bold tracking-wide uppercase mb-4 inline-block">New Concept</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4 tracking-tight">Step 4. Git Branch와 PR 완벽 이해하기 🌳</h2>
+                <p class="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                    무작정 명령어를 치기 전에, 우리가 왜 이런 복잡한 과정을 거치는지 <strong>'조별과제'</strong>에 비유하여 알아봅시다.
+                </p>
+            </div>
+
+            <!-- 💡 Concept Box -->
+            <div class="bg-indigo-50 border border-indigo-100 rounded-3xl p-8 mb-12 shadow-sm max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold text-indigo-900 mb-6 border-b border-indigo-200 pb-3"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i> 아찔했던 조별과제 PPT, 기억하시나요?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-red-600 font-bold mb-3 flex items-center gap-2"><i class="fas fa-times-circle"></i> Git이 없을 때 (과거)</h4>
+                        <ul class="text-gray-600 text-sm space-y-3">
+                            <li class="flex items-start gap-2"><span class="bg-white p-1 rounded border border-gray-200 text-xs font-mono shrink-0">1</span> 누군가 실수로 원본 파일을 덮어써서 날아감</li>
+                            <li class="flex items-start gap-2"><span class="bg-white p-1 rounded border border-gray-200 text-xs font-mono shrink-0">2</span> 파일명이 <code>기획서_최종_진짜최종_이게마지막.docx</code> 로 증식함</li>
+                            <li class="flex items-start gap-2"><span class="bg-white p-1 rounded border border-gray-200 text-xs font-mono shrink-0">3</span> 서로 다른 부분을 수정해서 하나로 합치느라 밤을 샘</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-green-600 font-bold mb-3 flex items-center gap-2"><i class="fas fa-check-circle"></i> Git Branch와 PR (현재)</h4>
+                        <ul class="text-gray-600 text-sm space-y-3">
+                            <li class="flex items-start gap-2"><span class="bg-white p-1 rounded border border-gray-200 text-xs font-mono font-bold text-indigo-600 shrink-0">Branch</span> <div>원본(main)을 손상시키지 않는 <strong>'안전한 내 복사본'</strong> 생성</div></li>
+                            <li class="flex items-start gap-2"><span class="bg-white p-1 rounded border border-gray-200 text-xs font-mono font-bold text-indigo-600 shrink-0">Commit</span> <div>작업 중 여러 번에 걸쳐 <strong>중간 저장(버전 기록)</strong></div></li>
+                            <li class="flex items-start gap-2"><span class="bg-white p-1 rounded border border-gray-200 text-xs font-mono font-bold text-indigo-600 shrink-0">PR</span> <div>작업 완료 후 쌓인 Commit들을 모아 <strong>"합쳐도 될까요?" 묻는 결재 서류</strong></div></li>
+                            <li class="flex items-start gap-2"><span class="bg-white p-1 rounded border border-gray-200 text-xs font-mono font-bold text-indigo-600 shrink-0">Merge</span> <div>승인이 떨어지면, Git이 알아서 <strong>안전하고 깔끔하게 융합</strong></div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Animation Canvas -->
+            <div class="bg-slate-50 border border-gray-200 rounded-3xl p-6 md:p-10 shadow-inner max-w-4xl mx-auto">
+                <h3 class="text-center font-bold text-gray-700 mb-6">👇 버튼을 순서대로 눌러 작업 흐름을 눈으로 확인하세요</h3>
+                
+                <!-- SVG Animation Canvas -->
+                <div class="bg-white rounded-2xl border border-gray-200 p-8 mb-8 shadow-sm overflow-hidden flex justify-center w-full">
+                    <svg viewBox="0 0 700 280" class="w-full max-w-3xl h-auto font-mono" id="svg-branch">
+                        <!-- Main branch line -->
+                        <line x1="50" y1="80" x2="650" y2="80" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round"/>
+                        <text x="50" y="55" fill="#4f46e5" font-weight="bold" font-size="18">main (원본)</text>
+
+                        <!-- Main initial commits -->
+                        <circle cx="100" cy="80" r="12" fill="#4f46e5" />
+                        <circle cx="180" cy="80" r="12" fill="#4f46e5" />
+
+                        <!-- Step 1: Branch path -->
+                        <path id="svg-br-path" d="M 180 80 C 210 80, 210 200, 240 200 L 430 200" fill="none" stroke="#ec4899" stroke-width="8" stroke-linecap="round" class="hidden" />
+                        <text id="svg-br-text" x="190" y="235" fill="#db2777" font-weight="bold" font-size="14" class="hidden">feature/hong (나만의 작업실)</text>
+
+                        <!-- Step 2: Branch commits (Multiple) -->
+                        <g id="svg-commits-group" class="hidden">
+                            <!-- Commit 1 -->
+                            <circle cx="280" cy="200" r="12" fill="#ec4899" stroke="#fff" stroke-width="4" />
+                            <text x="280" y="245" fill="#ec4899" font-size="12" font-weight="bold" text-anchor="middle">Commit 1</text>
+                            
+                            <!-- Commit 2 -->
+                            <circle cx="360" cy="200" r="12" fill="#ec4899" stroke="#fff" stroke-width="4" />
+                            <text x="360" y="245" fill="#ec4899" font-size="12" font-weight="bold" text-anchor="middle">Commit 2</text>
+                        </g>
+
+                        <!-- Step 3: Pull Request -->
+                        <g id="svg-pr-group" class="hidden">
+                            <!-- Arrow pointing to main from the last commit -->
+                            <line x1="360" y1="200" x2="360" y2="135" stroke="#a371f7" stroke-width="4" stroke-dasharray="6,6" />
+                            <polygon points="355,135 365,135 360,125" fill="#a371f7" />
+                            
+                            <!-- PR Box -->
+                            <g class="pr-pulse">
+                                <rect x="270" y="105" width="180" height="45" rx="8" fill="#a371f7" />
+                                <text x="360" y="133" fill="#fff" font-size="15" font-weight="bold" text-anchor="middle">Pull Request (PR)</text>
+                                <!-- Reviewer Icon -->
+                                <circle cx="470" cy="127" r="15" fill="#fff" stroke="#a371f7" stroke-width="2"/>
+                                <text x="470" y="132" fill="#a371f7" font-size="14" font-family="'Font Awesome 6 Free'" font-weight="900" text-anchor="middle">&#xf002;</text>
+                            </g>
+                            <text x="500" y="132" fill="#6b7280" font-size="14" font-weight="bold">"검토 부탁드립니다!"</text>
+                        </g>
+
+                        <!-- Step 4: Merge path & commit -->
+                        <path id="svg-mg-path" d="M 360 200 C 420 200, 420 80, 480 80" fill="none" stroke="#ec4899" stroke-width="8" stroke-dasharray="12,12" stroke-linecap="round" class="hidden" />
+                        <circle id="svg-mg-node" cx="480" cy="80" r="16" fill="#22c55e" stroke="#fff" stroke-width="5" class="hidden" />
+                        <text id="svg-mg-text" x="480" y="45" fill="#16a34a" font-weight="bold" font-size="18" text-anchor="middle" class="hidden">Merged! (합체 완료)</text>
+                    </svg>
+                </div>
+
+                <!-- Interactive Steps Controls -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
+                    <button onclick="setGitStep(1)" id="btn-step-1" class="step-btn bg-white border-2 border-gray-200 text-gray-700 px-4 py-3 rounded-xl flex items-center justify-center gap-3 font-bold hover:border-indigo-400">
+                        <span class="step-num w-6 h-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs transition-colors shrink-0">1</span>
+                        Branch
+                    </button>
+                    <button onclick="setGitStep(2)" id="btn-step-2" class="step-btn bg-white border-2 border-gray-200 text-gray-700 px-4 py-3 rounded-xl flex items-center justify-center gap-3 font-bold hover:border-indigo-400">
+                        <span class="step-num w-6 h-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs transition-colors shrink-0">2</span>
+                        Commit
+                    </button>
+                    <button onclick="setGitStep(3)" id="btn-step-3" class="step-btn bg-white border-2 border-gray-200 text-gray-700 px-4 py-3 rounded-xl flex items-center justify-center gap-3 font-bold hover:border-indigo-400">
+                        <span class="step-num w-6 h-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs transition-colors shrink-0">3</span>
+                        PR 요청
+                    </button>
+                    <button onclick="setGitStep(4)" id="btn-step-4" class="step-btn bg-white border-2 border-gray-200 text-gray-700 px-4 py-3 rounded-xl flex items-center justify-center gap-3 font-bold hover:border-indigo-400">
+                        <span class="step-num w-6 h-6 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs transition-colors shrink-0">4</span>
+                        Merge
+                    </button>
+                </div>
+
+                <!-- Step Description Card -->
+                <div id="step-description" class="bg-white p-6 rounded-2xl border border-indigo-200 shadow-md text-left min-h-[140px] flex items-center transition-all duration-300">
+                    <div class="text-gray-500 text-center w-full text-lg"><i class="fas fa-mouse-pointer mr-2 animate-bounce"></i> 위 버튼을 1번부터 차례대로 클릭해 보세요!</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 5: Git Workflow Practice & VS Code Bash
+         ========================================== -->
+    <section id="github" class="py-24 px-4 bg-slate-50 border-t border-gray-200 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="bg-indigo-100 text-indigo-800 px-4 py-1.5 rounded-full text-sm font-bold tracking-wide uppercase mb-4 inline-block">The Main Activity</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-gray-800 mb-6 tracking-tight">Step 5. 코드 없는 Git 실습: 기획서 작성 🚀</h2>
+                <p class="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                    코드(HTML/JS)를 짜다가 충돌이 나면 당황하기 쉽습니다.<br>
+                    따라서, 우리는 <strong>글(Markdown)</strong>로 된 기획서인 <code>README.md</code>를 함께 작성하며,<br>
+                    <strong>Pull Request -> Code Review -> Merge -> 충돌 해결</strong>의 전체 사이클을 안전하게 경험해 봅니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                
+                <!-- Left: VS Code & Git Bash Guide -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Bash Setting Card -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-slate-800 px-4 py-3 flex items-center gap-3">
+                            <i class="fas fa-terminal text-blue-400"></i>
+                            <span class="text-white font-bold text-sm">VS Code 터미널 & Git Bash 세팅</span>
+                        </div>
+                        <div class="p-6 text-slate-300 text-sm leading-relaxed space-y-4">
+                            <p>윈도우의 기본 터미널(PowerShell) 대신 <strong>Git Bash</strong>를 사용하면 운영체제에 상관없이 동일한 환경에서 Git 명령어를 사용할 수 있습니다.</p>
+                            
+                            <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                                <h4 class="text-white font-bold mb-2">🛠️ Git Bash 기본 설정법</h4>
+                                <ol class="list-decimal pl-4 space-y-2 text-slate-400">
+                                    <li>VS Code에서 <kbd class="bg-slate-700 px-1 rounded text-white font-mono">Ctrl</kbd> + <kbd class="bg-slate-700 px-1 rounded text-white font-mono">`</kbd> (백틱)을 눌러 터미널 열기</li>
+                                    <li>터미널 창 우측 상단의 <strong class="text-white">+ 버튼 옆 ˅ 기호</strong> 클릭</li>
+                                    <li><strong class="text-white">Select Default Profile (기본 프로필 선택)</strong> 클릭</li>
+                                    <li>목록 중 <strong class="text-blue-400">Git Bash</strong> 선택</li>
+                                    <li>터미널 패널 우측 <strong>휴지통 아이콘</strong>으로 기존 창을 끄고, 다시 <kbd class="bg-slate-700 px-1 rounded text-white font-mono">Ctrl</kbd> + <kbd class="bg-slate-700 px-1 rounded text-white font-mono">`</kbd> 를 눌러 새 터미널 열기 (bash 라고 뜨면 성공!)</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Command Guide -->
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md">
+                        <div class="flex border-b border-gray-200 bg-slate-50 flex-wrap sm:flex-nowrap">
+                            <button id="tab-btn-1" class="tab-btn active flex-1 py-3 text-xs sm:text-sm font-bold transition whitespace-nowrap px-1" onclick="switchGitTab(1)">1. 가져오기</button>
+                            <button id="tab-btn-2" class="tab-btn flex-1 py-3 text-xs sm:text-sm font-bold text-gray-500 hover:text-gray-800 transition whitespace-nowrap px-1" onclick="switchGitTab(2)">2. 작업&저장</button>
+                            <button id="tab-btn-3" class="tab-btn flex-1 py-3 text-xs sm:text-sm font-bold text-gray-500 hover:text-gray-800 transition whitespace-nowrap px-1" onclick="switchGitTab(3)">3. 올리기</button>
+                            <button id="tab-btn-4" class="tab-btn flex-1 py-3 text-xs sm:text-sm font-bold text-purple-500 hover:text-purple-700 transition whitespace-nowrap px-1 border-l border-gray-200" onclick="switchGitTab(4)">4. PR(Web)</button>
+                        </div>
+                        
+                        <div class="p-6">
+                            <!-- Tab 1 -->
+                            <div id="git-tab-1" class="space-y-4">
+                                <p class="text-sm text-gray-600">미리 만든 <strong>빈 폴더</strong>를 VS Code로 연 상태에서 진행하세요. (파일 > 폴더 열기)</p>
+                                <div class="bg-slate-900 p-4 rounded-lg font-mono text-sm border border-slate-800 cursor-pointer hover:border-indigo-500 transition group" onclick="copyToClipboard('git clone https://github.com/팀명/레포지토리명.git', this)">
+                                    <div class="flex justify-between text-slate-400 mb-1 text-xs"><span>저장소 복사하기 (주소는 깃허브에서 복사)</span><i class="far fa-copy opacity-0 group-hover:opacity-100 transition"></i></div>
+                                    <span class="text-pink-400">git</span> <span class="text-slate-200">clone <span class="text-gray-500">[저장소주소]</span></span>
+                                </div>
+                                <div class="bg-slate-900 p-4 rounded-lg font-mono text-sm border border-slate-800 cursor-pointer hover:border-indigo-500 transition group" onclick="copyToClipboard('git checkout -b feature/hong', this)">
+                                    <div class="flex justify-between text-slate-400 mb-1 text-xs"><span>내 브랜치 생성 및 이동 (ex: feature/hong)</span><i class="far fa-copy opacity-0 group-hover:opacity-100 transition"></i></div>
+                                    <span class="text-pink-400">git</span> <span class="text-slate-200">checkout -b feature/<span class="text-gray-500">[내이름]</span></span>
+                                </div>
+                                <button onclick="switchGitTab(2)" class="w-full mt-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-lg text-xs font-bold transition flex justify-center items-center gap-2">다음: 2. 작업 & 저장 <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                            
+                            <!-- Tab 2 -->
+                            <div id="git-tab-2" class="hidden space-y-4">
+                                <p class="text-sm text-gray-600">README.md 파일을 수정한 후, 변경 내역을 담고 확정짓습니다.</p>
+                                <div class="bg-slate-900 p-4 rounded-lg font-mono text-sm border border-slate-800 cursor-pointer hover:border-green-500 transition group" onclick="copyToClipboard('git add README.md', this)">
+                                    <div class="flex justify-between text-slate-400 mb-1 text-xs"><span>수정된 파일 담기</span><i class="far fa-copy opacity-0 group-hover:opacity-100 transition"></i></div>
+                                    <span class="text-pink-400">git</span> <span class="text-slate-200">add README.md</span>
+                                </div>
+                                <div class="bg-slate-900 p-4 rounded-lg font-mono text-sm border border-slate-800 cursor-pointer hover:border-green-500 transition group" onclick="copyToClipboard('git commit -m &quot;docs: 파트 1 작성 완료&quot;', this)">
+                                    <div class="flex justify-between text-slate-400 mb-1 text-xs"><span>변경사항 확정짓기 (어떤 작업을 했는지 명시)</span><i class="far fa-copy opacity-0 group-hover:opacity-100 transition"></i></div>
+                                    <span class="text-pink-400">git</span> <span class="text-slate-200">commit -m "docs: 파트 1 작성 완료"</span>
+                                </div>
+                                <button onclick="switchGitTab(3)" class="w-full mt-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-lg text-xs font-bold transition flex justify-center items-center gap-2">다음: 3. 올리기 <i class="fas fa-arrow-right"></i></button>
+                            </div>
+
+                            <!-- Tab 3 -->
+                            <div id="git-tab-3" class="hidden space-y-4">
+                                <p class="text-sm text-gray-600">내 컴퓨터에 저장된 내역을 GitHub에 올리고 반영을 준비합니다.</p>
+                                <div class="bg-slate-900 p-4 rounded-lg font-mono text-sm border border-slate-800 cursor-pointer hover:border-purple-500 transition group" onclick="copyToClipboard('git push origin feature/hong', this)">
+                                    <div class="flex justify-between text-slate-400 mb-1 text-xs"><span>원격 브랜치로 밀어올리기 (ex: feature/hong)</span><i class="far fa-copy opacity-0 group-hover:opacity-100 transition"></i></div>
+                                    <span class="text-pink-400">git</span> <span class="text-slate-200">push origin feature/<span class="text-gray-500">[내이름]</span></span>
+                                </div>
+                                <div class="mt-4 text-xs text-indigo-800 bg-indigo-50 border border-indigo-200 p-3 rounded-lg flex items-center justify-between">
+                                    <span><i class="fas fa-arrow-right text-indigo-600 mr-1"></i> 올리기 성공 후 GitHub 사이트로 이동하세요.</span>
+                                    <button onclick="switchGitTab(4)" class="bg-indigo-600 text-white px-2.5 py-1.5 rounded shadow text-xs font-bold hover:bg-indigo-700 transition">다음 탭(PR) 보기</button>
+                                </div>
+                            </div>
+
+                            <!-- Tab 4: Web PR Guide -->
+                            <div id="git-tab-4" class="hidden space-y-4">
+                                <p class="text-sm text-gray-600">GitHub 웹사이트에서 팀원들에게 리뷰를 요청합니다.</p>
+                                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-3 text-sm text-gray-700">
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded text-xs shrink-0">1</span>
+                                        <span>GitHub 저장소 페이지에 접속합니다.</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded text-xs shrink-0">2</span>
+                                        <span>상단에 뜬 녹색 <strong>[Compare & pull request]</strong> 버튼을 클릭합니다.</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded text-xs shrink-0">3</span>
+                                        <span>우측 메뉴의 <strong>Reviewers</strong> 항목 옆의 ⚙️(톱니바퀴)를 눌러 우리 팀의 <strong>QA 담당자와 PM</strong>을 지정합니다.</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded text-xs shrink-0">4</span>
+                                        <span>초록색 <strong>[Create pull request]</strong> 버튼을 눌러 완료합니다!</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Workflow Process -->
+                <div class="lg:col-span-7">
+                    <div class="relative border-l-2 border-indigo-100 ml-4 md:ml-8 space-y-12 pb-8">
+                        
+                        <!-- Step 3 (Merge Process) -->
+                        <div class="relative pl-8 md:pl-12">
+                            <div class="absolute -left-[17px] top-0 w-8 h-8 bg-white border-4 border-indigo-400 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(99,102,241,0.3)]"></div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3 flex items-center gap-2"><span class="text-xl">💣</span> <span class="text-indigo-600">[미션] 의도적 충돌 유발하기</span> <span class="text-sm font-normal text-gray-500 ml-1">(by All)</span></h3>
+                            <div class="bg-white p-5 rounded-xl border border-gray-200 text-gray-600 text-sm leading-relaxed shadow-sm">
+                                <p class="mb-4">아래 <strong>[기획서 템플릿]</strong>을 복사하여 작성할 때, 팀원들이 각자 다른 파트를 맡습니다.</p>
+                                <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-lg text-indigo-800 font-bold">
+                                    💥 충돌 해결 미션<br>
+                                    팀원 중 2명은 약속을 하고 <span class="bg-indigo-200 px-1 rounded text-indigo-900 font-mono text-xs">파트 1. 기획 배경</span>의 첫 번째 항목을 <strong>일부러 서로 다른 문장으로</strong> 작성해 봅니다. 둘 다 반영을 요청하고 병합 할 때 발생하는 충돌을 직접 경험해 보세요!
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="relative pl-8 md:pl-12">
+                            <div class="absolute -left-[17px] top-0 w-8 h-8 bg-white border-4 border-green-400 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(52,211,153,0.3)]"></div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3 flex items-center gap-2"><span class="text-xl">👀</span> <span class="text-green-600">리뷰 및 병합 (Merge)</span> <span class="text-sm font-normal text-gray-500 ml-1">(by QA & Tech Lead)</span></h3>
+                            <div class="bg-white p-5 rounded-xl border border-gray-200 text-gray-600 text-sm leading-relaxed shadow-sm">
+                                <p class="mb-4">요청이 올라오면 지정된 <strong>QA 담당자</strong>는 파일 변경 탭에서 내용을 확인하고 'Approve(승인)'를 남깁니다. 이후 <strong>Tech Lead</strong>가 화면을 공유하며 병합 버튼을 누릅니다.</p>
+                                <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-lg border border-gray-200 mb-4">
+                                    <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg border-2 border-transparent transition text-sm shadow-md">
+                                        <i class="fas fa-code-merge"></i> Merge pull request
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 5 -->
+                        <div class="relative pl-8 md:pl-12">
+                            <div class="absolute -left-[17px] top-0 w-8 h-8 bg-white border-4 border-red-400 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(248,113,113,0.3)]"></div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3 flex items-center gap-2"><span class="text-xl">🚑</span> <span class="text-red-500">충돌(Conflict) 해결 가이드</span></h3>
+                            <div class="bg-white p-5 rounded-xl border border-gray-200 text-gray-600 text-sm leading-relaxed shadow-sm">
+                                <p class="text-red-500 font-bold mb-2"><i class="fas fa-ban"></i> 당황하지 마세요! 실무에서도 매일 일어나는 일입니다.</p>
+                                <p>병합 시 에러가 났다면, VS Code 터미널에서 <code>git pull origin main</code>을 입력하여 충돌난 코드를 내 컴퓨터로 가져옵니다.</p>
+                                
+                                <div class="my-4 border border-gray-300 rounded-md overflow-hidden font-mono text-xs shadow-sm">
+                                    <div class="bg-slate-100 p-2 border-b border-gray-300 flex flex-wrap gap-2 text-[10px]">
+                                        <span class="text-blue-600 font-bold cursor-pointer hover:bg-blue-100 px-1 rounded transition">Accept Current Change</span> |
+                                        <span class="text-green-600 font-bold cursor-pointer hover:bg-green-100 px-1 rounded transition">Accept Incoming Change</span> |
+                                        <span class="text-purple-600 font-bold cursor-pointer hover:bg-purple-100 px-1 rounded transition">Accept Both Changes</span>
+                                    </div>
+                                    <div class="p-3 bg-white">
+                                        <div class="text-gray-400 font-bold">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (Current Change)</div>
+                                        <div class="bg-blue-50 text-blue-800 p-1 border-l-2 border-blue-400 my-1">내가 쓴 기획서 내용</div>
+                                        <div class="text-gray-400 font-bold">=======</div>
+                                        <div class="bg-green-50 text-green-800 p-1 border-l-2 border-green-400 my-1">다른 팀원이 쓴 기획서 내용</div>
+                                        <div class="text-gray-400 font-bold">&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main (Incoming Change)</div>
+                                    </div>
+                                </div>
+
+                                <p class="mt-3 bg-slate-50 p-3 border border-gray-200 rounded-lg">위와 같이 VS Code 상단에 뜨는 <strong>수락 버튼(Accept ~)</strong>을 눌러 내용을 정리한 뒤, 다시 터미널에 <span class="font-mono text-pink-500 text-[13px] font-bold bg-white px-1 border border-gray-200 rounded">add -> commit -> push</span> 를 순서대로 입력하면 해결 완료입니다!</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 6: Markdown Template (PRD)
+         ========================================== -->
+    <section id="template" class="py-24 px-4 bg-white border-t border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-gray-800 mb-2 tracking-tight">📋 기획서 템플릿 (README.md)</h2>
+                    <p class="text-gray-500">아래 텍스트를 복사하여 팀의 README.md에 덮어쓰고, 각자 파트를 나누어 상세히 채워보세요.</p>
+                </div>
+                <div class="flex gap-2 w-full md:w-auto">
+                    <button onclick="copyMarkdown()" id="btn-copy" class="flex-1 md:flex-none bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl text-sm font-bold transition flex items-center justify-center gap-2 shadow-md hover:shadow-lg shrink-0">
+                        <i class="far fa-copy"></i> 템플릿 복사
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left: Markdown Editor/Raw area -->
+                <div class="lg:col-span-8">
+                    <!-- Copyable Hidden Area -->
+                    <textarea id="markdown-content" class="copy-area" readonly># 🚀 프로젝트 명 (서비스 이름을 적어주세요)
+
+> **"여기에 서비스를 매력적으로 표현하는 한 줄 소개를 적어주세요."**
+
+---
+
+## 🎯 1. 기획 배경 및 해결 과제
+* **현재 상황 및 문제점:** (우리가 일상에서 겪고 있는 불편함을 구체적으로 적어주세요)
+* **우리가 제공할 해결책:** (그 불편함을 우리 웹사이트가 어떻게 해결해 줄 것인지 적어주세요)
+
+## 👤 2. 타겟 유저 페르소나
+* **인구통계학적 특성:** (누가 주로 사용할 것인가요?)
+* **불편함:** (그 사용자는 지금 무엇을 귀찮아하거나 힘들어하나요?)
+* **기대하는 것:** (우리 웹사이트에서 무엇을 얻어가고 싶어할까요?)
+
+## ⭐ 3. 핵심 기능
+> 프론트엔드 환경에서 3주 내에 구현할 수 있는 핵심적인 기능 딱 3가지를 정의합니다.
+1. **[기능명 1]**: (이 기능이 무엇인지 유저의 입장에서 설명해주세요)
+2. **[기능명 2]**: (이 기능이 무엇인지 유저의 입장에서 설명해주세요)
+3. **[기능명 3]**: (이 기능이 무엇인지 유저의 입장에서 설명해주세요)
+
+## 🗺️ 4. 화면 설계 및 유저 플로우
+* 사용자가 우리 웹사이트에 접속하여 목표를 달성하기까지의 클릭 흐름을 단계별로 작성합니다.
+  1. `메인 페이지` 접속
+  2. ...
+
+## 🛠️ 5. 기술 스택 및 아키텍처
+* **언어:** HTML5, CSS3, JavaScript
+* **스타일링:** Tailwind CSS
+* **버전 관리 및 배포:** Git, GitHub, GitHub Pages
+* **기획 도구:** Figma, Notion
+
+## 🤝 6. 팀 규칙 및 역할 분담
+### 📌 팀 규칙
+* **소통 채널:** (예: 디스코드)
+* **정기 회의:** (예: 매주 목요일 오후 6시)
+* **Git Commit 룰:** `feat:`(기능), `fix:`(버그), `docs:`(문서), `design:`(UI) 사용
+* **리뷰 룰:** <code>main</code> 브랜치 병합 전 최소 1명 이상 승인 필요
+
+### 👥 팀원 역할
+* **PM (Product Manager):** [이름]
+* **Tech Lead:** [이름]
+* **UI/UX Designer:** [이름]
+* **QA Engineer:** [이름]
+* **Scrum Master:** [이름]
+* **Tech Writer:** [이름]
+* **DevRel (Presenter):** [이름]
+</textarea>
+
+                    <!-- Display Area -->
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xl">
+                        <div class="bg-slate-100 border-b border-gray-200 px-4 py-3 flex gap-2 items-center">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                            <span class="ml-2 text-xs font-mono text-gray-500 font-bold">README.md Template</span>
+                        </div>
+                        <div class="p-8 md:p-10 text-gray-800 text-sm md:text-base leading-relaxed overflow-x-auto h-[600px] overflow-y-auto custom-scrollbar">
+                            <h1 class="text-3xl font-extrabold border-b-2 border-gray-100 pb-3 mb-5">🚀 [프로젝트 명] (서비스 이름)</h1>
+                            <blockquote class="border-l-4 border-indigo-400 pl-4 text-gray-600 italic mb-8 bg-indigo-50 py-3 rounded-r-lg">
+                                "여기에 서비스를 매력적으로 표현하는 한 줄 소개를 적어주세요."
+                            </blockquote>
+
+                            <h2 class="text-2xl font-bold border-b border-gray-100 pb-2 mt-10 mb-4 text-indigo-900">🎯 1. 기획 배경 및 해결 과제</h2>
+                            <ul class="list-disc pl-5 space-y-3 mb-6">
+                                <li><strong class="text-pink-600">현재 상황 및 문제점:</strong> (우리가 일상에서 겪고 있는 불편함을 구체적으로 적어주세요)</li>
+                                <li><strong class="text-blue-600">우리가 제공할 해결책:</strong> (그 불편함을 우리 웹사이트가 어떻게 해결해 줄 것인지 적어주세요)</li>
+                            </ul>
+
+                            <h2 class="text-2xl font-bold border-b border-gray-100 pb-2 mt-10 mb-4 text-indigo-900">👤 2. 타겟 유저 페르소나</h2>
+                            <ul class="list-disc pl-5 space-y-2 mb-6 text-gray-700">
+                                <li><strong>인구통계학적 특성:</strong> (누가 주로 사용할 것인가요?)</li>
+                                <li><strong>불편함:</strong> (그 사용자는 지금 무엇을 귀찮아하거나 힘들어하나요?)</li>
+                                <li><strong>기대하는 것:</strong> (우리 웹사이트에서 무엇을 얻어가고 싶어할까요?)</li>
+                            </ul>
+
+                            <h2 class="text-2xl font-bold border-b border-gray-100 pb-2 mt-10 mb-4 text-indigo-900">⭐ 3. 핵심 기능</h2>
+                            <p class="text-gray-500 mb-4 border-l-4 border-gray-300 pl-3 text-sm bg-gray-50 py-2 rounded-r">프론트엔드 환경에서 3주 내에 구현할 수 있는 핵심적인 기능 딱 3가지를 정의합니다.</p>
+                            <ol class="list-decimal pl-5 space-y-4 mb-6 text-gray-700">
+                                <li><strong>[기능명 1]</strong>: (이 기능이 무엇인지 유저의 입장에서 설명해주세요)</li>
+                                <li><strong>[기능명 2]</strong>: (이 기능이 무엇인지 유저의 입장에서 설명해주세요)</li>
+                                <li><strong>[기능명 3]</strong>: (이 기능이 무엇인지 유저의 입장에서 설명해주세요)</li>
+                            </ol>
+
+                            <div class="mt-12 p-5 bg-slate-50 border border-slate-200 rounded-xl text-center shadow-inner">
+                                <p class="text-gray-500 font-bold italic">- 화면 설계, 기술 스택, 팀 규칙 등 나머지 항목은 복사본에서 확인하세요! -</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Markdown Cheat Sheet -->
+                <div class="lg:col-span-4">
+                    <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-6 sticky top-24 shadow-sm">
+                        <h3 class="text-lg font-bold text-indigo-800 mb-4 border-b border-indigo-200 pb-2"><i class="fab fa-markdown"></i> Markdown 1분 요약</h3>
+                        <p class="text-sm text-gray-600 mb-4">README 작성 시 자주 쓰는 문법입니다. 그대로 따라 쳐보세요!</p>
+                        
+                        <div class="space-y-4 mb-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-700 mb-1">제목 (Heading)</h4>
+                                <div class="bg-white p-2 rounded border border-gray-200 text-sm font-mono text-pink-600"># 큰 제목<br>## 중간 제목</div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-700 mb-1">강조 (Bold / Italic)</h4>
+                                <div class="bg-white p-2 rounded border border-gray-200 text-sm font-mono text-pink-600">**굵게** 또는 *기울임*</div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-700 mb-1">목록 (List)</h4>
+                                <div class="bg-white p-2 rounded border border-gray-200 text-sm font-mono text-pink-600">- 리스트 항목 1<br>- 리스트 항목 2<br>  - 들여쓰기 시 스페이스바 2번</div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-700 mb-1">인용구 (Blockquote)</h4>
+                                <div class="bg-white p-2 rounded border border-gray-200 text-sm font-mono text-pink-600">> 인용할 텍스트 작성</div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-700 mb-1">코드 블록 (Code)</h4>
+                                <div class="bg-white p-2 rounded border border-gray-200 text-sm font-mono text-pink-600">`짧은 코드 강조`</div>
+                            </div>
+                        </div>
+                        
+                        <!-- VS Code Preview Tip -->
+                        <div class="bg-indigo-100 p-4 rounded-xl border border-indigo-200">
+                            <h4 class="text-sm font-bold text-indigo-800 mb-2"><i class="fas fa-eye"></i> VS Code 미리보기 꿀팁</h4>
+                            <p class="text-xs text-indigo-700 mb-2">VS Code에서 README.md를 열고 아래 단축키를 누르면 우측에 미리보기 창이 열립니다.</p>
+                            <div class="flex gap-1 justify-center font-mono text-xs">
+                                <kbd class="bg-white border border-gray-300 px-2 py-1 rounded shadow-sm">Ctrl</kbd> + 
+                                <kbd class="bg-white border border-gray-300 px-2 py-1 rounded shadow-sm">Shift</kbd> + 
+                                <kbd class="bg-white border border-gray-300 px-2 py-1 rounded shadow-sm">V</kbd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         Section 7: Homework
+         ========================================== -->
+    <section id="homework" class="py-24 px-4 bg-indigo-900 text-white relative overflow-hidden text-center border-t border-indigo-800">
+        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h2 class="text-4xl font-extrabold mb-6 tracking-tight flex justify-center items-center gap-3"><i class="fas fa-search text-pink-400"></i> Step 6. 이번 주 과제 안내</h2>
+            <p class="text-xl text-indigo-200 mb-12">기획을 마쳤으니, 이제 '눈'으로 볼 차례입니다.</p>
+
+            <div class="bg-white/10 backdrop-blur-lg border border-white/20 p-8 md:p-10 rounded-3xl shadow-2xl text-left relative overflow-hidden">
+                <!-- Card Inner Decoration -->
+                <div class="absolute top-0 right-0 w-48 h-48 bg-pink-500/20 rounded-bl-full blur-2xl"></div>
+                
+                <h3 class="text-2xl font-bold text-white mb-4 relative z-10">🎨 벤치마킹: 우리의 목표 시각화하기</h3>
+                <p class="text-indigo-100 mb-8 leading-relaxed relative z-10">
+                    다음 주 Figma 와이어프레임 실습을 위해, 우리 프로젝트와 가장 유사하거나 UI/UX 디자인으로 참고하고 싶은 <strong>레퍼런스(벤치마킹) 웹사이트를 개인당 2개씩</strong> 찾아오세요.
+                </p>
+
+                <div class="bg-indigo-900/60 p-6 rounded-xl border border-indigo-400/30 mb-6 relative z-10 shadow-inner">
+                    <h4 class="font-bold text-pink-300 mb-4"><i class="fas fa-check-square mr-1"></i> 제출 방법 및 양식</h4>
+                    <ul class="space-y-4 text-sm text-indigo-50">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-caret-right text-pink-400 mt-1"></i> 
+                            <div>팀 Notion(또는 제출 공간)에 참고 사이트 <strong>링크와 메인 화면 캡처</strong> 업로드</div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-caret-right text-pink-400 mt-1"></i> 
+                            <div><strong>분석 3줄 요약 필수:</strong> "어떤 점이 좋았는지, 우리 프로젝트의 어떤 부분(컬러, 버튼 배치, 애니메이션 등)에 적용하고 싶은지" 작성</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <p class="text-xs text-indigo-200 italic text-center font-bold relative z-10">* 많이 보고 분석할수록 다음 주 기획 시간이 훨씬 단축되고 결과물의 수준이 올라갑니다!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 py-10 text-center text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p><i class="fas fa-code"></i> 2026 Frontend Programming Course. Week 10 - Team Building & Git.</p>
+            <p>Designed for collaborative learners.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Branch SVG & Interactive Stepper 로직
+        const stepsData = {
+            1: {
+                title: "1. Branch (나만의 안전한 복사본 만들기)",
+                icon: "fas fa-code-branch text-pink-500",
+                desc: "함께 쓰는 원본(<code>main</code>) 코드를 바로 수정하면 위험합니다. 원본을 복사하여 아무리 망쳐도 다른 사람에게 영향을 주지 않는 <strong>독립적인 내 작업실(Branch)</strong>을 만듭니다."
+            },
+            2: {
+                title: "2. Commits (자유롭게 여러 번 저장하기)",
+                icon: "fas fa-save text-pink-500",
+                desc: "내 Branch에서는 눈치 보지 않고 <strong>수정 내역을 여러 번 나누어 저장(Commit)</strong>할 수 있습니다. (예: 뼈대 작성 -> 1차 커밋 -> 내용 보강 -> 2차 커밋)"
+            },
+            3: {
+                title: "3. Pull Request (팀원들에게 결재 올리기)",
+                icon: "fas fa-envelope-open-text text-purple-500",
+                desc: "원하는 만큼 작업을 완료했다면, <strong>지금까지 쌓인 여러 개의 Commit들을 모아서 \"이대로 합쳐도 될까요?\" 하고 결재 서류(PR)</strong>를 올립니다. 이때 지정된 팀원이 리뷰를 진행합니다."
+            },
+            4: {
+                title: "4. Merge (드디어 원본과 합체!)",
+                icon: "fas fa-code-merge text-green-500",
+                desc: "팀원의 승인(Approve)이 떨어지면, 내 Branch의 변경 사항이 드디어 <strong>원본(main)에 안전하게 융합(Merge)</strong>됩니다. 이제 모두가 내 작업물을 볼 수 있습니다!"
+            }
+        };
+
+        function setGitStep(step) {
+            // 1. 버튼 활성화 상태 업데이트
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`btn-step-${i}`);
+                if (i <= step) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            }
+
+            // 2. 설명 카드 업데이트
+            const descCard = document.getElementById('step-description');
+            descCard.innerHTML = `
+                <div class="w-full">
+                    <h4 class="text-xl font-extrabold text-gray-800 mb-3"><i class="${stepsData[step].icon} mr-2"></i>${stepsData[step].title}</h4>
+                    <p class="text-gray-600 leading-relaxed text-[15px]">${stepsData[step].desc}</p>
+                </div>
+            `;
+
+            // 3. SVG 애니메이션 제어
+            const svgElements = [
+                'svg-br-path', 'svg-br-text', 
+                'svg-commits-group', 
+                'svg-pr-group', 
+                'svg-mg-path', 'svg-mg-node', 'svg-mg-text'
+            ];
+            svgElements.forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('draw-path', 'fade-in', 'fade-in-fast');
+                el.classList.add('hidden');
+            });
+
+            // 스텝에 따라 순차적으로 요소 표시 및 애니메이션 트리거
+            if (step >= 1) {
+                document.getElementById('svg-br-path').classList.remove('hidden');
+                document.getElementById('svg-br-path').classList.add('draw-path');
+                document.getElementById('svg-br-text').classList.remove('hidden');
+                document.getElementById('svg-br-text').classList.add('fade-in');
+            }
+            if (step >= 2) {
+                document.getElementById('svg-commits-group').classList.remove('hidden');
+                document.getElementById('svg-commits-group').classList.add('fade-in-fast');
+            }
+            if (step >= 3) {
+                document.getElementById('svg-pr-group').classList.remove('hidden');
+                document.getElementById('svg-pr-group').classList.add('fade-in');
+            }
+            if (step >= 4) {
+                document.getElementById('svg-mg-path').classList.remove('hidden');
+                document.getElementById('svg-mg-path').classList.add('draw-path');
+                document.getElementById('svg-mg-node').classList.remove('hidden');
+                document.getElementById('svg-mg-node').classList.add('fade-in-fast');
+                document.getElementById('svg-mg-text').classList.remove('hidden');
+                document.getElementById('svg-mg-text').classList.add('fade-in');
+            }
+        }
+
+        // 터미널 탭 스위치
+        function switchGitTab(tabIndex) {
+            document.querySelectorAll('.tab-btn').forEach((btn, index) => {
+                if (index + 1 === tabIndex) {
+                    btn.classList.add('active');
+                    if(tabIndex === 4) {
+                        btn.classList.remove('text-purple-500', 'hover:text-purple-700');
+                    } else {
+                        btn.classList.remove('text-gray-500', 'hover:text-gray-800');
+                    }
+                } else {
+                    btn.classList.remove('active');
+                    if(index + 1 === 4) {
+                        btn.classList.add('text-purple-500', 'hover:text-purple-700');
+                    } else {
+                        btn.classList.add('text-gray-500', 'hover:text-gray-800');
+                    }
+                }
+            });
+            
+            document.querySelectorAll('[id^="git-tab-"]').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            document.getElementById(`git-tab-${tabIndex}`).classList.remove('hidden');
+        }
+
+        // 명령어 클릭 시 복사 기능
+        function copyToClipboard(text, element) {
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = element.querySelector('i');
+                const originalClass = icon.className;
+                
+                icon.className = 'fas fa-check text-green-400 opacity-100';
+                element.classList.add('border-green-400');
+                
+                setTimeout(() => {
+                    icon.className = originalClass;
+                    element.classList.remove('border-green-400');
+                }, 1500);
+            }).catch(err => {
+                const textarea = document.createElement("textarea");
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    const icon = element.querySelector('i');
+                    const originalClass = icon.className;
+                    icon.className = 'fas fa-check text-green-400 opacity-100';
+                    element.classList.add('border-green-400');
+                    setTimeout(() => {
+                        icon.className = originalClass;
+                        element.classList.remove('border-green-400');
+                    }, 1500);
+                } catch (e) {
+                    alert("복사에 실패했습니다.");
+                }
+                document.body.removeChild(textarea);
+            });
+        }
+
+        // Markdown 템플릿 복사 기능
+        function copyMarkdown() {
+            const textarea = document.getElementById('markdown-content');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); 
+
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById('btn-copy');
+                const originalHTML = btn.innerHTML;
+                
+                btn.innerHTML = '<i class="fas fa-check"></i> 복사 완료!';
+                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                btn.classList.add('bg-green-500', 'hover:bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                    btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                }, 2500);
+            } catch (err) {
+                alert("복사에 실패했습니다.");
+            }
+        }
+    </script>
+</body>
+</html>
