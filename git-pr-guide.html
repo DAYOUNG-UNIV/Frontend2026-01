@@ -17,7 +17,6 @@
             font-family: 'Fira Code', monospace;
         }
 
-        /* VS Code Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
             height: 10px;
@@ -32,7 +31,6 @@
             background: #4f4f4f; 
         }
 
-        /* Animations */
         .cursor-blink {
             animation: blink 1s step-end infinite;
         }
@@ -62,10 +60,68 @@
             background-color: #777;
             margin: 2px 0;
         }
+
+        .vscode-menu {
+            position: absolute;
+            background-color: #252526;
+            border: 1px solid #454545;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-radius: 4px;
+            padding: 4px 0;
+            z-index: 100;
+            display: none;
+            min-width: 200px;
+        }
+        .vscode-menu-item {
+            padding: 6px 24px;
+            font-size: 13px;
+            color: #cccccc;
+            cursor: pointer;
+        }
+        .vscode-menu-item:hover {
+            background-color: #04395e;
+            color: #ffffff;
+        }
+        .vscode-menu-divider {
+            height: 1px;
+            background-color: #454545;
+            margin: 4px 0;
+        }
+        .git-badge {
+            font-size: 10px;
+            font-weight: bold;
+            padding: 0 4px;
+            border-radius: 2px;
+            margin-left: auto;
+        }
+        .badge-m { color: #e2c08d; } /* Modified */
+        .badge-u { color: #73c991; } /* Untracked */
+        .badge-c { color: #f28b25; } /* Conflict */
+        
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 12px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white h-screen flex flex-col overflow-hidden">
-    <!-- Header -->
     <header class="bg-gray-800 border-b border-gray-700 p-3 flex justify-between items-center z-10 shrink-0">
         <div class="flex items-center gap-3">
             <i class="fab fa-github text-2xl"></i>
@@ -77,10 +133,8 @@
     </header>
 
     <div class="flex flex-1 overflow-hidden lg:flex-row flex-col">
-        <!-- Left Sidebar (Guide/Instructions) -->
         <aside class="lg:w-1/3 w-full bg-gray-800 border-r border-gray-700 flex flex-col h-full shrink-0">
             <div class="p-5 flex-1 overflow-y-auto custom-scrollbar" id="guide-content">
-                <!-- Guide Step Content -->
                 <div class="mb-4">
                     <span id="step-badge" class="inline-block px-2 py-1 bg-blue-600 text-xs rounded mb-2 font-bold uppercase tracking-wider">Intro</span>
                     <h2 id="step-title" class="text-2xl font-bold text-white mb-3">모두 함께 PR 해보기</h2>
@@ -89,7 +143,6 @@
                         코드를 작성하기 전에 '글(Markdown)'로 된 기획서(<code>README.md</code>)를 다 함께 완성해 보면서 깃허브 협업 흐름을 경험해 보겠습니다.
                     </p>
                     
-                    <!-- Git Graph Visualization Area -->
                     <div class="bg-gray-900 border border-gray-700 rounded-lg p-3 mb-4 hidden fade-in" id="graph-container">
                         <div class="text-xs text-gray-400 mb-2 font-bold flex items-center gap-2">
                             <i class="fas fa-project-diagram"></i> 현재 Git 상태 시각화
@@ -106,29 +159,31 @@
                 </div>
             </div>
             
-            <!-- Controls -->
             <div class="p-5 bg-gray-850 border-t border-gray-700 shrink-0">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs text-gray-400" id="progress-text">Step 0 / 6</span>
-                    <div class="w-2/3 bg-gray-700 rounded-full h-1.5">
-                        <div id="progress-bar" class="bg-blue-500 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs text-gray-400 font-bold" id="progress-text">Step 0 / 8</span>
+                    <div class="w-2/3 bg-gray-700 rounded-full h-2 shadow-inner">
+                        <div id="progress-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
-                <button id="next-btn" onclick="nextStep()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded shadow-lg transition-all transform active:scale-95 flex justify-center items-center gap-2">
-                    <span>가이드 시작하기</span> <i class="fas fa-arrow-right"></i>
-                </button>
+                <div class="flex gap-2">
+                    <button id="prev-btn" onclick="prevStep()" class="w-1/3 py-2.5 bg-gray-600 hover:bg-gray-500 text-white text-sm font-bold rounded shadow transition-all active:scale-95 flex justify-center items-center gap-1 opacity-50 cursor-not-allowed" disabled>
+                        <i class="fas fa-arrow-left"></i> 이전
+                    </button>
+                    <button id="next-btn" onclick="nextStep()" class="w-2/3 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded shadow transition-all active:scale-95 flex justify-center items-center gap-2">
+                        <span>가이드 시작하기</span> <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
         </aside>
 
-        <!-- Right Area (VS Code UI) -->
         <main class="flex-1 flex flex-col bg-[#1e1e1e] h-full overflow-hidden">
-            <!-- Top Activity Bar & Tabs -->
             <div class="bg-[#252526] flex items-center shrink-0">
                 <div class="w-12 h-10 flex items-center justify-center bg-[#333333] border-l-2 border-blue-500 cursor-pointer">
                     <i class="far fa-copy text-gray-300"></i>
                 </div>
                 <div class="flex-1 flex bg-[#1e1e1e] overflow-x-auto custom-scrollbar">
-                    <div class="flex items-center px-4 py-2 bg-[#1e1e1e] text-white border-t-2 border-blue-500 cursor-pointer border-r border-[#2d2d2d] min-w-[150px]">
+                    <div id="tab-readme" class="hidden items-center px-4 py-2 bg-[#1e1e1e] text-white border-t-2 border-blue-500 cursor-pointer border-r border-[#2d2d2d] min-w-[150px]">
                         <i class="fab fa-markdown text-blue-400 mr-2"></i> 
                         <span class="text-sm">README.md</span>
                         <i class="fas fa-times ml-auto text-gray-500 hover:text-white text-xs"></i>
@@ -140,20 +195,40 @@
                 <!-- File Explorer -->
                 <div class="w-48 bg-[#252526] flex-col hidden md:flex shrink-0 border-r border-[#333333]">
                     <div class="px-4 py-2 text-xs font-bold tracking-wider text-gray-400 uppercase">Explorer</div>
-                    <div class="px-2 py-1 flex items-center cursor-pointer hover:bg-[#2a2d2e] group" id="folder-root">
+                    
+                    <div id="workspace-root" class="px-2 py-1 flex items-center group relative cursor-pointer mt-1">
                         <i class="fas fa-chevron-down text-[10px] text-gray-400 mr-1 w-3"></i>
-                        <i class="fas fa-folder-open text-blue-400 mr-2 text-sm"></i>
-                        <span class="text-sm text-gray-300 group-hover:text-white">my-team-project</span>
+                        <i class="fas fa-folder text-blue-400 mr-2 text-sm"></i>
+                        <span class="text-sm text-gray-300 font-bold uppercase tracking-wider">projects</span>
                     </div>
-                    <div class="pl-6 pr-2 py-1 flex items-center cursor-pointer bg-[#37373d] text-white" id="file-readme">
-                        <i class="fab fa-markdown text-blue-400 mr-2 text-sm"></i>
-                        <span class="text-sm">README.md</span>
+                    
+                    <div id="empty-workspace" class="px-6 py-2 text-xs text-gray-500 italic">
+                        Folder is empty.
+                    </div>
+
+                    <div id="explorer-content" class="hidden">
+                        <div class="pl-4 pr-2 py-1 flex items-center cursor-pointer hover:bg-[#2a2d2e] group relative" id="folder-root">
+                            <i class="fas fa-chevron-down text-[10px] text-gray-400 mr-1 w-3"></i>
+                            <i class="fas fa-folder-open text-blue-400 mr-2 text-sm"></i>
+                            <span class="text-sm text-gray-300 group-hover:text-white">my-team-project</span>
+                        </div>
+                        <div class="pl-8 pr-2 py-1 flex items-center cursor-pointer bg-[#37373d] text-white" id="file-readme">
+                            <i class="fab fa-markdown text-blue-400 mr-2 text-sm"></i>
+                            <span class="text-sm flex-1">README.md</span>
+                            <span id="file-badge" class="git-badge hidden">M</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Editor -->
                 <div class="flex-1 overflow-y-auto bg-[#1e1e1e] relative text-[#d4d4d4] font-mono text-sm leading-relaxed p-4" id="editor-container">
-                    <div id="editor-content" class="whitespace-pre-wrap"># 🚀 프로젝트 명 (서비스 이름을 적어주세요)
+                    <div id="editor-empty" class="h-full flex flex-col items-center justify-center text-gray-600">
+                        <i class="fab fa-github text-6xl mb-4 opacity-20"></i>
+                        <p class="text-xs opacity-50 font-sans">No file is open.</p>
+                        <p class="text-[10px] opacity-30 font-sans mt-2">Clone the repository to start.</p>
+                    </div>
+
+                    <div id="editor-content" class="whitespace-pre-wrap hidden"># 🚀 프로젝트 명 (서비스 이름을 적어주세요)
 
 > **"여기에 서비스를 매력적으로 표현하는 한 줄 소개를 적어주세요."**
 
@@ -177,7 +252,6 @@
                 </div>
             </div>
 
-            <!-- Terminal (Git Bash) -->
             <div class="h-1/3 bg-[#1e1e1e] border-t border-[#333333] flex flex-col shrink-0">
                 <div class="flex items-center px-4 py-1.5 bg-[#252526]">
                     <span class="text-xs text-gray-400 mr-4 hover:text-white cursor-pointer uppercase tracking-wider">Problems</span>
@@ -194,8 +268,8 @@
                     <div class="flex mt-1">
                         <span class="text-green-500 mr-2">user@DESKTOP</span>
                         <span class="text-purple-400 mr-2">MINGW64</span>
-                        <span class="text-yellow-300 mr-2">~/my-team-project</span>
-                        <span class="text-cyan-400 mr-2" id="term-branch">(main)</span>
+                        <span class="text-yellow-300 mr-2" id="term-path">~/projects</span>
+                        <span class="text-cyan-400 mr-2" id="term-branch"></span>
                         <span class="text-white">$ <span id="term-input"></span><span class="cursor-blink bg-gray-400 w-2 inline-block h-4 align-middle ml-0.5"></span></span>
                     </div>
                 </div>
@@ -204,7 +278,7 @@
             <!-- Bottom Status Bar -->
             <div class="bg-[#007acc] h-6 flex items-center px-3 text-white text-xs shrink-0">
                 <div class="flex items-center cursor-pointer hover:bg-[#1f8ad1] px-2 h-full gap-1">
-                    <i class="fas fa-code-branch"></i> <span id="status-branch">main</span>
+                    <i class="fas fa-code-branch"></i> <span id="status-branch" class="hidden"></span>
                 </div>
                 <div class="flex items-center cursor-pointer hover:bg-[#1f8ad1] px-2 h-full gap-1 ml-2">
                     <i class="fas fa-sync-alt"></i> 0 ↓ 0 ↑
@@ -218,7 +292,6 @@
         </main>
     </div>
 
-    <!-- GitHub PR Modal (Hidden by default) -->
     <div id="pr-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center fade-in">
         <div class="bg-white rounded-lg shadow-2xl w-[600px] max-w-[90%] overflow-hidden text-gray-800">
             <div class="bg-gray-100 border-b border-gray-200 px-4 py-3 flex justify-between items-center">
@@ -253,7 +326,6 @@
         </div>
     </div>
 
-    <!-- Info Modal -->
     <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden flex items-center justify-center">
         <div class="bg-[#1e1e1e] border border-gray-700 rounded-lg shadow-2xl w-[700px] max-w-[90%] max-h-[90vh] overflow-hidden flex flex-col text-gray-200">
             <div class="bg-gray-800 border-b border-gray-700 px-5 py-4 flex justify-between items-center">
@@ -292,19 +364,181 @@
         </div>
     </div>
 
+    <div id="vscode-context-menu" class="vscode-menu font-sans">
+        <div class="vscode-menu-item" onclick="showToast('새 파일 생성 기능은 가이드 모드에서 생략됩니다.')">New File...</div>
+        <div class="vscode-menu-item" onclick="showToast('새 폴더 생성 기능은 가이드 모드에서 생략됩니다.')">New Folder...</div>
+        <div class="vscode-menu-divider"></div>
+        <div class="vscode-menu-item" onclick="showToast('탐색기에 이미 my-team-project 폴더가 열려 있습니다.')">Reveal in File Explorer</div>
+    <!-- Toast Notification -->
+    <div id="toast">메시지</div>
+
     <script>
         // State variables
         let currentStep = 0;
         let isAnimating = false;
         let conflictResolved = false;
+        let lastResolvedHtml = null;
+        let actionExecuted = false; // 액션 실행 여부를 추적하는 변수 추가
 
-        // SVG Git Graphs for visualization
-        const graphMain = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><circle cx="100" cy="60" r="10" fill="#4B5563"/><line x1="110" y1="60" x2="190" y2="60" stroke="#3B82F6" stroke-width="4"/><circle cx="200" cy="60" r="14" fill="#3B82F6" stroke="#fff" stroke-width="2"/><text x="200" y="35" fill="#9CA3AF" font-size="12" text-anchor="middle">main (원본 코드)</text></svg>`;
+        let currentPath = "~/projects";
+        let currentBranch = "";
+
+        const baseContent = `# 🚀 프로젝트 명 (서비스 이름을 적어주세요)\n\n> **"여기에 서비스를 매력적으로 표현하는 한 줄 소개를 적어주세요."**\n\n---\n\n## 🎯 1. 기획 배경 및 해결 과제\n`;
+        const tailContent = `\n\n## 👤 2. 타겟 유저 페르소나\n* **인구통계학적 특성:** (누가 주로 사용할 것인가요?)\n* **불편함:** (그 사용자는 지금 무엇을 귀찮아하거나 힘들어하나요?)\n* **기대하는 것:** (우리 웹사이트에서 무엇을 얻어가고 싶어할까요?)\n\n## ⭐ 3. 핵심 기능\n> 프론트엔드 환경에서 3주 내에 구현할 수 있는 핵심 기능 딱 3가지를 정의합니다.\n1. **[기능명 1]**: (이 기능이 무엇인지 유저의 입장에서 설명해주세요)\n2. **[기능명 2]**: (이 기능이 무엇인지 유저의 입장에서 설명해주세요)\n3. **[기능명 3]**: (이 기능이 무엇인지 유저의 입장에서 설명해주세요)\n`;
+
+        const txtBase = `* **현재 상황 및 문제점:** (우리가 일상에서 겪고 있는 불편함을 구체적으로 적어주세요)\n* **우리가 제공할 해결책:** (그 불편함을 우리 웹사이트가 어떻게 해결해 줄 것인지 적어주세요)`;
+        const txtEdited = `<span class='text-green-400 font-bold'>* **현재 상황 및 문제점:** 바쁜 대학생들이 매일 점심 메뉴를 고르는데 너무 많은 시간을 낭비하고 있습니다.</span>\n<span class='text-green-400 font-bold'>* **우리가 제공할 해결책:** 학교 주변 식당 데이터를 바탕으로, 룰렛을 돌려 오늘 먹을 메뉴를 랜덤으로 1초만에 추천해주는 웹사이트입니다.</span>`;
+        const txtResolved = `<span class='text-blue-400 font-bold'>* **현재 상황 및 문제점:** 바쁜 대학생들이 매일 점심 메뉴를 고르는데 너무 많은 시간을 낭비하고 있습니다.</span>\n<span class='text-green-400 font-bold'>* **현재 상황 및 문제점:** 점심시간 1시간은 너무 짧은데, 매번 '뭐 먹지?' 고민하느라 10분씩 버리고 있습니다. (다른 팀원이 쓴 내용)</span>\n<span class='text-green-400 font-bold'>* **우리가 제공할 해결책:** 학교 주변 식당 데이터를 바탕으로, 룰렛을 돌려 오늘 먹을 메뉴를 랜덤으로 1초만에 추천해주는 웹사이트입니다.</span>`;
+
+        const editorBaseText = baseContent + txtBase + tailContent;
+        const editorEditedText = baseContent + txtEdited + tailContent;
+        const editorResolvedTextDefault = baseContent + txtResolved + tailContent;
+
+        function syncRightPanel(step) {
+            // 초기 상태로 리셋
+            document.getElementById('empty-workspace').classList.remove('hidden');
+            document.getElementById('explorer-content').classList.add('hidden');
+            document.getElementById('tab-readme').classList.replace('flex', 'hidden');
+            document.getElementById('editor-empty').classList.remove('hidden');
+            document.getElementById('editor-content').classList.add('hidden');
+            
+            currentPath = "~/projects";
+            currentBranch = "";
+            document.getElementById('term-path').innerText = currentPath;
+            document.getElementById('term-branch').innerText = currentBranch;
+            
+            document.getElementById('status-branch').innerText = "";
+            document.getElementById('status-branch').className = "hidden";
+            const badge = document.getElementById('file-badge');
+            badge.className = "git-badge hidden";
+            badge.innerText = "";
+            document.getElementById('editor-content').innerHTML = editorBaseText;
+            document.getElementById('terminal-lines').innerHTML = ""; // 터미널 초기화
+            conflictResolved = false;
+
+            // 단계에 맞춰 누적 상태 적용 (명령어가 완료된 상태를 기준으로 렌더링)
+            if (step > 2) {
+                document.getElementById('empty-workspace').classList.add('hidden');
+                document.getElementById('explorer-content').classList.remove('hidden');
+                document.getElementById('tab-readme').classList.replace('hidden', 'flex');
+                document.getElementById('editor-empty').classList.add('hidden');
+                document.getElementById('editor-content').classList.remove('hidden');
+                
+                currentPath = "~/projects/my-team-project";
+                currentBranch = "(main)";
+                document.getElementById('term-path').innerText = currentPath;
+                document.getElementById('term-branch').innerText = currentBranch;
+                document.getElementById('status-branch').innerText = "main";
+                document.getElementById('status-branch').className = "";
+
+                addTerminalHistory("git clone https://github.com/my-team/my-team-project.git", "~/projects", "", [
+                    "Cloning into 'my-team-project'...",
+                    "remote: Enumerating objects: 4, done.",
+                    "Receiving objects: 100% (4/4), done."
+                ]);
+                addTerminalHistory("cd my-team-project", currentPath, currentBranch, []);
+            }
+            if (step > 3) {
+                currentBranch = "(feature/hong)";
+                document.getElementById('term-branch').innerText = currentBranch;
+                document.getElementById('status-branch').innerText = "feature/hong";
+                addTerminalHistory("git checkout -b feature/hong", currentPath, "(main)", ["Switched to a new branch 'feature/hong'"]);
+            }
+            if (step > 4) {
+                document.getElementById('editor-content').innerHTML = editorEditedText;
+                if (step === 5) { // Commit 전 단계까지만 M 뱃지 표시
+                    badge.classList.remove('hidden');
+                    badge.classList.add('badge-m');
+                    badge.innerText = 'M';
+                }
+            }
+            if (step > 5) {
+                addTerminalHistory("git add README.md", currentPath, currentBranch, []);
+                addTerminalHistory('git commit -m "docs: 홍길동 파트 기획안 작성 완료"', currentPath, currentBranch, [
+                    "[feature/hong 2a3b4c] docs: 홍길동 파트 기획안 작성 완료",
+                    " 1 file changed, 2 insertions(+), 2 deletions(-)"
+                ]);
+            }
+            if (step > 6) {
+                addTerminalHistory("git push origin feature/hong", currentPath, currentBranch, [
+                    "remote: Create a pull request for 'feature/hong' on GitHub by visiting:",
+                    "remote:      https://github.com/my-team/my-team-project/pull/new/feature/hong",
+                    "To https://github.com/my-team/my-team-project.git",
+                    " * [new branch]      feature/hong -> feature/hong"
+                ]);
+            }
+            if (step > 8) { // 충돌 해결이 완료된 최종 상태 (Step 9)
+                document.getElementById('editor-content').innerHTML = lastResolvedHtml || editorResolvedTextDefault;
+                conflictResolved = true;
+                addTerminalHistory("git pull origin main", currentPath, currentBranch, [
+                    "Auto-merging README.md",
+                    "<span class='text-red-400'>CONFLICT (content): Merge conflict in README.md</span>",
+                    "Automatic merge failed; fix conflicts and then commit the result."
+                ]);
+                addTerminalHistory("git add README.md", currentPath, currentBranch, []);
+                addTerminalHistory('git commit -m "Merge branch \'main\' into feature/hong"', currentPath, currentBranch, [
+                    "[feature/hong 9f8e7d] Merge branch 'main' into feature/hong"
+                ]);
+            }
+            scrollToBottom('terminal');
+        }
+
+        function addTerminalHistory(cmd, path, branch, lines) {
+            const linesDiv = document.getElementById('terminal-lines');
+            linesDiv.innerHTML += `
+                <div class="flex mt-1">
+                    <span class="text-green-500 mr-2">user@DESKTOP</span>
+                    <span class="text-purple-400 mr-2">MINGW64</span>
+                    <span class="text-yellow-300 mr-2">${path}</span>
+                    <span class="text-cyan-400 mr-2">${branch}</span>
+                    <span class="text-white">$ ${cmd}</span>
+                </div>`;
+            for (let line of lines) {
+                linesDiv.innerHTML += `<div class="text-gray-300 ml-1 whitespace-pre">${line}</div>`;
+            }
+        }
+
+        function prevStep() {
+            if (isAnimating || currentStep === 0) return;
+            currentStep--;
+            actionExecuted = false;
+            syncRightPanel(currentStep);
+            updateGuideUI();
+        }
+
+        document.addEventListener('contextmenu', (e) => {
+            const explorer = document.getElementById('folder-root');
+            const file = document.getElementById('file-readme');
+            if (explorer.contains(e.target) || e.target === explorer || file.contains(e.target) || e.target === file) {
+                e.preventDefault();
+                const menu = document.getElementById('vscode-context-menu');
+                menu.style.display = 'block';
+                menu.style.left = e.pageX + 'px';
+                menu.style.top = e.pageY + 'px';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            document.getElementById('vscode-context-menu').style.display = 'none';
+        });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        const graphMain = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><circle cx="100" cy="60" r="10" fill="#4B5563"/><line x1="110" y1="60" x2="190" y2="60" stroke="#3B82F6" stroke-width="4"/><circle cx="200" cy="60" r="14" fill="#3B82F6" stroke="#fff" stroke-width="2" class="fade-in"/><text x="200" y="35" fill="#9CA3AF" font-size="12" text-anchor="middle">main (원본 코드)</text></svg>`;
         
-        const graphBranch = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><circle cx="100" cy="40" r="10" fill="#4B5563"/><line x1="110" y1="40" x2="190" y2="40" stroke="#3B82F6" stroke-width="4"/><circle cx="200" cy="40" r="12" fill="#3B82F6"/><text x="200" y="20" fill="#9CA3AF" font-size="12" text-anchor="middle">main</text><path d="M 200 52 C 200 90, 220 90, 240 90" fill="transparent" stroke="#10B981" stroke-width="4" stroke-dasharray="4"/><circle cx="250" cy="90" r="12" fill="#10B981" class="fade-in"/><text x="250" y="115" fill="#10B981" font-size="12" font-weight="bold" text-anchor="middle">feature/hong</text></svg>`;
+        const graphBranch = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><circle cx="100" cy="40" r="10" fill="#4B5563"/><line x1="110" y1="40" x2="190" y2="40" stroke="#3B82F6" stroke-width="4"/><circle cx="200" cy="40" r="12" fill="#3B82F6"/><text x="200" y="20" fill="#9CA3AF" font-size="12" text-anchor="middle">main</text><path d="M 200 52 C 200 90, 220 90, 240 90" fill="transparent" stroke="#10B981" stroke-width="4" stroke-dasharray="4"/><circle cx="250" cy="90" r="12" fill="#10B981" class="fade-in"/><text x="250" y="115" fill="#10B981" font-size="12" font-weight="bold" text-anchor="middle">feature/hong 생성됨</text></svg>`;
+
+        const graphEdit = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><circle cx="200" cy="40" r="12" fill="#3B82F6"/><text x="200" y="20" fill="#9CA3AF" font-size="12" text-anchor="middle">main</text><path d="M 200 52 C 200 90, 220 90, 240 90" fill="transparent" stroke="#10B981" stroke-width="4"/><circle cx="250" cy="90" r="12" fill="#10B981"/><text x="250" y="115" fill="#10B981" font-size="12" text-anchor="middle">feature/hong</text><circle cx="250" cy="90" r="16" fill="transparent" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4" class="cursor-blink"/><text x="310" y="95" fill="#F59E0B" font-size="12" font-weight="bold">코드 수정 중... (M)</text></svg>`;
         
-        const graphCommit = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><circle cx="100" cy="40" r="10" fill="#4B5563"/><line x1="110" y1="40" x2="190" y2="40" stroke="#3B82F6" stroke-width="4"/><circle cx="200" cy="40" r="12" fill="#3B82F6"/><text x="200" y="20" fill="#9CA3AF" font-size="12" text-anchor="middle">main</text><path d="M 200 52 C 200 90, 220 90, 240 90" fill="transparent" stroke="#10B981" stroke-width="4"/><circle cx="250" cy="90" r="10" fill="#10B981"/><line x1="260" y1="90" x2="310" y2="90" stroke="#10B981" stroke-width="4"/><circle cx="320" cy="90" r="14" fill="#10B981" stroke="#fff" stroke-width="2" class="fade-in"/><text x="320" y="115" fill="#10B981" font-size="12" font-weight="bold" text-anchor="middle">새로운 세이브 포인트!</text></svg>`;
+        const graphCommit = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><circle cx="200" cy="40" r="12" fill="#3B82F6"/><text x="200" y="20" fill="#9CA3AF" font-size="12" text-anchor="middle">main</text><path d="M 200 52 C 200 90, 220 90, 240 90" fill="transparent" stroke="#10B981" stroke-width="4"/><circle cx="250" cy="90" r="10" fill="#10B981"/><line x1="260" y1="90" x2="310" y2="90" stroke="#10B981" stroke-width="4"/><circle cx="320" cy="90" r="14" fill="#10B981" stroke="#fff" stroke-width="2" class="fade-in"/><text x="320" y="115" fill="#10B981" font-size="12" font-weight="bold" text-anchor="middle">새로운 세이브 포인트!</text></svg>`;
         
+        const graphPush = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><defs><marker id="arrow-push" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#38BDF8"/></marker></defs><circle cx="200" cy="40" r="12" fill="#3B82F6"/><text x="200" y="20" fill="#9CA3AF" font-size="12" text-anchor="middle">main</text><path d="M 200 52 C 200 90, 220 90, 240 90" fill="transparent" stroke="#10B981" stroke-width="4"/><circle cx="250" cy="90" r="10" fill="#10B981"/><line x1="260" y1="90" x2="310" y2="90" stroke="#10B981" stroke-width="4"/><circle cx="320" cy="90" r="12" fill="#10B981"/><text x="320" y="115" fill="#10B981" font-size="12" text-anchor="middle">feature/hong (로컬)</text><path d="M 320 75 L 320 30" fill="transparent" stroke="#38BDF8" stroke-width="3" stroke-dasharray="5" marker-end="url(#arrow-push)" class="fade-in"/><text x="320" y="20" fill="#38BDF8" font-size="12" font-weight="bold" text-anchor="middle">GitHub 서버로 업로드 (Push)</text></svg>`;
+
         const graphPR = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><defs><marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#A855F7"/></marker></defs><circle cx="200" cy="40" r="12" fill="#3B82F6"/><text x="200" y="20" fill="#9CA3AF" font-size="12" text-anchor="middle">main</text><path d="M 200 52 C 200 90, 220 90, 240 90" fill="transparent" stroke="#10B981" stroke-width="4"/><circle cx="250" cy="90" r="10" fill="#10B981"/><line x1="260" y1="90" x2="310" y2="90" stroke="#10B981" stroke-width="4"/><circle cx="320" cy="90" r="12" fill="#10B981"/><text x="320" y="115" fill="#10B981" font-size="12" text-anchor="middle">내 브랜치</text><path d="M 320 75 C 320 40, 280 40, 230 40" fill="transparent" stroke="#A855F7" stroke-width="3" stroke-dasharray="5" marker-end="url(#arrow)" class="fade-in"/><text x="275" y="30" fill="#A855F7" font-size="12" font-weight="bold" text-anchor="middle">PR (결재 요청!)</text></svg>`;
         
         const graphConflict = `<svg viewBox="0 0 400 120" class="w-full h-full font-sans"><circle cx="160" cy="35" r="10" fill="#3B82F6"/><line x1="170" y1="35" x2="250" y2="35" stroke="#EF4444" stroke-width="4"/><circle cx="260" cy="35" r="14" fill="#EF4444" stroke="#fff" stroke-width="2" class="cursor-blink"/><text x="260" y="15" fill="#EF4444" font-size="11" text-anchor="middle">다른 팀원이 먼저 Merge함!</text><text x="160" y="15" fill="#9CA3AF" font-size="11" text-anchor="middle">main</text><path d="M 160 45 C 160 85, 180 85, 200 85" fill="transparent" stroke="#10B981" stroke-width="4"/><circle cx="210" cy="85" r="10" fill="#10B981"/><line x1="220" y1="85" x2="270" y2="85" stroke="#10B981" stroke-width="4"/><circle cx="280" cy="85" r="12" fill="#10B981"/><text x="280" y="110" fill="#10B981" font-size="11" text-anchor="middle">내 코드</text><path d="M 260 50 L 280 72" stroke="#F59E0B" stroke-width="3" stroke-dasharray="4"/><text x="285" y="65" fill="#F59E0B" font-size="18" font-weight="bold">⚡충돌!</text></svg>`;
@@ -315,11 +549,10 @@
             {
                 badge: "Intro",
                 title: "모두 함께 PR 해보기",
-                desc: "팀 과제의 가장 중요한 목표는 <strong>'모든 팀원이 PR이 무엇인지 이해하고 직접 해보는 것'</strong>입니다.<br><br>우측 에디터에 기본 기획서(README.md) 템플릿이 보입니다. 이 문서를 팀원들이 각자 브랜치를 파서 수정한 뒤 합치는 과정을 경험해 보겠습니다.",
+                desc: "팀 과제의 가장 중요한 목표는 <strong>'모든 팀원이 PR이 무엇인지 이해하고 직접 해보는 것'</strong>입니다.<br><br>우측 에디터는 현재 비어있지만, 원격 저장소를 복사(Clone)해오면 기본 기획서(README.md) 템플릿이 나타날 것입니다. 이 문서를 팀원들이 각자 브랜치를 파서 수정한 뒤 합치는 과정을 경험해 보겠습니다.",
                 detail: "준비가 되었다면 아래 버튼을 눌러주세요.",
                 btnText: "Step 1 시작하기",
-                showGraph: false,
-                action: () => {}
+                showGraph: false
             },
             {
                 badge: "Step 1",
@@ -327,14 +560,13 @@
                 desc: "코드를 만지기 전에 우선 디스코드나 대면으로 모이세요!<br><br>서비스의 이름, 타겟 유저, 핵심 기능 3가지를 구체적으로 어떻게 할지 회의합니다.",
                 detail: "내용이 정해졌다면, 팀원 각자가 템플릿의 어느 부분을 맡아서 타이핑할지 정확히 분담합니다. (예: A는 1번 기획 배경, B는 2번 타겟 유저 등)",
                 btnText: "다음: 저장소 가져오기 (Clone)",
-                showGraph: false,
-                action: () => {} 
+                showGraph: false
             },
             {
                 badge: "Step 2",
                 title: "팀 저장소 가져오기 (Clone)",
                 desc: "VS Code를 열고 터미널(Git Bash)을 실행합니다.<br>팀장이 깃허브에 만들어둔 '우리 팀 저장소' 주소를 내 컴퓨터로 통째로 복사해서 가져오는 과정입니다.",
-                detail: "터미널 명령어 시뮬레이션을 위해 아래 버튼을 누르면 명령어가 자동 입력됩니다.",
+                detail: "터미널 명령어 시뮬레이션을 위해 아래 버튼을 누르면 명령어가 자동 입력됩니다. (명령어가 완료되면 좌측 탐색기에 폴더가 생겨납니다!)",
                 btnText: "명령어 실행: git clone",
                 showGraph: true,
                 graphSVG: graphMain,
@@ -346,6 +578,24 @@
                         "remote: Enumerating objects: 4, done.",
                         "Receiving objects: 100% (4/4), done."
                     ]);
+                    
+                    await typeTerminal("cd my-team-project");
+                    
+                    currentPath = "~/projects/my-team-project";
+                    currentBranch = "(main)";
+                    document.getElementById('term-path').innerText = currentPath;
+                    document.getElementById('term-branch').innerText = currentBranch;
+                    
+                    document.getElementById('status-branch').innerText = "main";
+                    document.getElementById('status-branch').classList.remove('hidden');
+
+                    // Show Explorer and Editor files after clone
+                    document.getElementById('empty-workspace').classList.add('hidden');
+                    document.getElementById('explorer-content').classList.remove('hidden');
+                    document.getElementById('tab-readme').classList.replace('hidden', 'flex');
+                    document.getElementById('editor-empty').classList.add('hidden');
+                    document.getElementById('editor-content').classList.remove('hidden');
+                    
                     document.getElementById('folder-root').classList.add('bg-[#37373d]');
                     setTimeout(() => document.getElementById('folder-root').classList.remove('bg-[#37373d]'), 1000);
                 }
@@ -371,67 +621,95 @@
             },
             {
                 badge: "Step 4",
-                title: "내 파트 수정 후 저장 (Commit)",
-                desc: "<strong>커밋(Commit)이란?</strong> 게임의 '세이브 포인트'를 만드는 것과 같습니다.<br><br>VS Code에서 내가 맡은 파트의 내용을 적은 뒤, 내 브랜치(연습장)에 영구적으로 '저장' 도장을 찍는 행위입니다.",
-                detail: "우측 에디터에서 '1. 기획 배경' 내용이 자동으로 타이핑되는 것을 확인하세요.",
-                btnText: "내용 수정 및 Commit 하기",
+                title: "내 파트 기획서 수정하기",
+                desc: "VS Code 에디터에서 내가 맡기로 한 파트의 내용을 수정합니다.<br><br>파일의 내용이 변경되면, 깃(Git)은 이 파일이 '수정됨(Modified)' 상태라고 인식합니다. 좌측 탐색기 파일 옆에 노란색 <strong>M</strong> 뱃지가 생기는 것을 확인해보세요.",
+                detail: "아래 버튼을 누르면 기획 배경 부분이 수정되는 것을 모사합니다.",
+                btnText: "내용 수정 시뮬레이션",
                 showGraph: true,
-                graphSVG: graphCommit,
-                graphDesc: "내 브랜치에 코드를 수정하고 새로운 세이브(Commit)를 남겼습니다.",
+                graphSVG: graphEdit,
+                graphDesc: "브랜치 내부에서 코드가 변경되어, Git이 변경 사항을 감지했습니다.",
                 action: async () => {
                     const editor = document.getElementById('editor-content');
                     const originalText = editor.innerHTML;
                     
                     const updatedText = originalText.replace(
                         "* **현재 상황 및 문제점:** (우리가 일상에서 겪고 있는 불편함을 구체적으로 적어주세요)",
-                        "<span class='text-green-400'>* **현재 상황 및 문제점:** 바쁜 대학생들이 매일 점심 메뉴를 고르는데 너무 많은 시간을 낭비하고 있습니다.</span>"
+                        "<span class='text-green-400 font-bold'>* **현재 상황 및 문제점:** 바쁜 대학생들이 매일 점심 메뉴를 고르는데 너무 많은 시간을 낭비하고 있습니다.</span>"
                     ).replace(
                         "* **우리가 제공할 해결책:** (그 불편함을 우리 웹사이트가 어떻게 해결해 줄 것인지 적어주세요)",
-                        "<span class='text-green-400'>* **우리가 제공할 해결책:** 학교 주변 식당 데이터를 바탕으로, 룰렛을 돌려 오늘 먹을 메뉴를 랜덤으로 1초만에 추천해주는 웹사이트입니다.</span>"
+                        "<span class='text-green-400 font-bold'>* **우리가 제공할 해결책:** 학교 주변 식당 데이터를 바탕으로, 룰렛을 돌려 오늘 먹을 메뉴를 랜덤으로 1초만에 추천해주는 웹사이트입니다.</span>"
                     );
                     
                     editor.innerHTML = updatedText;
                     
-                    await new Promise(r => setTimeout(r, 1000));
+                    const badge = document.getElementById('file-badge');
+                    badge.classList.remove('hidden');
+                    badge.classList.add('badge-m');
+                    badge.innerText = 'M';
+                }
+            },
+            {
+                badge: "Step 5",
+                title: "수정한 내용 확정 짓기 (Add & Commit)",
+                desc: "<strong>커밋(Commit)이란?</strong> 게임의 '세이브 포인트'를 만드는 것과 같습니다.<br><br>변경한 파일을 장바구니에 담고(<code>add</code>), 이름표를 붙여서 사진을 찰칵 찍어 기록(<code>commit</code>)하는 과정입니다.",
+                detail: "명령어: <code>git add 파일명</code> 후 <code>git commit -m \"메시지\"</code>",
+                btnText: "명령어 실행: Add & Commit",
+                showGraph: true,
+                graphSVG: graphCommit,
+                graphDesc: "내 브랜치에 코드를 수정하고 새로운 세이브(Commit)를 남겼습니다.",
+                action: async () => {
                     await typeTerminal("git add README.md");
+                    await new Promise(r => setTimeout(r, 500));
                     await typeTerminal("git commit -m \"docs: 홍길동 파트 기획안 작성 완료\"");
                     await mockTerminalOutput([
                         "[feature/hong 2a3b4c] docs: 홍길동 파트 기획안 작성 완료",
                         " 1 file changed, 2 insertions(+), 2 deletions(-)"
                     ]);
+
+                    document.getElementById('file-badge').classList.add('hidden');
                 }
             },
             {
-                badge: "Step 5",
-                title: "결재 요청하기 (Push & PR)",
-                desc: "내 컴퓨터에만 있던 세이브 파일을 깃허브 서버로 쏘아 올리는 것이 <strong>Push</strong>입니다.<br><br>그리고 <strong>\"내가 이렇게 수정했는데, 원본(main)에 합쳐도 될까요?\"</strong> 라고 팀원들에게 검토를 부탁하는 서류를 올리는 것이 바로 <strong>PR(Pull Request)</strong>입니다.",
-                detail: "명령어 실행 후 나타나는 GitHub PR 화면 모사를 확인하세요.",
-                btnText: "명령어 실행: Push & PR",
+                badge: "Step 6",
+                title: "깃허브 서버로 쏘아 올리기 (Push)",
+                desc: "지금까지의 세이브 포인트는 오직 '내 컴퓨터(로컬)'에만 존재합니다.<br><br>다른 팀원들이 볼 수 있도록 인터넷(GitHub 서버)으로 내 브랜치를 밀어 올리는 작업이 바로 <strong>Push</strong>입니다.",
+                detail: "명령어: <code>git push origin 내브랜치명</code>",
+                btnText: "명령어 실행: Push",
                 showGraph: true,
-                graphSVG: graphPR,
-                graphDesc: "깃허브에 코드를 올리고, main으로 합쳐달라는 화살표(PR)를 날렸습니다.",
+                graphSVG: graphPush,
+                graphDesc: "내 컴퓨터에서 생성한 브랜치와 커밋을 깃허브 서버로 업로드했습니다.",
                 action: async () => {
                     await typeTerminal("git push origin feature/hong");
                     await mockTerminalOutput([
                         "remote: Create a pull request for 'feature/hong' on GitHub by visiting:",
                         "remote:      https://github.com/my-team/my-team-project/pull/new/feature/hong",
-                        "To https://github.com/my-team/my-team-project.git"
+                        "To https://github.com/my-team/my-team-project.git",
+                        " * [new branch]      feature/hong -> feature/hong"
                     ]);
-                    
-                    setTimeout(() => {
-                        document.getElementById('pr-modal').classList.remove('hidden');
-                    }, 800);
                 }
             },
             {
-                badge: "Step 6",
-                title: "💣 의도적 충돌(Conflict) 해결",
-                desc: "<strong class='text-red-400'>앗!</strong> 내가 코드를 짜는 동안, 다른 팀원이 먼저 코드를 수정해서 원본(main)에 합쳤네요.<br><br>내가 작성한 줄과 다른 팀원이 수정한 줄이 겹치면, 깃허브는 <strong>\"누구 말을 들어야 해?\"</strong> 하며 멘붕에 빠집니다. 이것이 바로 <strong>충돌(Conflict)</strong>입니다!",
-                detail: "우측 에디터에 나타나는 초록/파랑 버튼(Accept Current / Incoming Change)을 눌러 문장을 예쁘게 병합해 보세요.",
-                btnText: "명령어 실행: Pull 및 충돌 발생",
+                badge: "Step 7",
+                title: "결재 요청하기 (Pull Request)",
+                desc: "<strong>\"제가 맡은 부분 다 했어요! 원본(main)에 합쳐도 될까요?\"</strong><br><br>깃허브 웹사이트에서 팀원들에게 코드 검토를 요청하는 서류를 올립니다. 이것이 바로 PR(Pull Request)입니다.",
+                detail: "아래 버튼을 누르면 깃허브 PR 생성 화면 모달이 나타납니다. 확인 후 닫기를 눌러주세요.",
+                btnText: "PR 생성 화면 보기",
+                showGraph: true,
+                graphSVG: graphPR,
+                graphDesc: "내 브랜치를 main으로 합쳐달라는 화살표(PR)를 날렸습니다.",
+                action: async () => {
+                    document.getElementById('pr-modal').classList.remove('hidden');
+                }
+            },
+            {
+                badge: "Step 8",
+                title: "💣 의도적 충돌(Conflict) 발생!",
+                desc: "<strong class='text-red-400'>앗!</strong> 내가 올린 PR을 승인받기 전, <strong>다른 팀원이 먼저 코드를 수정해서 원본(main)에 합쳐버렸네요.</strong><br><br>원격 저장소의 변경사항을 내 컴퓨터로 가져오기 위해 <code>git pull origin main</code>을 쳤더니, 내가 수정한 줄과 겹쳐서 충돌(Conflict) 에러가 났습니다!",
+                detail: "우측 에디터에 충돌 표시가 나타납니다. 좌측 탐색기에도 주황색 <strong>C</strong> 뱃지가 표시됩니다.",
+                btnText: "명령어 실행: Pull 및 충돌",
                 showGraph: true,
                 graphSVG: graphConflict,
-                graphDesc: "main이 먼저 업데이트 되어버렸습니다! 두 코드가 부딪혀 번개(충돌)가 발생했습니다.",
+                graphDesc: "main이 먼저 업데이트 되어버렸습니다! 두 코드가 같은 줄을 수정하여 충돌이 발생했습니다.",
                 action: async () => {
                     await typeTerminal("git pull origin main");
                     await mockTerminalOutput([
@@ -440,12 +718,34 @@
                         "Automatic merge failed; fix conflicts and then commit the result."
                     ]);
 
+                    const badge = document.getElementById('file-badge');
+                    badge.classList.remove('hidden', 'badge-m');
+                    badge.classList.add('badge-c');
+                    badge.innerText = 'C';
+
                     const editor = document.getElementById('editor-content');
                     const conflictHtml = `
-<div id="conflict-actions" class="text-xs font-sans mb-1 flex gap-3 pt-2 fade-in">
-    <span class="text-blue-400 cursor-pointer hover:underline hover:text-blue-300 bg-blue-900 bg-opacity-30 px-2 py-1 rounded border border-blue-800" onclick="resolveConflict('current')"><i class="fas fa-arrow-left"></i> Accept Current Change (내 코드)</span>
-    <span class="text-green-400 cursor-pointer hover:underline hover:text-green-300 bg-green-900 bg-opacity-30 px-2 py-1 rounded border border-green-800" onclick="resolveConflict('incoming')"><i class="fas fa-arrow-right"></i> Accept Incoming Change (팀원 코드)</span>
-    <span class="text-purple-400 cursor-pointer hover:underline hover:text-purple-300 bg-purple-900 bg-opacity-30 px-2 py-1 rounded border border-purple-800" onclick="resolveConflict('both')"><i class="fas fa-compress-arrows-alt"></i> Accept Both Changes (둘 다)</span>
+<div id="conflict-guide" class="bg-[#2d2d2d] border border-gray-600 rounded-lg p-4 mb-4 mt-2 fade-in shadow-lg">
+    <h4 class="text-yellow-400 font-bold text-sm mb-3 border-b border-gray-600 pb-2"><i class="fas fa-lightbulb"></i> 충돌 해결 가이드 : 무엇을 선택해야 할까요?</h4>
+    <div class="space-y-3 text-xs text-gray-300 font-sans">
+        <div class="flex items-start gap-2">
+            <span class="shrink-0 inline-block w-32 text-center px-2 py-1 bg-[#1e1e1e] text-blue-400 rounded border border-blue-800">Accept Current</span>
+            <p><strong>나의 변경사항</strong>만 유지합니다. 내가 쓴 내용이 100% 맞을 때만 씁니다. <span class="text-red-400">(팀원의 코드가 영구 삭제됨)</span></p>
+        </div>
+        <div class="flex items-start gap-2">
+            <span class="shrink-0 inline-block w-32 text-center px-2 py-1 bg-[#1e1e1e] text-green-400 rounded border border-green-800">Accept Incoming</span>
+            <p><strong>팀원의 변경사항</strong>만 유지합니다. 내 작업을 취소하고 팀원 코드를 덮어씌울 때 씁니다. <span class="text-red-400">(내 코드가 영구 삭제됨)</span></p>
+        </div>
+        <div class="flex items-start gap-2 bg-purple-900 bg-opacity-20 p-2 rounded border border-purple-800">
+            <span class="shrink-0 inline-block w-32 text-center px-2 py-1 bg-purple-600 text-white font-bold rounded shadow-[0_0_8px_rgba(168,85,247,0.6)]">Accept Both (권장)</span>
+            <p class="text-purple-200"><strong>두 내용을 모두 화면에 남깁니다.</strong> 실무에서는 일단 둘 다 남겨둔 뒤, 사람이 코드를 직접 읽어보고 하나의 자연스러운 코드로 다듬고 수정하는 것이 코드를 날리지 않는 가장 안전한 방법입니다.</p>
+        </div>
+    </div>
+</div>
+<div id="conflict-actions" class="text-xs font-sans mb-1 flex flex-wrap gap-2 fade-in">
+    <span class="text-blue-400 cursor-pointer hover:underline hover:text-blue-300 bg-blue-900 bg-opacity-30 px-3 py-1.5 rounded border border-blue-800 transition-colors hover:bg-opacity-50" onclick="resolveConflict('current')"><i class="fas fa-arrow-left"></i> Accept Current Change</span>
+    <span class="text-green-400 cursor-pointer hover:underline hover:text-green-300 bg-green-900 bg-opacity-30 px-3 py-1.5 rounded border border-green-800 transition-colors hover:bg-opacity-50" onclick="resolveConflict('incoming')"><i class="fas fa-arrow-right"></i> Accept Incoming Change</span>
+    <span class="text-purple-300 cursor-pointer hover:underline hover:text-white bg-purple-700 bg-opacity-60 px-3 py-1.5 rounded border border-purple-500 transition-colors hover:bg-purple-600 font-bold shadow-lg" onclick="resolveConflict('both')"><i class="fas fa-compress-arrows-alt"></i> Accept Both Changes (권장)</span>
 </div>
 <div id="conflict-block" class="font-mono">
 <div class="text-blue-400 bg-[#1e1e1e]">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (Current Change - 내가 방금 쓴 내용)</div>
@@ -454,45 +754,69 @@
 <div class="conflict-divider"></div>
 <div class="conflict-incoming p-1">* **현재 상황 및 문제점:** 점심시간 1시간은 너무 짧은데, 매번 '뭐 먹지?' 고민하느라 10분씩 버리고 있습니다. (다른 팀원이 쓴 내용)</div>
 <div class="text-green-400 bg-[#1e1e1e]">&gt;&gt;&gt;&gt;&gt;&gt;&gt; main (Incoming Change - 먼저 합쳐진 팀원의 내용)</div>
-</div>
-* **우리가 제공할 해결책:** 학교 주변 식당 데이터를 바탕으로, 룰렛을 돌려 오늘 먹을 메뉴를 랜덤으로 1초만에 추천해주는 웹사이트입니다.`;
+</div>`;
                     
-                    const baseText = `# 🚀 프로젝트 명 (서비스 이름을 적어주세요)\n\n> **"여기에 서비스를 매력적으로 표현하는 한 줄 소개를 적어주세요."**\n\n---\n\n## 🎯 1. 기획 배경 및 해결 과제`;
-                    const tailText = `\n\n## 👤 2. 타겟 유저 페르소나\n* **인구통계학적 특성:** (누가 주로 사용할 것인가요?)\n...`;
+                    const tailText = `\n<span class='text-green-400 font-bold'>* **우리가 제공할 해결책:** 학교 주변 식당 데이터를 바탕으로, 룰렛을 돌려 오늘 먹을 메뉴를 랜덤으로 1초만에 추천해주는 웹사이트입니다.</span>` + tailContent;
                     
-                    editor.innerHTML = baseText + conflictHtml + tailText;
+                    editor.innerHTML = baseContent + conflictHtml + tailText;
                     
                     const btn = document.getElementById('next-btn');
                     btn.innerHTML = `<i class="fas fa-exclamation-triangle text-yellow-400 animate-pulse"></i> 우측 에디터에서 버튼을 눌러 충돌을 해결해주세요!`;
-                    btn.classList.replace('bg-blue-600', 'bg-yellow-600');
-                    btn.classList.replace('hover:bg-blue-500', 'hover:bg-yellow-500');
+                    btn.className = "w-2/3 py-2.5 bg-yellow-600 hover:bg-yellow-500 text-white text-sm font-bold rounded shadow transition-all flex justify-center items-center gap-2 opacity-80 cursor-not-allowed";
                     btn.disabled = true;
-                    btn.classList.add('opacity-80', 'cursor-not-allowed');
                 }
             }
         ];
 
         async function nextStep() {
             if (isAnimating || currentStep >= steps.length) return;
+
+            const step = steps[currentStep];
+
+            if (step.action && !actionExecuted) {
+                isAnimating = true;
+                
+                const btn = document.getElementById('next-btn');
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 실행 중...`;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+                await step.action();
+
+                actionExecuted = true;
+                isAnimating = false;
+
+                if (currentStep !== 8) {
+                    btn.innerHTML = `<span class="text-yellow-300">결과 확인 완료 (다음 이동)</span> <i class="fas fa-arrow-right"></i>`;
+                    btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                }
+                return; 
+            }
+
+            // Step 8에서 충돌 해결이 안 되었다면 다음으로 넘어가지 않음
+            if (currentStep === 8 && !conflictResolved) {
+                return;
+            }
+
             isAnimating = true;
-            
-            const btn = document.getElementById('next-btn');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 실행 중...`;
-            btn.classList.add('opacity-75', 'cursor-not-allowed');
-
-            if (steps[currentStep].action) {
-                await steps[currentStep].action();
-            }
-
-            if (currentStep !== 6 || conflictResolved) {
-                currentStep++;
-                updateGuideUI();
-            }
-
+            currentStep++;
+            actionExecuted = false; 
+            updateGuideUI();
             isAnimating = false;
         }
 
         function updateGuideUI() {
+            const prevBtn = document.getElementById('prev-btn');
+            if (currentStep === 0) {
+                prevBtn.disabled = true;
+                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                prevBtn.disabled = false;
+                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+
+            const btn = document.getElementById('next-btn');
+            btn.className = "w-2/3 py-2.5 text-white text-sm font-bold rounded shadow transition-all active:scale-95 flex justify-center items-center gap-2";
+
             if (currentStep >= steps.length) {
                 document.getElementById('step-badge').innerText = "완료";
                 document.getElementById('step-badge').className = "inline-block px-2 py-1 bg-green-600 text-xs rounded mb-2 font-bold uppercase tracking-wider";
@@ -500,17 +824,13 @@
                 document.getElementById('step-desc').innerHTML = "축하합니다! Git 협업의 가장 중요한 전체 사이클을 경험하셨습니다.<br><br>이제 팀원들과 디스코드에 모여, 실제 GitHub 저장소에서 이 과정을 직접 진행해 보세요!";
                 document.getElementById('step-detail').innerHTML = "상단 <strong class='text-indigo-400'>[과제 정보 및 제출방법]</strong> 버튼을 눌러 최종 제출 방법을 다시 확인해 주세요.";
                 
-                // Show Resolved Graph
                 const graphContainer = document.getElementById('graph-container');
                 graphContainer.classList.remove('hidden');
                 document.getElementById('git-graph').innerHTML = graphResolved;
                 document.getElementById('graph-desc').innerHTML = "충돌이 예쁘게 다듬어지고 마침내 하나의 줄기(main)로 완전히 병합되었습니다!";
 
-                const btn = document.getElementById('next-btn');
                 btn.innerHTML = `<i class="fas fa-check"></i> 튜토리얼 종료`;
-                btn.classList.replace('bg-blue-600', 'bg-green-600');
-                btn.classList.replace('hover:bg-blue-500', 'hover:bg-green-500');
-                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btn.classList.add('bg-green-600', 'hover:bg-green-500', 'opacity-75', 'cursor-not-allowed');
                 btn.disabled = true;
                 
                 document.getElementById('progress-text').innerText = "Complete!";
@@ -522,7 +842,7 @@
             const step = steps[currentStep];
             document.getElementById('step-badge').innerText = step.badge;
             
-            if(step.badge === "Step 6") {
+            if(step.badge === "Step 6" || step.badge === "Step 8") {
                 document.getElementById('step-badge').className = "inline-block px-2 py-1 bg-red-600 text-xs rounded mb-2 font-bold uppercase tracking-wider";
             } else {
                 document.getElementById('step-badge').className = "inline-block px-2 py-1 bg-blue-600 text-xs rounded mb-2 font-bold uppercase tracking-wider";
@@ -532,7 +852,6 @@
             document.getElementById('step-desc').innerHTML = step.desc;
             document.getElementById('step-detail').innerHTML = step.detail;
             
-            // Handle Graph Visibility and Content
             const graphContainer = document.getElementById('graph-container');
             if(step.showGraph) {
                 graphContainer.classList.remove('hidden');
@@ -542,13 +861,13 @@
                 graphContainer.classList.add('hidden');
             }
 
-            const btn = document.getElementById('next-btn');
             btn.innerHTML = `<span>${step.btnText}</span> <i class="fas fa-arrow-right"></i>`;
-            btn.classList.remove('opacity-75', 'cursor-not-allowed');
+            btn.classList.add('bg-blue-600', 'hover:bg-blue-500');
             btn.disabled = false;
 
             document.getElementById('progress-text').innerText = `Step ${currentStep} / ${steps.length - 1}`;
             document.getElementById('progress-bar').style.width = `${(currentStep / (steps.length - 1)) * 100}%`;
+            document.getElementById('progress-bar').classList.replace('bg-green-500', 'bg-blue-500');
         }
 
         async function typeTerminal(command) {
@@ -562,14 +881,13 @@
             await new Promise(r => setTimeout(r, 400)); // pause before enter
             
             // Move command to history lines
-            const branchText = document.getElementById('term-branch').innerText;
             const linesDiv = document.getElementById('terminal-lines');
             linesDiv.innerHTML += `
                 <div class="flex mt-1">
                     <span class="text-green-500 mr-2">user@DESKTOP</span>
                     <span class="text-purple-400 mr-2">MINGW64</span>
-                    <span class="text-yellow-300 mr-2">~/my-team-project</span>
-                    <span class="text-cyan-400 mr-2">${branchText}</span>
+                    <span class="text-yellow-300 mr-2">${currentPath}</span>
+                    <span class="text-cyan-400 mr-2">${currentBranch}</span>
                     <span class="text-white">$ ${command}</span>
                 </div>`;
             inputSpan.innerHTML = '';
@@ -581,7 +899,7 @@
             for (let line of lines) {
                 linesDiv.innerHTML += `<div class="text-gray-300 ml-1 whitespace-pre">${line}</div>`;
                 scrollToBottom('terminal');
-                await new Promise(r => setTimeout(r, 100)); // output speed
+                await new Promise(r => setTimeout(r, 100));
             }
         }
 
@@ -590,60 +908,76 @@
             el.scrollTop = el.scrollHeight;
         }
 
-        // Modals
         function showInfoModal() {
             document.getElementById('info-modal').classList.remove('hidden');
         }
 
         function closeModal(id) {
-            document.getElementById('pr-modal').classList.add('hidden'); // Ensure specific styling is reset if needed
+            document.getElementById('pr-modal').classList.add('hidden');
             document.getElementById(id).classList.add('hidden');
         }
 
         async function resolveConflict(choice) {
-            if (currentStep !== 6 || isAnimating) return;
+            if (currentStep !== 8 || isAnimating) return;
+            isAnimating = true; 
             
             const conflictActions = document.getElementById('conflict-actions');
             const conflictBlock = document.getElementById('conflict-block');
             
-            let resolvedText = "";
+            if (!conflictActions || !conflictBlock) {
+                isAnimating = false;
+                return;
+            }
+            
+            let resolvedLine = "";
+            let feedbackHtml = "";
+
             if (choice === 'current') {
-                resolvedText = `<span class='text-blue-300'>* **현재 상황 및 문제점:** 바쁜 대학생들이 매일 점심 메뉴를 고르는데 너무 많은 시간을 낭비하고 있습니다.</span>`;
+                resolvedLine = `<span class='text-blue-400 font-bold'>* **현재 상황 및 문제점:** 바쁜 대학생들이 매일 점심 메뉴를 고르는데 너무 많은 시간을 낭비하고 있습니다.</span>`;
+                feedbackHtml = `<div class="p-3 mb-4 mt-2 border rounded text-sm fade-in bg-blue-900 bg-opacity-30 text-blue-200 border-blue-700 font-sans">
+                    <i class="fas fa-exclamation-triangle text-yellow-400"></i> <strong>Current 선택됨:</strong> 내 코드만 유지되고 팀원의 코드가 통째로 삭제되었습니다. 실무에서는 중요한 변경사항이 날아갈 수 있으니 주의하세요!
+                </div>`;
             } else if (choice === 'incoming') {
-                resolvedText = `<span class='text-green-300'>* **현재 상황 및 문제점:** 점심시간 1시간은 너무 짧은데, 매번 '뭐 먹지?' 고민하느라 10분씩 버리고 있습니다.</span>`;
+                resolvedLine = `<span class='text-green-400 font-bold'>* **현재 상황 및 문제점:** 점심시간 1시간은 너무 짧은데, 매번 '뭐 먹지?' 고민하느라 10분씩 버리고 있습니다. (다른 팀원이 쓴 내용)</span>`;
+                feedbackHtml = `<div class="p-3 mb-4 mt-2 border rounded text-sm fade-in bg-green-900 bg-opacity-30 text-green-200 border-green-700 font-sans">
+                    <i class="fas fa-exclamation-triangle text-yellow-400"></i> <strong>Incoming 선택됨:</strong> 내 코드는 삭제되고 팀원의 코드만 유지되었습니다. 내 작업을 덮어씌워도 괜찮을 때만 사용합니다.
+                </div>`;
             } else {
-                resolvedText = `<span class='text-purple-300'>* **현재 상황 및 문제점:** 바쁜 대학생들의 점심시간 1시간은 너무 짧은데, 매번 '뭐 먹지?' 고민하느라 10분씩 낭비하고 있습니다.</span>`;
+                resolvedLine = `<span class='text-purple-400 font-bold'>* **현재 상황 및 문제점:** 바쁜 대학생들이 매일 점심 메뉴를 고르는데 너무 많은 시간을 낭비하고 있습니다. 점심시간 1시간은 너무 짧은데, 매번 '뭐 먹지?' 고민하느라 10분씩 버리고 있습니다.</span>`;
+                feedbackHtml = `<div class="p-3 mb-4 mt-2 border rounded text-sm fade-in bg-purple-900 bg-opacity-40 text-purple-100 border-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.3)] font-sans">
+                    <i class="fas fa-check-circle text-purple-300"></i> <strong>Both 선택됨 (권장 방식):</strong> 두 내용이 지워지지 않고 모두 화면에 유지되었습니다!<br>
+                    <span class="text-purple-300 text-xs mt-1 block">(※ 본 가이드에서는 이해를 돕기 위해 코드가 한 문장으로 예쁘게 다듬어지도록 모사했습니다. 실무에서는 개발자가 2줄을 직접 1줄로 예쁘게 수정해주시면 됩니다!)</span>
+                </div>`;
             }
 
-            // Replace in DOM
+            // 안내 패널(충돌 해결 가이드) 제거
+            const guidePanel = document.getElementById('conflict-guide');
+            if (guidePanel) guidePanel.remove();
+
+            // '이전' 버튼 클릭 시 되돌아올 수 있도록 최종 스냅샷 저장
+            lastResolvedHtml = baseContent + feedbackHtml + resolvedLine + `\n<span class='text-green-400 font-bold'>* **우리가 제공할 해결책:** 학교 주변 식당 데이터를 바탕으로, 룰렛을 돌려 오늘 먹을 메뉴를 랜덤으로 1초만에 추천해주는 웹사이트입니다.</span>` + tailContent;
+
             conflictActions.remove();
-            conflictBlock.outerHTML = resolvedText;
+            conflictBlock.outerHTML = feedbackHtml + resolvedLine;
+
+            document.getElementById('file-badge').classList.add('hidden');
 
             conflictResolved = true;
 
-            // Finalizing Conflict resolution in Terminal
             await typeTerminal("git add README.md");
             await typeTerminal("git commit -m \"Merge branch 'main' into feature/hong\"");
             await mockTerminalOutput([
                 "[feature/hong 9f8e7d] Merge branch 'main' into feature/hong"
             ]);
 
-            // Update Guide Button to finish
             const btn = document.getElementById('next-btn');
             btn.innerHTML = `<span>수정 완료! 마무리하기</span> <i class="fas fa-check"></i>`;
-            btn.classList.replace('bg-yellow-600', 'bg-blue-600');
-            btn.classList.replace('hover:bg-yellow-500', 'hover:bg-blue-500');
+            btn.className = "w-2/3 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded shadow transition-all active:scale-95 flex justify-center items-center gap-2";
             btn.disabled = false;
-            btn.classList.remove('opacity-80', 'cursor-not-allowed');
             
-            // Advance state
-            btn.onclick = () => {
-                currentStep++;
-                updateGuideUI();
-            };
+            isAnimating = false; 
         }
 
-        // Initialize UI
         updateGuideUI();
 
     </script>
